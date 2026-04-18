@@ -363,6 +363,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
     <div class="sb-it" onclick="go('gr',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 15l-2 5L8 8l10 4-5 3z"/><circle cx="19" cy="5" r="2"/></svg><span class="sb-lb">Graduações</span></div>
     <div class="sb-it" onclick="go('ps',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class="sb-lb">Prospects</span></div>
     <div class="sb-sec">OPERAÇÃO</div>
+    <div class="sb-it" onclick="go('pf',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7 7 0 0 1 13 0"/><path d="M15 11l1 1 3-3"/></svg><span class="sb-lb">Professores</span></div>
     <div class="sb-it" onclick="go('lj',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="sb-lb">Lojinha</span></div>
     <div class="sb-it" onclick="go('fi',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="sb-lb">Financeiro</span></div>
     <div class="sb-it" onclick="go('nt',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="sb-lb">Notificações</span></div>
@@ -541,6 +542,55 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
       </div>
     </div>
 
+    <!-- ══ PROFESSORES ══ -->
+    <div class="sec" id="s-pf">
+      <div class="g4">
+        <div class="kpi a-pu"><div class="kl">PROFESSORES</div><div class="kv" id="kpiProfs">0</div></div>
+        <div class="kpi a-ok"><div class="kl">AULAS ESTE MÊS</div><div class="kv" id="kpiAulasM">0</div></div>
+        <div class="kpi a-bl"><div class="kl">AULAS CONFIRMADAS</div><div class="kv" id="kpiAulasC">0</div></div>
+        <div class="kpi a-er"><div class="kl">AULAS PENDENTES</div><div class="kv" id="kpiAulasP" style="color:var(--er)">0</div></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <div class="chips" id="pfChips" style="margin-bottom:0">
+          <span class="chip on" onclick="filtPfView(this,'profs')">Professores</span>
+          <span class="chip" onclick="filtPfView(this,'grade')">Grade de Aulas</span>
+          <span class="chip" onclick="filtPfView(this,'pagto')">Pagamentos</span>
+        </div>
+        <button class="btn btn-pu btn-sm" style="margin-left:auto" id="pfBtnAdd" onclick="abrirModalProf()">+ Cadastrar professor</button>
+      </div>
+
+      <!-- LISTA PROFESSORES -->
+      <div id="pfViewProfs">
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="tw"><table>
+            <thead><tr><th style="padding-left:12px">Professor</th><th>Faixa</th><th>Contato</th><th>Vínculo</th><th>Valor/Aula</th><th>Turmas</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody id="tbProfs"><tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text3)">Nenhum professor cadastrado. Clique em "+ Cadastrar professor".</td></tr></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- GRADE DE AULAS -->
+      <div id="pfViewGrade" style="display:none">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+          <button class="btn btn-pu btn-sm" onclick="abrirModalAula()">+ Nova aula</button>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="tw"><table>
+            <thead><tr><th style="padding-left:12px">Dia</th><th>Horário</th><th>Turma</th><th>Tipo</th><th>Professor</th><th>Cap.</th><th>Data</th><th>Status</th><th>Ação</th></tr></thead>
+            <tbody id="tbAulas"><tr><td colspan="9" style="text-align:center;padding:24px;color:var(--text3)">Nenhuma aula cadastrada.</td></tr></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- PAGAMENTOS -->
+      <div id="pfViewPagto" style="display:none">
+        <div class="card">
+          <div class="card-hd"><span class="ct">RESUMO DE PAGAMENTOS — MÊS ATUAL</span></div>
+          <div id="tbPagto"><div style="font-size:13px;color:var(--text3);text-align:center;padding:20px">Cadastre professores e aulas para gerar o resumo.</div></div>
+        </div>
+      </div>
+    </div>
+
     <!-- ══ NOTIFICAÇÕES ══ -->
     <div class="sec" id="s-nt">
       <div class="bd-banner"><span style="font-size:16px">📲</span><div><strong>Push real exige BD + backend:</strong> envio de WhatsApp, notificações push e e-mails automáticos precisam de servidor e banco de dados. Aqui você agenda e visualiza o que seria enviado.</div></div>
@@ -567,6 +617,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
     <button class="bn-it" onclick="go('lj',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="bn-lb">Loja</span></button>
     <button class="bn-it" onclick="go('fi',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="bn-lb">Financeiro</span></button>
     <button class="bn-it" onclick="go('ps',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class="bn-lb">Leads</span></button>
+    <button class="bn-it" onclick="go('pf',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7 7 0 0 1 13 0"/><path d="M15 11l1 1 3-3"/></svg><span class="bn-lb">Profs</span></button>
     <button class="bn-it" onclick="go('nt',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="bn-lb">Avisos</span></button>
   </div>
 </nav>
@@ -597,6 +648,12 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
         <div class="fg"><label class="fl">NOME DO RESPONSÁVEL</label><input class="fi" id="aRespNome" placeholder="Nome completo"></div>
         <div class="fg"><label class="fl">TELEFONE DO RESPONSÁVEL</label><input class="fi" id="aRespTel" placeholder="(11) 9 0000-0000"></div>
         <div class="section-sep full">BJJ — GRADUAÇÃO &amp; KIMONO</div>
+        <div class="fg"><label class="fl">TIPO DE ALUNO *</label>
+          <select class="fi" id="aTipo" onchange="atualizarFaixasPorTipo()"><option value="Adulto">Adulto</option><option value="Kids">Kids</option></select>
+        </div>
+        <div class="fg"><label class="fl">TURMA</label>
+          <select class="fi" id="aTurma"><option>Fundamental</option><option>Avançado</option><option>Feminino</option><option>Open Mat</option><option>Kids — Infantil</option><option>Kids — Juvenil</option><option>Kids — Pré-teen</option></select>
+        </div>
         <div class="fg"><label class="fl">FAIXA ATUAL *</label>
           <select class="fi" id="aFaixa"><option value="">Selecione</option><option>Branca</option><option>Cinza</option><option>Amarelo</option><option>Laranja</option><option>Verde</option><option>Azul</option><option>Roxa</option><option>Marrom</option><option>Preta</option></select>
         </div>
@@ -732,6 +789,91 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
   </div>
 </div>
 
+<!-- MODAL PROFESSOR -->
+<div class="modal-overlay" id="modalProf">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-hd">
+      <div><div class="modal-title" id="modalProfTitle">Cadastrar Professor</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Unidade Haydee</div></div>
+      <button class="modal-close" onclick="fecharModal('modalProf')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="section-sep full">DADOS PESSOAIS</div>
+        <div class="full fg"><label class="fl">NOME COMPLETO *</label><input class="fi" id="pfNome" placeholder="Nome completo"></div>
+        <div class="fg"><label class="fl">CPF</label><input class="fi" id="pfCpf" placeholder="000.000.000-00"></div>
+        <div class="fg"><label class="fl">DATA DE NASCIMENTO</label><input class="fi" type="date" id="pfNasc"></div>
+        <div class="fg"><label class="fl">TELEFONE / WHATSAPP *</label><input class="fi" id="pfTel" placeholder="(11) 9 0000-0000"></div>
+        <div class="fg"><label class="fl">E-MAIL</label><input class="fi" type="email" id="pfEmail" placeholder="email@exemplo.com"></div>
+        <div class="section-sep full">BJJ — GRADUAÇÃO</div>
+        <div class="fg"><label class="fl">FAIXA *</label>
+          <select class="fi" id="pfFaixa"><option value="">Selecione</option><option>Azul</option><option>Roxa</option><option>Marrom</option><option>Preta</option></select>
+        </div>
+        <div class="fg"><label class="fl">GRAUS</label>
+          <select class="fi" id="pfGraus"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select>
+        </div>
+        <div class="fg"><label class="fl">REGISTRO (CREF / CBJJ)</label><input class="fi" id="pfCref" placeholder="CREF 000000-G/SP"></div>
+        <div class="fg"><label class="fl">DATA DE INÍCIO</label><input class="fi" type="date" id="pfInicio"></div>
+        <div class="section-sep full">CONTRATO &amp; PAGAMENTO</div>
+        <div class="fg"><label class="fl">VÍNCULO *</label>
+          <select class="fi" id="pfVinculo"><option>Autônomo por aula</option><option>Mensalista fixo</option><option>CLT</option><option>MEI</option><option>Voluntário</option></select>
+        </div>
+        <div class="fg"><label class="fl">VALOR POR AULA (R$)</label><input class="fi" type="number" id="pfValorAula" placeholder="80"></div>
+        <div class="fg"><label class="fl">MENSALIDADE FIXA (R$)</label><input class="fi" type="number" id="pfMensalidade" placeholder="0"></div>
+        <div class="fg"><label class="fl">STATUS</label>
+          <select class="fi" id="pfStatus"><option>Ativo</option><option>Inativo</option><option>Afastado</option></select>
+        </div>
+        <div class="full fg"><label class="fl">TURMAS QUE MINISTRA</label>
+          <input class="fi" id="pfTurmas" placeholder="Ex: Fundamental 06:30, Kids 16:00, Open Mat 19:00">
+        </div>
+        <div class="full fg"><label class="fl">OBSERVAÇÕES</label><textarea class="fi" id="pfObs" rows="2" placeholder="Especialidades, observações..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <input type="hidden" id="pfEditId">
+      <button class="btn btn-sec" onclick="fecharModal('modalProf')">Cancelar</button>
+      <button class="btn btn-pu" onclick="salvarProf()">Salvar professor</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL AULA -->
+<div class="modal-overlay" id="modalAula">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd">
+      <div><div class="modal-title" id="modalAulaTitle">Nova Aula</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Grade de Aulas — Haydee</div></div>
+      <button class="modal-close" onclick="fecharModal('modalAula')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg"><label class="fl">DIA DA SEMANA *</label>
+          <select class="fi" id="aulaDia"><option>Segunda</option><option>Terça</option><option>Quarta</option><option>Quinta</option><option>Sexta</option><option>Sábado</option><option>Domingo</option></select>
+        </div>
+        <div class="fg"><label class="fl">HORÁRIO *</label><input class="fi" id="aulaHorario" placeholder="06:30"></div>
+        <div class="fg"><label class="fl">TIPO DE ALUNO *</label>
+          <select class="fi" id="aulaTipo"><option value="Adulto">Adulto</option><option value="Kids">Kids</option></select>
+        </div>
+        <div class="fg"><label class="fl">TURMA *</label>
+          <select class="fi" id="aulaTurma"><option>Fundamental</option><option>Avançado</option><option>Feminino</option><option>Open Mat</option><option>Kids — Infantil</option><option>Kids — Juvenil</option><option>Kids — Pré-teen</option></select>
+        </div>
+        <div class="fg"><label class="fl">PROFESSOR *</label>
+          <select class="fi" id="aulaProf"></select>
+        </div>
+        <div class="fg"><label class="fl">CAPACIDADE MÁX.</label><input class="fi" type="number" id="aulaCap" placeholder="20" value="20"></div>
+        <div class="fg"><label class="fl">DATA DA AULA *</label><input class="fi" type="date" id="aulaData"></div>
+        <div class="fg"><label class="fl">STATUS</label>
+          <select class="fi" id="aulaStatus"><option value="Agendada">Agendada</option><option value="Confirmada">Confirmada</option><option value="Cancelada">Cancelada</option><option value="Reposição">Reposição</option></select>
+        </div>
+        <div class="full fg"><label class="fl">OBSERVAÇÃO</label><input class="fi" id="aulaObs" placeholder="Observações sobre a aula..."></div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <input type="hidden" id="aulaEditId">
+      <button class="btn btn-sec" onclick="fecharModal('modalAula')">Cancelar</button>
+      <button class="btn btn-pu" onclick="salvarAula()">Salvar aula</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div id="toast"></div>
 
@@ -799,7 +941,7 @@ function doLogout(){document.getElementById('app').classList.remove('show');setT
 document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
 
 // ══ NAV ════════════════════════════════════════════════
-const titles={db:'Dashboard',al:'Alunos',ki:'Kids',ci:'Check-in',gr:'Graduações',ps:'Prospects',lj:'Lojinha',fi:'Financeiro',nt:'Notificações'};
+const titles={db:'Dashboard',al:'Alunos',ki:'Kids',ci:'Check-in',gr:'Graduações',ps:'Prospects',lj:'Lojinha',fi:'Financeiro',nt:'Notificações',pf:'Professores'};
 function go(id,el){
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('.sb-it,.bn-it').forEach(i=>i.classList.remove('on'));
@@ -835,6 +977,8 @@ function abrirModalAluno(isKid=false){
   ['aNome','aCpf','aTel','aEmail','aEndereco','aRespNome','aRespTel','aObs'].forEach(id=>document.getElementById(id).value='');
   ['aSexo','aFaixa','aGraus','aKimono','aStatus'].forEach(id=>document.getElementById(id).selectedIndex=0);
   document.getElementById('aPlano').value=isKid?'Kids — R$250/mês':'Mensal — R$300';
+  document.getElementById('aTipo').value=isKid?'Kids':'Adulto';
+  atualizarFaixasPorTipo();
   document.getElementById('aNasc').value='';
   document.getElementById('aIngresso').value=today();
   document.getElementById('aEditId').value='';
@@ -854,6 +998,9 @@ function editarAluno(id){
   document.getElementById('aEndereco').value=a.endereco||'';
   document.getElementById('aRespNome').value=a.respNome||'';
   document.getElementById('aRespTel').value=a.respTel||'';
+  document.getElementById('aTipo').value=a.kids?'Kids':'Adulto';
+  atualizarFaixasPorTipo();
+  document.getElementById('aTurma').value=a.turma||'Fundamental';
   document.getElementById('aFaixa').value=a.faixa||'';
   document.getElementById('aGraus').value=a.graus||0;
   document.getElementById('aKimono').value=a.kimono||'';
@@ -887,7 +1034,8 @@ function salvarAluno(){
     plano:document.getElementById('aPlano').value,
     status:document.getElementById('aStatus').value,
     obs:document.getElementById('aObs').value,
-    kids:kimono.startsWith('M')||faixa==='Cinza'||faixa==='Amarelo'||faixa==='Laranja'||faixa==='Verde',
+    turma:document.getElementById('aTurma').value,
+    kids:document.getElementById('aTipo').value==='Kids',
     treinos:editId?(alunos.find(a=>a.id===editId)?.treinos||0):0,
     criadoEm:editId?(alunos.find(a=>a.id===editId)?.criadoEm||nowStr()):nowStr()
   };
@@ -1230,8 +1378,263 @@ function refreshDash(){
   else alEl.innerHTML=lowProds.map(p=>{const lowTams=Object.entries(p.estoque||{}).filter(([,v])=>v>0&&v<=3);return`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)"><div style="flex:1"><div style="font-size:13px;font-weight:600">${p.nome}</div><div style="font-size:11px;color:var(--er)">${lowTams.map(([t,q])=>t+':'+q).join(' · ')}</div></div><span class="badge b-wa">Baixo</span></div>`}).join('');
 }
 
+// ══ PROFESSORES ════════════════════════════════════════
+let professores = ls('professores') || [];
+let aulas       = ls('aulas')       || [];
+function saveProfs(){ ss('professores',professores); ss('aulas',aulas); }
+
+const diasOrder={Segunda:1,Terça:2,Quarta:3,Quinta:4,Sexta:5,Sábado:6,Domingo:7};
+const pfViews=['pfViewProfs','pfViewGrade','pfViewPagto'];
+const pfBtnLabels={profs:'+ Cadastrar professor',grade:'+ Nova aula',pagto:null};
+
+function filtPfView(el,view){
+  document.querySelectorAll('#pfChips .chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  pfViews.forEach(v=>document.getElementById(v).style.display='none');
+  document.getElementById('pfView'+view.charAt(0).toUpperCase()+view.slice(1)).style.display='block';
+  const btn=document.getElementById('pfBtnAdd');
+  if(view==='profs'){btn.textContent='+ Cadastrar professor';btn.onclick=abrirModalProf;btn.style.display=''}
+  else if(view==='grade'){btn.textContent='+ Nova aula';btn.onclick=abrirModalAula;btn.style.display=''}
+  else{btn.style.display='none'}
+  if(view==='pagto')renderPagto();
+}
+
+// ── Cadastro de Professor ──
+function abrirModalProf(id){
+  const p=id?professores.find(x=>x.id===id):null;
+  ['pfNome','pfCpf','pfTel','pfEmail','pfCref','pfTurmas','pfObs'].forEach(i=>document.getElementById(i).value=p?p[i.replace('pf','').toLowerCase()]||p[i]||'':'');
+  document.getElementById('pfNome').value=p?.nome||'';
+  document.getElementById('pfCpf').value=p?.cpf||'';
+  document.getElementById('pfTel').value=p?.tel||'';
+  document.getElementById('pfEmail').value=p?.email||'';
+  document.getElementById('pfCref').value=p?.cref||'';
+  document.getElementById('pfTurmas').value=p?.turmas||'';
+  document.getElementById('pfObs').value=p?.obs||'';
+  document.getElementById('pfNasc').value=p?.nasc||'';
+  document.getElementById('pfInicio').value=p?.inicio||today();
+  document.getElementById('pfFaixa').value=p?.faixa||'';
+  document.getElementById('pfGraus').value=p?.graus||0;
+  document.getElementById('pfVinculo').value=p?.vinculo||'Autônomo por aula';
+  document.getElementById('pfValorAula').value=p?.valorAula||'';
+  document.getElementById('pfMensalidade').value=p?.mensalidade||'';
+  document.getElementById('pfStatus').value=p?.status||'Ativo';
+  document.getElementById('pfEditId').value=p?.id||'';
+  document.getElementById('modalProfTitle').textContent=p?'Editar Professor — '+p.nome:'Cadastrar Professor';
+  abrirModal('modalProf');
+  setTimeout(()=>document.getElementById('pfNome').focus(),200);
+}
+function salvarProf(){
+  const nome=document.getElementById('pfNome').value.trim();
+  const tel=document.getElementById('pfTel').value.trim();
+  const faixa=document.getElementById('pfFaixa').value;
+  if(!nome||!tel||!faixa){showToast('⚠ Nome, telefone e faixa são obrigatórios');return}
+  const editId=document.getElementById('pfEditId').value;
+  const obj={
+    id:editId||Date.now().toString(),
+    nome,cpf:document.getElementById('pfCpf').value,
+    nasc:document.getElementById('pfNasc').value,
+    tel,email:document.getElementById('pfEmail').value,
+    faixa,graus:parseInt(document.getElementById('pfGraus').value)||0,
+    cref:document.getElementById('pfCref').value,
+    inicio:document.getElementById('pfInicio').value,
+    vinculo:document.getElementById('pfVinculo').value,
+    valorAula:parseFloat(document.getElementById('pfValorAula').value)||0,
+    mensalidade:parseFloat(document.getElementById('pfMensalidade').value)||0,
+    turmas:document.getElementById('pfTurmas').value,
+    status:document.getElementById('pfStatus').value,
+    obs:document.getElementById('pfObs').value,
+  };
+  if(editId){const i=professores.findIndex(p=>p.id===editId);professores[i]=obj}
+  else professores.unshift(obj);
+  saveProfs();fecharModal('modalProf');renderProfs();renderPfKpis();
+  showToast(`✓ ${nome} ${editId?'atualizado':'cadastrado'}!`);
+}
+function excluirProf(id){
+  const p=professores.find(x=>x.id===id);
+  if(!p||!confirm(`Excluir ${p.nome}?`))return;
+  professores=professores.filter(x=>x.id!==id);
+  saveProfs();renderProfs();renderPfKpis();
+  showToast(`Ficha de ${p.nome} removida.`);
+}
+function renderProfs(){
+  const tb=document.getElementById('tbProfs');
+  if(!professores.length){tb.innerHTML='<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text3)">Nenhum professor cadastrado.</td></tr>';return}
+  tb.innerHTML=professores.map(p=>`<tr>
+    <td style="padding-left:12px"><div style="display:flex;align-items:center;gap:7px">
+      <span class="ava" style="background:var(--pu-xl);color:var(--pu-d)">${p.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span>
+      <div><div style="font-weight:700">${p.nome}</div><div style="font-size:11px;color:var(--text3)">${p.email||'—'}</div></div>
+    </div></td>
+    <td><span class="belt ${beltMap[p.faixa]||'bBk'}">${p.faixa}</span>${graus(p.graus)}</td>
+    <td style="font-size:12px">${p.tel||'—'}</td>
+    <td><span class="badge b-ch">${p.vinculo}</span></td>
+    <td style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--pu)">${p.valorAula?'R$'+p.valorAula+'/aula':p.mensalidade?'R$'+p.mensalidade+'/mês':'—'}</td>
+    <td style="font-size:12px;color:var(--text3);max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.turmas||'—'}</td>
+    <td><span class="badge ${p.status==='Ativo'?'b-ok':p.status==='Afastado'?'b-wa':'b-er'}">${p.status}</span></td>
+    <td><button class="btn-ghost" onclick="abrirModalProf('${p.id}')">Editar</button><button class="btn-ghost" style="color:var(--er)" onclick="excluirProf('${p.id}')">✕</button></td>
+  </tr>`).join('');
+}
+
+// ── Aulas ──
+function abrirModalAula(id){
+  const au=id?aulas.find(x=>x.id===id):null;
+  document.getElementById('aulaDia').value=au?.dia||'Segunda';
+  document.getElementById('aulaHorario').value=au?.horario||'';
+  document.getElementById('aulaTipo').value=au?.tipo||'Adulto';
+  document.getElementById('aulaTurma').value=au?.turma||'Fundamental';
+  document.getElementById('aulaCap').value=au?.cap||20;
+  document.getElementById('aulaData').value=au?.data||today();
+  document.getElementById('aulaStatus').value=au?.status||'Agendada';
+  document.getElementById('aulaObs').value=au?.obs||'';
+  document.getElementById('aulaEditId').value=au?.id||'';
+  document.getElementById('modalAulaTitle').textContent=au?'Editar Aula':'Nova Aula';
+  // populate professor select
+  const sel=document.getElementById('aulaProf');
+  sel.innerHTML=professores.length
+    ?professores.filter(p=>p.status==='Ativo').map(p=>`<option value="${p.id}" ${au?.profId===p.id?'selected':''}>${p.nome}</option>`).join('')
+    :'<option value="">— Cadastre um professor primeiro —</option>';
+  abrirModal('modalAula');
+}
+function salvarAula(){
+  const horario=document.getElementById('aulaHorario').value.trim();
+  const data=document.getElementById('aulaData').value;
+  const profId=document.getElementById('aulaProf').value;
+  if(!horario||!data){showToast('⚠ Horário e data são obrigatórios');return}
+  const editId=document.getElementById('aulaEditId').value;
+  const prof=professores.find(p=>p.id===profId);
+  const obj={
+    id:editId||Date.now().toString(),
+    dia:document.getElementById('aulaDia').value,
+    horario,
+    tipo:document.getElementById('aulaTipo').value,
+    turma:document.getElementById('aulaTurma').value,
+    profId,profNome:prof?.nome||'—',
+    cap:parseInt(document.getElementById('aulaCap').value)||20,
+    data,
+    status:document.getElementById('aulaStatus').value,
+    obs:document.getElementById('aulaObs').value,
+    confirmadaEm:editId?(aulas.find(a=>a.id===editId)?.confirmadaEm||null):null
+  };
+  if(editId){const i=aulas.findIndex(a=>a.id===editId);aulas[i]=obj}
+  else aulas.unshift(obj);
+  saveProfs();fecharModal('modalAula');renderAulas();renderPfKpis();
+  showToast(`✓ Aula ${obj.turma} — ${obj.horario} salva!`);
+}
+function confirmarAula(id){
+  const au=aulas.find(x=>x.id===id);if(!au)return;
+  au.status='Confirmada';
+  au.confirmadaEm=nowStr();
+  saveProfs();renderAulas();renderPfKpis();
+  showToast(`✓ Aula ${au.turma} confirmada por ${au.profNome}!`);
+}
+function cancelarAula(id){
+  const au=aulas.find(x=>x.id===id);if(!au)return;
+  if(!confirm(`Cancelar aula ${au.turma} — ${au.horario}?`))return;
+  au.status='Cancelada';
+  saveProfs();renderAulas();renderPfKpis();
+  showToast(`Aula ${au.turma} marcada como cancelada.`);
+}
+function excluirAula(id){
+  if(!confirm('Remover esta aula?'))return;
+  aulas=aulas.filter(x=>x.id!==id);
+  saveProfs();renderAulas();renderPfKpis();
+}
+const aulaStatusBadge={Agendada:'b-bl',Confirmada:'b-ok',Cancelada:'b-er',Reposição:'b-wa'};
+const tipoBadge={Adulto:'b-pu',Kids:'b-bl'};
+function renderAulas(){
+  const tb=document.getElementById('tbAulas');
+  const sorted=[...aulas].sort((a,b)=>diasOrder[a.dia]-diasOrder[b.dia]||a.horario.localeCompare(b.horario));
+  if(!sorted.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;padding:24px;color:var(--text3)">Nenhuma aula cadastrada.</td></tr>';return}
+  tb.innerHTML=sorted.map(au=>`<tr>
+    <td style="padding-left:12px;font-weight:700">${au.dia}</td>
+    <td style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700">${au.horario}</td>
+    <td>${au.turma}</td>
+    <td><span class="badge ${tipoBadge[au.tipo]||'b-ch'}">${au.tipo}</span></td>
+    <td><div style="display:flex;align-items:center;gap:6px"><span class="ava" style="width:24px;height:24px;font-size:10px">${au.profNome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span>${au.profNome}</div></td>
+    <td>${au.cap}</td>
+    <td style="font-size:12px;color:var(--text3)">${formatDate(au.data)}</td>
+    <td><span class="badge ${aulaStatusBadge[au.status]||'b-ch'}">${au.status}</span></td>
+    <td style="white-space:nowrap">
+      ${au.status==='Agendada'?`<button class="btn btn-ok btn-sm" onclick="confirmarAula('${au.id}')">✓ Confirmar</button> `:''}
+      ${au.status!=='Cancelada'&&au.status!=='Confirmada'?`<button class="btn btn-sec btn-sm" onclick="cancelarAula('${au.id}')">Cancelar</button> `:''}
+      <button class="btn-ghost" onclick="abrirModalAula('${au.id}')">Editar</button>
+      <button class="btn-ghost" style="color:var(--er)" onclick="excluirAula('${au.id}')">✕</button>
+    </td>
+  </tr>`).join('');
+}
+
+// ── Pagamentos ──
+function renderPagto(){
+  const el=document.getElementById('tbPagto');
+  if(!professores.length){el.innerHTML='<div style="font-size:13px;color:var(--text3);text-align:center;padding:20px">Cadastre professores e aulas para gerar o resumo.</div>';return}
+  const mesAtual=new Date().toISOString().slice(0,7);
+  el.innerHTML=professores.map(p=>{
+    const aulasProf=aulas.filter(a=>a.profId===p.id&&a.data.startsWith(mesAtual));
+    const confirmadas=aulasProf.filter(a=>a.status==='Confirmada').length;
+    const agendadas=aulasProf.filter(a=>a.status==='Agendada').length;
+    const canceladas=aulasProf.filter(a=>a.status==='Cancelada').length;
+    const total=p.mensalidade>0?p.mensalidade:(confirmadas*p.valorAula);
+    return`<div style="background:var(--ch-xl);border-radius:var(--r12);padding:14px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <span class="ava" style="width:40px;height:40px;font-size:14px;background:var(--pu-xl);color:var(--pu-d)">${p.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:700">${p.nome}</div>
+          <div style="font-size:11px;color:var(--text3)"><span class="belt ${beltMap[p.faixa]||'bBk'}" style="font-size:10px;padding:1px 5px">${p.faixa}</span> · ${p.vinculo}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:700;color:var(--pu)">R$${total}</div>
+          <div style="font-size:10px;color:var(--text3)">${p.mensalidade>0?'mensalidade fixa':confirmadas+' aulas × R$'+p.valorAula}</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <div style="background:var(--card);border-radius:var(--r8);padding:8px;text-align:center">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--ok)">${confirmadas}</div>
+          <div style="font-size:10px;color:var(--text3)">CONFIRMADAS</div>
+        </div>
+        <div style="background:var(--card);border-radius:var(--r8);padding:8px;text-align:center">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--bl)">${agendadas}</div>
+          <div style="font-size:10px;color:var(--text3)">AGENDADAS</div>
+        </div>
+        <div style="background:var(--card);border-radius:var(--r8);padding:8px;text-align:center">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--er)">${canceladas}</div>
+          <div style="font-size:10px;color:var(--text3)">CANCELADAS</div>
+        </div>
+      </div>
+      ${total>0?`<div style="margin-top:10px;text-align:right"><button class="btn btn-pu btn-sm" onclick="registrarPagtoProf('${p.id}','${p.nome}',${total})">Registrar pagamento R$${total}</button></div>`:''}
+    </div>`;
+  }).join('');
+}
+function registrarPagtoProf(id,nome,valor){
+  financeiro.unshift({id:Date.now().toString(),desc:`Pagamento professor: ${nome}`,tipo:'Saída',forma:'Transferência',valor,data:nowStr()});
+  save();renderFinanceiro();
+  showToast(`✓ Pagamento de R$${valor} para ${nome} registrado!`);
+}
+
+// ── KPIs ──
+function renderPfKpis(){
+  const mesAtual=new Date().toISOString().slice(0,7);
+  const aulasM=aulas.filter(a=>a.data.startsWith(mesAtual));
+  document.getElementById('kpiProfs').textContent=professores.length;
+  document.getElementById('kpiAulasM').textContent=aulasM.length;
+  document.getElementById('kpiAulasC').textContent=aulasM.filter(a=>a.status==='Confirmada').length;
+  document.getElementById('kpiAulasP').textContent=aulasM.filter(a=>a.status==='Agendada').length;
+}
+
+// ── tipo aluno helper ──
+function atualizarFaixasPorTipo(){
+  const tipo=document.getElementById('aTipo').value;
+  const sel=document.getElementById('aFaixa');
+  const turma=document.getElementById('aTurma');
+  if(tipo==='Kids'){
+    sel.innerHTML='<option value="">Selecione</option><option>Branca</option><option>Cinza</option><option>Amarelo</option><option>Laranja</option><option>Verde</option>';
+    turma.innerHTML='<option>Kids — Infantil</option><option>Kids — Juvenil</option><option>Kids — Pré-teen</option>';
+  } else {
+    sel.innerHTML='<option value="">Selecione</option><option>Branca</option><option>Azul</option><option>Roxa</option><option>Marrom</option><option>Preta</option>';
+    turma.innerHTML='<option>Fundamental</option><option>Avançado</option><option>Feminino</option><option>Open Mat</option>';
+  }
+}
+
 // ══ REFRESH ALL ════════════════════════════════════════
-function refreshAll(){renderAlunos();renderKids();renderCI();renderGrad();renderProspects();renderEstoque();renderPedidos();renderFinanceiro();refreshDash()}
+function refreshAll(){renderAlunos();renderKids();renderCI();renderGrad();renderProspects();renderEstoque();renderPedidos();renderFinanceiro();renderProfs();renderAulas();renderPfKpis();refreshDash()}
 </script>
 </body>
 </html>
