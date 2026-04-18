@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Fratres BJJ — Unidade Haydee</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pu:#7B5EA7;--pu-l:#9B7EC7;--pu-xl:#EDE9F5;--pu-d:#5A3F86;
+  --bl:#5B9BD5;--bl-xl:#E8F2FB;
+  --ch:#2C2C2C;--ch-l:#444;--ch-xl:#F5F4F2;
+  --go:#E5B300;
+  --ok:#1A8754;--ok-bg:#E8F5EE;
+  --wa:#B45309;--wa-bg:#FEF3C7;
+  --er:#C0392B;--er-bg:#FEE2E2;
+  --bg:#F7F6F3;--card:#fff;--border:#E8E6DF;
+  --text:#1A1A1A;--text2:#555;--text3:#999;
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;
+  --sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
+  --sh-md:0 4px 14px rgba(0,0,0,.1);
+  --sb:220px;--top:56px;--bnh:64px;
+  font-family:'Barlow',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);font-size:15px;line-height:1.5;overflow-x:hidden}
+button,select,input,textarea{font-family:'Barlow',sans-serif}
+
+/* ── SPLASH ── */
+#splash{position:fixed;inset:0;z-index:9999;background:var(--ch);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,transform .5s}
+#splash.hide{opacity:0;pointer-events:none;transform:scale(1.03)}
+.spr{animation:rotIn .9s cubic-bezier(.17,.67,.35,1.2) both}
+@keyframes rotIn{from{opacity:0;transform:rotate(-40deg) scale(.7)}to{opacity:1;transform:none}}
+.spunit{font-size:12px;color:rgba(255,255,255,.3);letter-spacing:2px;margin-top:2px;animation:fup .6s .65s both}
+.spbar{width:160px;height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:28px;overflow:hidden;animation:fup .6s .6s both}
+.spbf{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--pu),var(--bl));width:0;transition:width 1.6s cubic-bezier(.4,0,.2,1)}
+@keyframes fup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* ── LOGIN ── */
+#login{position:fixed;inset:0;z-index:9998;background:var(--ch);display:none;align-items:center;justify-content:center;padding:20px}
+#login.show{display:flex}
+.lb{width:100%;max-width:380px;animation:fup .4s ease both}
+.ll{display:flex;flex-direction:column;align-items:center;margin-bottom:28px}
+.ln{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;color:#fff;letter-spacing:4px;margin-top:12px}
+.lu{font-size:10px;color:var(--pu-l);letter-spacing:3px;font-weight:600;margin-top:2px}
+.lunit{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:1.5px;margin-top:3px}
+.lc{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r16);padding:26px;backdrop-filter:blur(10px)}
+.lct{font-size:18px;font-weight:700;color:#fff;margin-bottom:3px}
+.lcs{font-size:12px;color:rgba(255,255,255,.3);margin-bottom:20px}
+.ll2{font-size:11px;font-weight:700;letter-spacing:.8px;color:rgba(255,255,255,.4);margin-bottom:5px;display:block}
+.li{width:100%;height:44px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:var(--r8);color:#fff;padding:0 14px;font-size:14px;outline:none;transition:border-color .15s;margin-bottom:13px}
+.li:focus{border-color:var(--pu-l);background:rgba(123,94,167,.15)}
+.li::placeholder{color:rgba(255,255,255,.2)}
+.lbtn{width:100%;height:46px;background:var(--pu);border:none;border-radius:var(--r8);color:#fff;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:background .15s,transform .1s;margin-top:3px}
+.lbtn:hover{background:var(--pu-d)}.lbtn:active{transform:scale(.98)}
+.lerr{font-size:12px;color:#f87171;margin-top:8px;display:none;text-align:center}
+.lusers{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.luser{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid rgba(255,255,255,.1);border-radius:var(--r8);cursor:pointer;transition:all .12s}
+.luser:hover{border-color:rgba(255,255,255,.25)}
+.luser.on{border-color:var(--pu-l);background:rgba(123,94,167,.2)}
+.lu-ava{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.lu-name{font-size:13px;font-weight:600;color:#fff}
+.lu-role{font-size:11px;color:rgba(255,255,255,.35)}
+
+/* ── APP SHELL ── */
+#app{display:flex;min-height:100vh;opacity:0;transition:opacity .3s}
+#app.show{opacity:1}
+#sidebar{width:var(--sb);flex-shrink:0;background:var(--ch);display:flex;flex-direction:column;position:fixed;left:0;top:0;height:100vh;z-index:100}
+.sb-logo{padding:16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px}
+.sb-bn{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff;letter-spacing:2px;line-height:1}
+.sb-bs{font-size:9px;color:var(--pu-l);letter-spacing:3px;font-weight:600;margin-top:2px}
+.sb-bu{font-size:9px;color:rgba(255,255,255,.25);letter-spacing:1px;margin-top:1px}
+.sb-stats{display:flex;padding:9px 16px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sb-stat{flex:1;text-align:center}
+.sb-sv{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:#fff}
+.sb-sl{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.5px}
+.sb-nav{flex:1;overflow-y:auto;padding:5px 0;scrollbar-width:none}
+.sb-nav::-webkit-scrollbar{display:none}
+.sb-sec{font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.18);padding:9px 16px 3px;font-weight:700}
+.sb-it{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;border-left:3px solid transparent;transition:background .12s}
+.sb-it:hover{background:rgba(255,255,255,.04)}
+.sb-it.on{background:rgba(123,94,167,.15);border-left-color:var(--pu-l)}
+.sb-it.on .sb-ic,.sb-it.on .sb-lb{color:var(--pu-l)}
+.sb-ic{width:16px;height:16px;color:rgba(255,255,255,.3);flex-shrink:0}
+.sb-lb{font-size:13px;color:rgba(255,255,255,.55);flex:1}
+.sb-badge{background:var(--pu);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:9px}
+.sb-badge-er{background:var(--er)}
+.sb-badge-ok{background:var(--ok)}
+.sb-footer{padding:10px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between}
+.sb-user{font-size:11px;color:rgba(255,255,255,.3);line-height:1.5}
+.sb-logout{background:none;border:none;color:rgba(255,255,255,.2);font-size:11px;cursor:pointer}
+.sb-logout:hover{color:rgba(255,255,255,.6)}
+#main{flex:1;margin-left:var(--sb);display:flex;flex-direction:column;min-height:100vh}
+#topbar{height:var(--top);background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 20px;position:sticky;top:0;z-index:50;box-shadow:var(--sh)}
+#tb-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:.5px;flex:1;color:var(--ch)}
+.tb-unit{font-size:11px;color:var(--pu);font-weight:600;background:var(--pu-xl);padding:3px 9px;border-radius:20px}
+.tb-ava{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer}
+#mbtop{display:none;height:var(--top);background:var(--ch);align-items:center;padding:0 14px;gap:10px;position:sticky;top:0;z-index:50}
+.mb-bn{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:1.5px}
+.mb-unit{font-size:8px;color:var(--pu-l);letter-spacing:1px}
+.mb-pg{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;color:rgba(255,255,255,.45);margin-right:4px}
+#content{flex:1;padding:18px;max-width:1400px;width:100%}
+.sec{display:none;animation:fadeIn .2s ease}
+.sec.on{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+#bnav{display:none;position:fixed;bottom:0;left:0;right:0;height:var(--bnh);background:var(--ch);border-top:1px solid rgba(255,255,255,.07);z-index:100;overflow-x:auto;scrollbar-width:none}
+#bnav::-webkit-scrollbar{display:none}
+.bn-in{display:flex;height:100%;min-width:max-content;padding:0 4px}
+.bn-it{flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 12px;cursor:pointer;gap:3px;min-width:56px;opacity:.4;transition:opacity .15s;border:none;background:none}
+.bn-it.on{opacity:1}.bn-it.on .bn-lb{color:var(--pu-l)}
+.bn-ic{color:#fff;flex-shrink:0}
+.bn-lb{font-size:9px;color:rgba(255,255,255,.6);font-weight:600;letter-spacing:.2px}
+
+/* ── BD INDICATOR ── */
+.bd-tag{display:inline-flex;align-items:center;gap:5px;background:#FEF9C3;border:1px solid #FDE047;color:#713F12;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.3px}
+.bd-banner{background:linear-gradient(90deg,#FEF9C3,#FFF);border:1px solid #FDE047;border-radius:var(--r8);padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;font-size:12px;color:#713F12}
+
+/* ── LAYOUT ── */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--r12);padding:13px 15px;box-shadow:var(--sh)}
+.kl{font-size:10px;letter-spacing:.8px;color:var(--text3);font-weight:700;margin-bottom:4px}
+.kv{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:700;line-height:1}
+.ks{font-size:11px;color:var(--text3);margin-top:3px}
+.kpi.a-pu{border-top:3px solid var(--pu)}.kpi.a-bl{border-top:3px solid var(--bl)}
+.kpi.a-ok{border-top:3px solid var(--ok)}.kpi.a-er{border-top:3px solid var(--er)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r12);padding:15px;margin-bottom:13px;box-shadow:var(--sh)}
+.card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.ct{font-size:10px;letter-spacing:1px;font-weight:700;color:var(--text3)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;padding:7px 9px;font-size:10px;letter-spacing:.7px;font-weight:700;color:var(--text3);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:8px 9px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--ch-xl)}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+.b-ok{background:var(--ok-bg);color:var(--ok)}.b-wa{background:var(--wa-bg);color:var(--wa)}
+.b-er{background:var(--er-bg);color:var(--er)}.b-pu{background:var(--pu-xl);color:var(--pu-d)}
+.b-bl{background:var(--bl-xl);color:#1d6aa8}.b-ch{background:var(--ch-xl);color:var(--ch-l)}
+.belt{display:inline-flex;align-items:center;gap:2px;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700}
+.bW{background:#E5E5E5;color:#333}.bB{background:#1565C0;color:#fff}.bP{background:#6A1B9A;color:#fff}
+.bBr{background:#4E342E;color:#fff}.bBk{background:#111;color:#fff}
+.kbW{background:#E5E5E5;color:#333}.kbG{background:#616161;color:#fff}.kbY{background:#F9A825;color:#333}
+.kbO{background:#E65100;color:#fff}.kbGr{background:#1B5E20;color:#fff}
+.stripe{display:inline-block;width:5px;height:11px;background:var(--go);border-radius:1px;margin-left:2px;vertical-align:middle}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:var(--r8);font-size:13px;font-weight:600;cursor:pointer;border:1px solid transparent;transition:all .12s;white-space:nowrap}
+.btn-pu{background:var(--pu);color:#fff;border-color:var(--pu)}.btn-pu:hover{background:var(--pu-d)}
+.btn-ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+.btn-er{background:var(--er);color:#fff;border-color:var(--er)}
+.btn-sec{background:var(--card);color:var(--text);border-color:var(--border)}.btn-sec:hover{background:var(--ch-xl)}
+.btn-sm{padding:5px 10px;font-size:12px;border-radius:var(--r4)}
+.btn-ghost{background:none;border:none;color:var(--pu);font-size:12px;cursor:pointer;padding:3px 7px;border-radius:var(--r4);font-weight:600}
+.btn-ghost:hover{background:var(--pu-xl)}
+.btn-ic{width:30px;height:30px;border-radius:var(--r8);display:inline-flex;align-items:center;justify-content:center;background:var(--ch-xl);border:1px solid var(--border);cursor:pointer;font-size:14px;font-family:'Barlow',sans-serif}
+.ava{width:28px;height:28px;border-radius:50%;background:var(--pu-xl);color:var(--pu-d);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.ava-bl{background:var(--bl-xl);color:#1d6aa8}.ava-ch{background:var(--ch-xl);color:var(--ch-l)}
+
+/* ── PROGRESS ── */
+.pw{display:flex;align-items:center;gap:6px}
+.pb{flex:1;min-width:40px;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.pf{height:100%;border-radius:3px;background:var(--pu)}
+.pl{font-size:11px;font-weight:700;color:var(--text2);min-width:28px;text-align:right}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{padding:4px 11px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--text2);transition:all .12s}
+.chip.on{background:var(--pu);color:#fff;border-color:var(--pu)}
+.chip:hover:not(.on){background:var(--ch-xl)}
+.sb-search{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.si{flex:1;height:38px;border:1px solid var(--border);border-radius:var(--r8);padding:0 12px 0 34px;font-size:13px;background:var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 10px center;outline:none}
+.si:focus{border-color:var(--pu);box-shadow:0 0 0 3px rgba(123,94,167,.12)}
+
+/* ── FIELD ── */
+.fi{width:100%;height:38px;border:1px solid var(--border);border-radius:var(--r8);padding:0 11px;font-size:13px;background:var(--card);outline:none;transition:border-color .12s}
+.fi:focus{border-color:var(--pu);box-shadow:0 0 0 3px rgba(123,94,167,.12)}
+select.fi{cursor:pointer}
+textarea.fi{height:auto;padding:8px 11px;resize:vertical}
+.fl{display:block;font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.5px;margin-bottom:4px;margin-top:11px}
+.fg{margin-bottom:0}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border-radius:var(--r16);width:100%;max-width:600px;box-shadow:var(--sh-md);animation:fup .25s ease;margin:auto}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:.5px}
+.modal-close{width:30px;height:30px;border-radius:50%;border:none;background:var(--ch-xl);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.modal-body{padding:20px}
+.modal-ft{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.form-grid .full{grid-column:1/-1}
+.section-sep{grid-column:1/-1;font-size:10px;letter-spacing:1px;font-weight:700;color:var(--text3);padding:12px 0 4px;border-top:1px solid var(--border);margin-top:6px}
+
+/* ── CI TILE ── */
+.ci-t{display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--card);border:1px solid var(--border);border-radius:var(--r8);margin-bottom:5px;cursor:pointer;transition:all .12s}
+.ci-t:hover{border-color:var(--pu-l)}.ci-t.done{border-color:var(--ok);background:var(--ok-bg)}
+.ci-dot{width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background .15s}
+.ci-t.done .ci-dot{background:var(--ok)}
+.ci-in{flex:1}.ci-nm{font-size:13px;font-weight:600}.ci-sub{font-size:11px;color:var(--text3)}
+.ci-btn{padding:4px 10px;border-radius:var(--r4);border:1px solid var(--border);background:var(--card);font-size:12px;cursor:pointer;font-weight:600;transition:all .12s}
+.ci-btn.dn{background:var(--ok);color:#fff;border-color:var(--ok)}
+
+/* ── KIDS GRID ── */
+.kg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.kdc{background:var(--card);border:1px solid var(--border);border-radius:var(--r12);overflow:hidden;box-shadow:var(--sh);cursor:pointer;transition:box-shadow .12s,transform .12s}
+.kdc:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
+.kdc-top{height:4px}.kdc-body{padding:11px}
+.kdc-name{font-size:12px;font-weight:700;margin-bottom:2px}
+.kdc-meta{font-size:11px;color:var(--text3);margin-bottom:7px}
+.kdc-prog{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:5px}
+.kdc-pf{height:100%;border-radius:3px;background:var(--pu)}
+.kdc-ft{display:flex;justify-content:space-between;font-size:11px;color:var(--text3)}
+
+/* ── SHOP GRID ── */
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:9px;margin-bottom:12px}
+.pc{background:var(--card);border:1px solid var(--border);border-radius:var(--r12);overflow:hidden;cursor:pointer;transition:border-color .12s,box-shadow .12s}
+.pc:hover{border-color:var(--pu);box-shadow:var(--sh-md)}.pc.sel{border:2px solid var(--pu)}
+.pc-th{height:62px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px}
+.pc-bd{padding:9px}.pc-nm{font-size:12px;font-weight:700;line-height:1.3;margin-bottom:3px}
+.pc-pr{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--pu)}
+.pc-st{font-size:10px;color:var(--text3);margin-top:2px}
+.szb{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0}
+.sz{padding:4px 9px;border:1px solid var(--border);border-radius:var(--r4);font-size:12px;font-weight:600;cursor:pointer;background:var(--card);color:var(--text2);transition:all .1s}
+.sz.on{background:var(--pu);color:#fff;border-color:var(--pu)}.sz:hover:not(.on){background:var(--ch-xl)}
+
+/* ── ESTOQUE CELLS ── */
+.stk-cell{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:40px}
+.stk-v{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700}
+.stk-s{font-size:10px;color:var(--text3)}
+.stk-low{color:var(--er)}.stk-ok-v{color:var(--ok)}.stk-wa-v{color:var(--wa)}
+
+/* ── NOTIF ── */
+.notif{display:flex;gap:9px;padding:10px;border-bottom:1px solid var(--border);align-items:flex-start}
+.notif:last-child{border-bottom:none}
+.nd{width:7px;height:7px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.nb{flex:1}.nt{font-size:13px;font-weight:600;margin-bottom:2px}.ns{font-size:11px;color:var(--text3)}
+.dr{display:flex;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
+.dr:last-child{border-bottom:none}.dk{color:var(--text3);min-width:90px;flex-shrink:0}.dv{font-weight:600}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ch);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:9000;opacity:0;transition:all .25s;pointer-events:none;max-width:90vw;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1099px){
+  #sidebar{display:none}#main{margin-left:0}#topbar{display:none}
+  #mbtop{display:flex}#bnav{display:block}
+  #content{padding:10px 10px calc(var(--bnh)+12px)}
+  .g4{grid-template-columns:1fr 1fr;gap:8px}.g3{grid-template-columns:1fr 1fr}
+  .g2{grid-template-columns:1fr;gap:8px}.form-grid{grid-template-columns:1fr}
+  .form-grid .full{grid-column:auto}
+}
+@media(max-width:480px){.g4{grid-template-columns:1fr 1fr}.kg{grid-template-columns:repeat(2,1fr)}.sg{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <svg class="spr" width="210" height="245" viewBox="0 0 210 245" xmlns="http://www.w3.org/2000/svg">
+    <!-- fundo branco circular (como no original) -->
+    <circle cx="105" cy="100" r="99" fill="white"/>
+    <!-- anel externo: charcoal -->
+    <circle cx="105" cy="100" r="89" fill="none" stroke="#2C2C2C" stroke-width="16"/>
+    <!-- anel cinza -->
+    <circle cx="105" cy="100" r="71" fill="none" stroke="#888888" stroke-width="14"/>
+    <!-- anel roxo -->
+    <circle cx="105" cy="100" r="55" fill="none" stroke="#7B5EA7" stroke-width="13"/>
+    <!-- anel azul -->
+    <circle cx="105" cy="100" r="40" fill="none" stroke="#5B9BD5" stroke-width="12"/>
+    <!-- faixa branca horizontal -->
+    <rect x="4" y="85" width="202" height="30" fill="white"/>
+    <line x1="4" y1="85" x2="206" y2="85" stroke="#BBBBBB" stroke-width="1"/>
+    <line x1="4" y1="115" x2="206" y2="115" stroke="#BBBBBB" stroke-width="1"/>
+    <!-- FRATRES -->
+    <text x="105" y="108" text-anchor="middle" fill="#1A1A1A"
+      font-size="22" font-weight="800"
+      font-family="Barlow Condensed,Arial Narrow,Impact,sans-serif"
+      letter-spacing="5">FRATRES</text>
+    <!-- JIU-JITSU abaixo do círculo -->
+    <text x="105" y="225" text-anchor="middle" fill="white"
+      font-size="24" font-weight="800"
+      font-family="Barlow Condensed,Arial Narrow,Impact,sans-serif"
+      letter-spacing="3">JIU-JITSU</text>
+  </svg>
+  <div class="spunit">UNIDADE HAYDEE</div>
+  <div class="spbar"><div class="spbf" id="splashBar"></div></div>
+</div>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="lb">
+    <div class="ll">
+      <svg width="190" height="230" viewBox="0 0 210 245" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="105" cy="100" r="99" fill="white"/>
+        <circle cx="105" cy="100" r="89" fill="none" stroke="#2C2C2C" stroke-width="16"/>
+        <circle cx="105" cy="100" r="71" fill="none" stroke="#888888" stroke-width="14"/>
+        <circle cx="105" cy="100" r="55" fill="none" stroke="#7B5EA7" stroke-width="13"/>
+        <circle cx="105" cy="100" r="40" fill="none" stroke="#5B9BD5" stroke-width="12"/>
+        <rect x="4" y="85" width="202" height="30" fill="white"/>
+        <line x1="4" y1="85" x2="206" y2="85" stroke="#BBBBBB" stroke-width="1"/>
+        <line x1="4" y1="115" x2="206" y2="115" stroke="#BBBBBB" stroke-width="1"/>
+        <text x="105" y="108" text-anchor="middle" fill="#1A1A1A" font-size="22" font-weight="800" font-family="Barlow Condensed,Arial Narrow,Impact,sans-serif" letter-spacing="5">FRATRES</text>
+        <text x="105" y="225" text-anchor="middle" fill="white" font-size="24" font-weight="800" font-family="Barlow Condensed,Arial Narrow,Impact,sans-serif" letter-spacing="3">JIU-JITSU</text>
+      </svg>
+      <div class="lunit" style="margin-top:4px">UNIDADE HAYDEE</div>
+    </div>
+    <div class="lc">
+      <div class="lct">Bem-vinda(o) de volta</div>
+      <div class="lcs">Selecione seu usuário para continuar</div>
+      <div class="lusers">
+        <div class="luser on" onclick="selUser(this,'sthella','Sthella Vilela','Gestora','SV','#7B5EA7')" data-u="sthella">
+          <div class="lu-ava" style="background:#EDE9F5;color:#7B5EA7">SV</div>
+          <div><div class="lu-name">Sthella Vilela</div><div class="lu-role">Gestora da Unidade</div></div>
+        </div>
+        <div class="luser" onclick="selUser(this,'cleisson','Cleisson Ribeiro','Black Belt Coach','CR','#5B9BD5')" data-u="cleisson">
+          <div class="lu-ava" style="background:#E8F2FB;color:#5B9BD5">CR</div>
+          <div><div class="lu-name">Cleisson Ribeiro</div><div class="lu-role">Black Belt Coach</div></div>
+        </div>
+      </div>
+      <label class="ll2">SENHA</label>
+      <div style="position:relative;margin-bottom:13px">
+        <input class="li" type="password" id="loginPass" placeholder="••••••••" style="margin-bottom:0;padding-right:44px">
+        <button onclick="toggleSenha()" type="button" id="eyeBtn" style="position:absolute;right:0;top:0;height:44px;width:44px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);transition:color .15s" title="Mostrar/ocultar senha">
+          <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <button class="lbtn" onclick="doLogin()">ENTRAR</button>
+      <div class="lerr" id="loginErr">Senha incorreta. Tente novamente.</div>
+      <div style="text-align:center;margin-top:12px;font-size:11px;color:rgba(255,255,255,.15)">Fratres BJJ · Unidade Haydee</div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+<nav id="sidebar">
+  <div class="sb-logo">
+    <svg width="36" height="36" viewBox="0 0 90 90" style="flex-shrink:0">
+      <circle cx="45" cy="45" r="43" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1.5"/>
+      <circle cx="45" cy="45" r="34" fill="none" stroke="#555" stroke-width="4"/>
+      <circle cx="45" cy="45" r="24" fill="none" stroke="#7B5EA7" stroke-width="4"/>
+      <circle cx="45" cy="45" r="14" fill="none" stroke="#5B9BD5" stroke-width="4"/>
+      <rect x="8" y="40.5" width="74" height="9" fill="#2C2C2C"/>
+      <text x="45" y="48" text-anchor="middle" fill="white" font-size="8.5" font-weight="700" font-family="Barlow Condensed,sans-serif" letter-spacing="2.5">FRATRES</text>
+    </svg>
+    <div><div class="sb-bn">FRATRES</div><div class="sb-bs">JIU-JITSU</div><div class="sb-bu">UN. HAYDEE</div></div>
+  </div>
+  <div class="sb-stats">
+    <div class="sb-stat"><div class="sb-sv" id="sbAdultos">0</div><div class="sb-sl">ADULTOS</div></div>
+    <div class="sb-stat"><div class="sb-sv" id="sbKids">0</div><div class="sb-sl">KIDS</div></div>
+    <div class="sb-stat"><div class="sb-sv" id="sbEstoque" style="color:var(--go)">0</div><div class="sb-sl">ITENS</div></div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-sec">PRINCIPAL</div>
+    <div class="sb-it on" onclick="go('db',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="sb-lb">Dashboard</span></div>
+    <div class="sb-it" onclick="go('ci',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="sb-lb">Check-in</span></div>
+    <div class="sb-sec">ALUNOS</div>
+    <div class="sb-it" onclick="go('al',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="sb-lb">Alunos</span></div>
+    <div class="sb-it" onclick="go('ki',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="5"/><path d="M3 21c0-4 3.6-7 9-7s9 3 9 7"/></svg><span class="sb-lb">Kids</span></div>
+    <div class="sb-it" onclick="go('gr',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 15l-2 5L8 8l10 4-5 3z"/><circle cx="19" cy="5" r="2"/></svg><span class="sb-lb">Graduações</span></div>
+    <div class="sb-it" onclick="go('ps',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class="sb-lb">Prospects</span></div>
+    <div class="sb-sec">OPERAÇÃO</div>
+    <div class="sb-it" onclick="go('lj',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="sb-lb">Lojinha</span></div>
+    <div class="sb-it" onclick="go('fi',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="sb-lb">Financeiro</span></div>
+    <div class="sb-it" onclick="go('nt',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="sb-lb">Notificações</span></div>
+  </div>
+  <div class="sb-footer">
+    <div class="sb-user" id="sbUser">—</div>
+    <button class="sb-logout" onclick="doLogout()">Sair</button>
+  </div>
+</nav>
+
+<div id="main">
+  <header id="topbar">
+    <span id="tb-title">Dashboard</span>
+    <span class="tb-unit">Unidade Haydee</span>
+    <div class="tb-ava" id="tbAva" style="background:var(--pu-xl);color:var(--pu)">SV</div>
+  </header>
+  <header id="mbtop">
+    <div style="display:flex;align-items:center;gap:8px;flex:1">
+      <svg width="28" height="28" viewBox="0 0 90 90"><circle cx="45" cy="45" r="43" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="2"/><circle cx="45" cy="45" r="34" fill="none" stroke="#555" stroke-width="4"/><circle cx="45" cy="45" r="24" fill="none" stroke="#7B5EA7" stroke-width="4"/><circle cx="45" cy="45" r="14" fill="none" stroke="#5B9BD5" stroke-width="4"/><rect x="8" y="40.5" width="74" height="9" fill="#2C2C2C"/><text x="45" y="48" text-anchor="middle" fill="white" font-size="8.5" font-weight="700" font-family="Barlow Condensed,sans-serif" letter-spacing="2.5">FRATRES</text></svg>
+      <div><div class="mb-bn">FRATRES BJJ</div><div class="mb-unit">UN. HAYDEE</div></div>
+    </div>
+    <span class="mb-pg" id="mbPg">Dashboard</span>
+    <div id="mbAva" style="width:30px;height:30px;border-radius:50%;background:rgba(123,94,167,.35);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:700">SV</div>
+  </header>
+
+  <div id="content">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div class="sec on" id="s-db">
+      <div style="background:linear-gradient(130deg,var(--ch),#3a3a3a);border-radius:var(--r12);padding:15px;margin-bottom:14px;display:flex;align-items:center;gap:12px;color:#fff">
+        <svg width="44" height="44" viewBox="0 0 90 90" style="flex-shrink:0"><circle cx="45" cy="45" r="43" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.1)" stroke-width="1.5"/><circle cx="45" cy="45" r="34" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="4"/><circle cx="45" cy="45" r="24" fill="none" stroke="#9B7EC7" stroke-width="4"/><circle cx="45" cy="45" r="14" fill="none" stroke="#5B9BD5" stroke-width="4"/></svg>
+        <div style="flex:1"><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;letter-spacing:1px">FRATRES JIU-JITSU</div><div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:2px">Unidade Haydee · <span id="dbDate"></span></div></div>
+        <div style="display:flex;gap:16px">
+          <div style="text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700" id="dbAlunos">0</div><div style="font-size:9.5px;color:rgba(255,255,255,.4)">ALUNOS</div></div>
+          <div style="text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:#9B7EC7" id="dbItems">0</div><div style="font-size:9.5px;color:rgba(255,255,255,.4)">ITENS LOJA</div></div>
+          <div style="text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700" id="dbCiCount">0</div><div style="font-size:9.5px;color:rgba(255,255,255,.4)">CHECK-INS</div></div>
+        </div>
+      </div>
+      <div class="g4">
+        <div class="kpi a-pu" onclick="go('al',null)" style="cursor:pointer"><div class="kl">ADULTOS</div><div class="kv" id="kpiAdultos">0</div><div class="ks">cadastrados</div></div>
+        <div class="kpi a-bl" onclick="go('ki',null)" style="cursor:pointer"><div class="kl">KIDS</div><div class="kv" id="kpiKids">0</div><div class="ks">cadastrados</div></div>
+        <div class="kpi a-ok" onclick="go('lj',null)" style="cursor:pointer"><div class="kl">ITENS EM ESTOQUE</div><div class="kv" id="kpiEstoque">0</div><div class="ks">produtos</div></div>
+        <div class="kpi a-er"><div class="kl">ESTOQUE BAIXO</div><div class="kv" id="kpiLow" style="color:var(--er)">0</div><div class="ks">atenção necessária</div></div>
+      </div>
+      <div class="bd-banner"><span style="font-size:16px">⚡</span><div><strong>Quando será necessário banco de dados:</strong> ao precisar acessar o app em dois dispositivos ao mesmo tempo, ou integrar com Wellhub/TotalPass via API real. Até lá, tudo persiste aqui mesmo via localStorage.</div></div>
+      <div class="g2">
+        <div class="card"><div class="card-hd"><span class="ct">ÚLTIMOS ALUNOS CADASTRADOS</span><button class="btn-ghost" onclick="go('al',null)">Ver todos →</button></div><div id="dbUltAlunos"><div style="font-size:13px;color:var(--text3);text-align:center;padding:16px">Nenhum aluno cadastrado ainda.</div></div></div>
+        <div class="card"><div class="card-hd"><span class="ct">ESTOQUE — ALERTAS</span><button class="btn-ghost" onclick="go('lj',null)">Ver loja →</button></div><div id="dbEstoqueAlert"><div style="font-size:13px;color:var(--text3);text-align:center;padding:16px">Nenhum produto cadastrado.</div></div></div>
+      </div>
+    </div>
+
+    <!-- ══ ALUNOS ══ -->
+    <div class="sec" id="s-al">
+      <div class="sb-search">
+        <input class="si" type="text" id="busca" placeholder="Buscar aluno..." oninput="renderAlunos()">
+        <select class="fi" style="width:130px;height:38px" id="filtFaixa" onchange="renderAlunos()">
+          <option value="">Todas faixas</option><option>Branca</option><option>Azul</option><option>Roxa</option><option>Marrom</option><option>Preta</option>
+        </select>
+        <button class="btn btn-pu btn-sm" onclick="abrirModalAluno()">+ Novo aluno</button>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="tw"><table>
+          <thead><tr><th style="padding-left:13px">Aluno</th><th>Faixa</th><th>Kimono</th><th>Nascimento</th><th>Telefone</th><th>Plano</th><th>Status</th><th>Ações</th></tr></thead>
+          <tbody id="tbAlunos"><tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text3)">Nenhum aluno cadastrado. Clique em "+ Novo aluno" para começar.</td></tr></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- ══ CHECK-IN ══ -->
+    <div class="sec" id="s-ci">
+      <div class="g4">
+        <div class="kpi a-pu"><div class="kl">PRESENTES HOJE</div><div class="kv" id="ciTotal">0</div></div>
+        <div class="kpi"><div class="kl">AUSENTES</div><div class="kv" id="ciAusentes">0</div></div>
+        <div class="kpi a-bl"><div class="kl">TAXA HOJE</div><div class="kv" id="ciTaxa" style="color:var(--bl)">0%</div></div>
+        <div class="kpi"><div class="kl">TOTAL ALUNOS</div><div class="kv" id="ciTotalAlunos">0</div></div>
+      </div>
+      <div class="bd-banner" style="background:#EDE9F5;border-color:var(--pu)"><span style="font-size:16px">🔄</span><div><strong>BD necessário para:</strong> sincronizar check-ins em tempo real entre múltiplos dispositivos (ex: tablet na recepção + celular do professor ao mesmo tempo).</div></div>
+      <div class="card" style="padding:0">
+        <div style="padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+          <span class="ct">CHECK-IN — <span id="ciAulaLabel">HOJE</span></span>
+          <span class="badge b-ch" id="ciBadge">0 presentes</span>
+        </div>
+        <div id="tbCI" style="padding:8px 10px;max-height:450px;overflow-y:auto">
+          <div style="font-size:13px;color:var(--text3);text-align:center;padding:20px">Cadastre alunos para habilitar o check-in.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ KIDS ══ -->
+    <div class="sec" id="s-ki">
+      <div class="sb-search">
+        <input class="si" type="text" id="buscaKids" placeholder="Buscar kid..." oninput="renderKids()">
+        <button class="btn btn-pu btn-sm" onclick="abrirModalAluno(true)">+ Novo kid</button>
+      </div>
+      <div class="kg" id="kidGrid"><div style="font-size:13px;color:var(--text3);padding:20px;grid-column:1/-1;text-align:center">Nenhum kid cadastrado ainda.</div></div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="tw"><table>
+          <thead><tr><th style="padding-left:12px">Nome</th><th>Idade</th><th>Faixa</th><th>Responsável</th><th>Contato</th><th>Kimono</th><th>Status</th><th>Ações</th></tr></thead>
+          <tbody id="tbKids"><tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text3)">Nenhum kid cadastrado.</td></tr></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- ══ GRADUAÇÕES ══ -->
+    <div class="sec" id="s-gr">
+      <div class="card"><div class="card-hd"><span class="ct">ALUNOS — PROGRESSO</span></div>
+        <div class="tw"><table>
+          <thead><tr><th>Aluno</th><th>Faixa</th><th>Treinos</th><th>Progresso</th><th>Ação</th></tr></thead>
+          <tbody id="tbGrad"><tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text3)">Cadastre alunos para acompanhar graduações.</td></tr></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- ══ PROSPECTS ══ -->
+    <div class="sec" id="s-ps">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+        <button class="btn btn-pu btn-sm" onclick="abrirModalProspect()">+ Novo prospect</button>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="tw"><table>
+          <thead><tr><th style="padding-left:12px">Nome</th><th>Contato</th><th>Interesse</th><th>Visita</th><th>Status</th><th>Ações</th></tr></thead>
+          <tbody id="tbProspects"><tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text3)">Nenhum prospect cadastrado.</td></tr></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- ══ LOJINHA ══ -->
+    <div class="sec" id="s-lj">
+      <div class="g3">
+        <div class="kpi a-pu"><div class="kl">PRODUTOS CADASTRADOS</div><div class="kv" id="kpiProd">0</div></div>
+        <div class="kpi a-er"><div class="kl">ESTOQUE BAIXO (≤3)</div><div class="kv" id="kpiLow2" style="color:var(--er)">0</div></div>
+        <div class="kpi a-ok"><div class="kl">PEDIDOS HOJE</div><div class="kv" id="kpiPedidos">0</div></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <div class="chips" id="ljChips" style="margin-bottom:0">
+          <span class="chip on" onclick="filtProd(this,'')">Todos</span>
+          <span class="chip" onclick="filtProd(this,'Kimono')">Kimonos</span>
+          <span class="chip" onclick="filtProd(this,'Vestuário')">Vestuário</span>
+          <span class="chip" onclick="filtProd(this,'Acessório')">Acessórios</span>
+        </div>
+        <button class="btn btn-pu btn-sm" style="margin-left:auto" onclick="abrirModalProduto()">+ Cadastrar produto</button>
+      </div>
+      <div class="card">
+        <div class="card-hd"><span class="ct">ESTOQUE ATUAL</span><span class="bd-tag">⚡ BD para vários PDVs</span></div>
+        <div class="tw"><table>
+          <thead><tr><th style="padding-left:12px">Produto</th><th>Cat.</th><th>Tamanhos / Qtd</th><th>Preço</th><th>Custo</th><th>Status</th><th>Ações</th></tr></thead>
+          <tbody id="tbEstoque"><tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text3)">Nenhum produto cadastrado. Clique em "+ Cadastrar produto".</td></tr></tbody>
+        </table></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><span class="ct">PEDIDOS</span></div>
+        <div class="tw"><table>
+          <thead><tr><th>Data</th><th>Aluno</th><th>Produto</th><th>Tam.</th><th>Qtd</th><th>Valor</th><th>Status</th></tr></thead>
+          <tbody id="tbPedidos"><tr><td colspan="7" style="text-align:center;padding:16px;color:var(--text3)">Nenhum pedido realizado.</td></tr></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- ══ FINANCEIRO ══ -->
+    <div class="sec" id="s-fi">
+      <div class="bd-banner"><span style="font-size:16px">💳</span><div><strong>BD essencial para financeiro:</strong> controle de mensalidades recorrentes, pagamentos automáticos e relatórios históricos requerem banco de dados. Esta seção mostrará os lançamentos manuais adicionados na sessão atual.</div></div>
+      <div class="g4">
+        <div class="kpi a-ok"><div class="kl">ENTRADAS (SESSÃO)</div><div class="kv" id="fiEntradas" style="color:var(--ok)">R$0</div></div>
+        <div class="kpi a-er"><div class="kl">SAÍDAS (SESSÃO)</div><div class="kv" id="fiSaidas" style="color:var(--er)">R$0</div></div>
+        <div class="kpi a-pu"><div class="kl">SALDO</div><div class="kv" id="fiSaldo">R$0</div></div>
+        <div class="kpi"><div class="kl">LANÇAMENTOS</div><div class="kv" id="fiCount">0</div></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+        <button class="btn btn-pu btn-sm" onclick="abrirModalLancamento()">+ Lançamento</button>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="tw"><table>
+          <thead><tr><th>Data/Hora</th><th>Descrição</th><th>Forma</th><th>Tipo</th><th>Valor</th></tr></thead>
+          <tbody id="tbFinanceiro"><tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text3)">Nenhum lançamento.</td></tr></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- ══ NOTIFICAÇÕES ══ -->
+    <div class="sec" id="s-nt">
+      <div class="bd-banner"><span style="font-size:16px">📲</span><div><strong>Push real exige BD + backend:</strong> envio de WhatsApp, notificações push e e-mails automáticos precisam de servidor e banco de dados. Aqui você agenda e visualiza o que seria enviado.</div></div>
+      <div class="card">
+        <div class="card-hd"><span class="ct">MENSAGENS AGENDADAS</span><button class="btn btn-pu btn-sm" onclick="showToast('Criação de mensagem — disponível com BD')">+ Nova</button></div>
+        <div class="notif"><div class="nd" style="background:var(--er)"></div><div class="nb"><div class="nt">Lembrete de cobrança</div><div class="ns">Alunos inadimplentes · push/WhatsApp</div></div><span class="bd-tag">⚡ BD</span></div>
+        <div class="notif"><div class="nd" style="background:var(--pu)"></div><div class="nb"><div class="nt">Progresso kids — relatório pais</div><div class="ns">Todos os responsáveis</div></div><span class="bd-tag">⚡ BD</span></div>
+        <div class="notif"><div class="nd" style="background:var(--ok)"></div><div class="nb"><div class="nt">Cerimônia de graduação</div><div class="ns">Todos os alunos</div></div><span class="bd-tag">⚡ BD</span></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- BOTTOM NAV -->
+<nav id="bnav">
+  <div class="bn-in">
+    <button class="bn-it on" onclick="go('db',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="bn-lb">Início</span></button>
+    <button class="bn-it" onclick="go('ci',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="bn-lb">Check-in</span></button>
+    <button class="bn-it" onclick="go('al',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span class="bn-lb">Alunos</span></button>
+    <button class="bn-it" onclick="go('ki',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="5"/><path d="M3 21c0-4 3.6-7 9-7s9 3 9 7"/></svg><span class="bn-lb">Kids</span></button>
+    <button class="bn-it" onclick="go('gr',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 15l-2 5L8 8l10 4-5 3z"/><circle cx="19" cy="5" r="2"/></svg><span class="bn-lb">Faixas</span></button>
+    <button class="bn-it" onclick="go('lj',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="bn-lb">Loja</span></button>
+    <button class="bn-it" onclick="go('fi',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="bn-lb">Financeiro</span></button>
+    <button class="bn-it" onclick="go('ps',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class="bn-lb">Leads</span></button>
+    <button class="bn-it" onclick="go('nt',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="bn-lb">Avisos</span></button>
+  </div>
+</nav>
+
+<!-- MODAL ALUNO -->
+<div class="modal-overlay" id="modalAluno">
+  <div class="modal">
+    <div class="modal-hd">
+      <div>
+        <div class="modal-title" id="modalAlunoTitle">Nova Ficha Cadastral</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px" id="modalAlunoSub">Unidade Haydee</div>
+      </div>
+      <button class="modal-close" onclick="fecharModal('modalAluno')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="section-sep full">DADOS PESSOAIS</div>
+        <div class="full fg"><label class="fl">NOME COMPLETO *</label><input class="fi" id="aNome" placeholder="Nome completo do aluno"></div>
+        <div class="fg"><label class="fl">CPF</label><input class="fi" id="aCpf" placeholder="000.000.000-00"></div>
+        <div class="fg"><label class="fl">DATA DE NASCIMENTO *</label><input class="fi" type="date" id="aNasc"></div>
+        <div class="fg"><label class="fl">SEXO</label>
+          <select class="fi" id="aSexo"><option value="">Selecione</option><option>Masculino</option><option>Feminino</option><option>Outro</option></select>
+        </div>
+        <div class="fg"><label class="fl">TELEFONE / WHATSAPP *</label><input class="fi" id="aTel" placeholder="(11) 9 0000-0000"></div>
+        <div class="full fg"><label class="fl">E-MAIL</label><input class="fi" type="email" id="aEmail" placeholder="email@exemplo.com"></div>
+        <div class="full fg"><label class="fl">ENDEREÇO</label><input class="fi" id="aEndereco" placeholder="Rua, número, bairro, cidade"></div>
+        <div class="section-sep full">CONTATO DE EMERGÊNCIA</div>
+        <div class="fg"><label class="fl">NOME DO RESPONSÁVEL</label><input class="fi" id="aRespNome" placeholder="Nome completo"></div>
+        <div class="fg"><label class="fl">TELEFONE DO RESPONSÁVEL</label><input class="fi" id="aRespTel" placeholder="(11) 9 0000-0000"></div>
+        <div class="section-sep full">BJJ — GRADUAÇÃO &amp; KIMONO</div>
+        <div class="fg"><label class="fl">FAIXA ATUAL *</label>
+          <select class="fi" id="aFaixa"><option value="">Selecione</option><option>Branca</option><option>Cinza</option><option>Amarelo</option><option>Laranja</option><option>Verde</option><option>Azul</option><option>Roxa</option><option>Marrom</option><option>Preta</option></select>
+        </div>
+        <div class="fg"><label class="fl">GRAUS (0–4)</label>
+          <select class="fi" id="aGraus"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select>
+        </div>
+        <div class="fg"><label class="fl">TAMANHO KIMONO *</label>
+          <select class="fi" id="aKimono"><option value="">Selecione</option><option>A0</option><option>A1</option><option>A2</option><option>A3</option><option>A4</option><option>F0</option><option>F1</option><option>F2</option><option>F3</option><option>M0</option><option>M1</option><option>M2</option><option>M3</option><option>M4</option></select>
+        </div>
+        <div class="fg"><label class="fl">DATA DE INGRESSO</label><input class="fi" type="date" id="aIngresso"></div>
+        <div class="section-sep full">CONTRATO &amp; PLANO</div>
+        <div class="fg"><label class="fl">PLANO</label>
+          <select class="fi" id="aPlano"><option>Mensal — R$300</option><option>Trimestral — R$270/mês</option><option>Semestral — R$250/mês</option><option>Anual — R$230/mês</option><option>Kids — R$250/mês</option><option>Wellhub</option><option>TotalPass</option></select>
+        </div>
+        <div class="fg"><label class="fl">STATUS</label>
+          <select class="fi" id="aStatus"><option>Ativo</option><option>Inativo</option><option>Inadimplente</option><option>Trancado</option></select>
+        </div>
+        <div class="full fg"><label class="fl">OBSERVAÇÕES MÉDICAS / GERAIS</label><textarea class="fi" id="aObs" rows="2" placeholder="Lesões, alergias, observações importantes..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <input type="hidden" id="aEditId">
+      <button class="btn btn-sec" onclick="fecharModal('modalAluno')">Cancelar</button>
+      <button class="btn btn-pu" onclick="salvarAluno()">Salvar ficha</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PRODUTO -->
+<div class="modal-overlay" id="modalProduto">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-hd">
+      <div><div class="modal-title" id="modalProdTitle">Cadastrar Produto</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Estoque Lojinha Haydee</div></div>
+      <button class="modal-close" onclick="fecharModal('modalProduto')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="full fg"><label class="fl">NOME DO PRODUTO *</label><input class="fi" id="pNome" placeholder="Ex: Kimono Adulto Branco"></div>
+        <div class="fg"><label class="fl">CATEGORIA *</label>
+          <select class="fi" id="pCat"><option value="">Selecione</option><option>Kimono</option><option>Vestuário</option><option>Acessório</option></select>
+        </div>
+        <div class="fg"><label class="fl">PREÇO DE VENDA (R$) *</label><input class="fi" type="number" id="pPreco" placeholder="280"></div>
+        <div class="fg"><label class="fl">PREÇO DE CUSTO (R$)</label><input class="fi" type="number" id="pCusto" placeholder="150"></div>
+        <div class="fg"><label class="fl">COR</label><input class="fi" id="pCor" placeholder="Branco, Preto, Azul..."></div>
+        <div class="full"><div class="section-sep full">TAMANHOS E QUANTIDADES</div></div>
+        <div class="full"><div style="font-size:12px;color:var(--text3);margin-bottom:10px">Preencha apenas os tamanhos disponíveis (deixe 0 para não disponível).</div>
+          <div id="tamanhosGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <input type="hidden" id="pEditId">
+      <button class="btn btn-sec" onclick="fecharModal('modalProduto')">Cancelar</button>
+      <button class="btn btn-pu" onclick="salvarProduto()">Salvar produto</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PROSPECT -->
+<div class="modal-overlay" id="modalProspect">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-hd">
+      <div><div class="modal-title">Novo Prospect</div></div>
+      <button class="modal-close" onclick="fecharModal('modalProspect')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="full fg"><label class="fl">NOME *</label><input class="fi" id="prNome" placeholder="Nome do prospect"></div>
+        <div class="fg"><label class="fl">TELEFONE *</label><input class="fi" id="prTel" placeholder="(11) 9 0000-0000"></div>
+        <div class="fg"><label class="fl">INTERESSE</label>
+          <select class="fi" id="prInteresse"><option>Fundamental</option><option>Avançado</option><option>Kids</option><option>Feminino</option><option>Open Mat</option></select>
+        </div>
+        <div class="full fg"><label class="fl">OBSERVAÇÃO</label><input class="fi" id="prObs" placeholder="Como chegou até a Fratres?"></div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-sec" onclick="fecharModal('modalProspect')">Cancelar</button>
+      <button class="btn btn-pu" onclick="salvarProspect()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL LANÇAMENTO -->
+<div class="modal-overlay" id="modalLancamento">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-hd">
+      <div><div class="modal-title">Novo Lançamento</div></div>
+      <button class="modal-close" onclick="fecharModal('modalLancamento')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="full fg"><label class="fl">DESCRIÇÃO *</label><input class="fi" id="lDesc" placeholder="Ex: Mensalidade João, Aluguel..."></div>
+        <div class="fg"><label class="fl">TIPO</label>
+          <select class="fi" id="lTipo"><option value="Entrada">Entrada</option><option value="Saída">Saída</option></select>
+        </div>
+        <div class="fg"><label class="fl">VALOR (R$) *</label><input class="fi" type="number" id="lValor" placeholder="300"></div>
+        <div class="fg"><label class="fl">FORMA DE PAGAMENTO</label>
+          <select class="fi" id="lForma"><option>Pix</option><option>Dinheiro</option><option>Débito</option><option>Crédito</option><option>Cheque</option><option>Transferência</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-sec" onclick="fecharModal('modalLancamento')">Cancelar</button>
+      <button class="btn btn-pu" onclick="salvarLancamento()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PEDIDO -->
+<div class="modal-overlay" id="modalPedido">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-hd">
+      <div><div class="modal-title" id="modalPedidoTitle">Vender produto</div></div>
+      <button class="modal-close" onclick="fecharModal('modalPedido')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="full fg"><label class="fl">ALUNO / CLIENTE</label>
+          <select class="fi" id="pedAluno"><option value="—">— (Avulso)</option></select>
+        </div>
+        <div class="fg"><label class="fl">TAMANHO</label><select class="fi" id="pedTam"></select></div>
+        <div class="fg"><label class="fl">QUANTIDADE</label><input class="fi" type="number" id="pedQtd" value="1" min="1"></div>
+        <div class="full fg"><label class="fl">FORMA DE PAGAMENTO</label>
+          <select class="fi" id="pedForma"><option>Pix</option><option>Dinheiro</option><option>Débito</option><option>Crédito</option></select>
+        </div>
+      </div>
+      <div id="pedResumo" style="background:var(--pu-xl);border-radius:var(--r8);padding:10px;margin-top:12px;font-size:13px;color:var(--pu-d)"></div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-sec" onclick="fecharModal('modalPedido')">Cancelar</button>
+      <button class="btn btn-ok" onclick="finalizarVenda()">Confirmar venda</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+// ══ STORAGE ═══════════════════════════════════════════
+const KEY = 'fratres_haydee_';
+function ls(k){ try{return JSON.parse(localStorage.getItem(KEY+k)||'null')}catch{return null} }
+function ss(k,v){ try{localStorage.setItem(KEY+k,JSON.stringify(v))}catch{} }
+let alunos    = ls('alunos')    || [];
+let produtos  = ls('produtos')  || [];
+let prospects = ls('prospects') || [];
+let financeiro= ls('financeiro')|| [];
+let pedidos   = ls('pedidos')   || [];
+let ciState   = ls('ci_'+today())||{};
+
+function today(){ return new Date().toISOString().slice(0,10) }
+function save(){ ss('alunos',alunos);ss('produtos',produtos);ss('prospects',prospects);ss('financeiro',financeiro);ss('pedidos',pedidos);ss('ci_'+today(),ciState) }
+
+// ══ SPLASH ═════════════════════════════════════════════
+window.addEventListener('load',()=>{
+  const d = new Date();
+  document.getElementById('dbDate').textContent = d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+  const bar = document.getElementById('splashBar');
+  setTimeout(()=>bar.style.width='100%',100);
+  setTimeout(()=>{
+    document.getElementById('splash').classList.add('hide');
+    setTimeout(()=>{document.getElementById('splash').style.display='none';document.getElementById('login').classList.add('show')},500);
+  },2100);
+});
+
+// ══ LOGIN ══════════════════════════════════════════════
+let curUser = {id:'sthella',name:'Sthella Vilela',role:'Gestora',ini:'SV',bg:'var(--pu-xl)',fg:'var(--pu)'};
+function selUser(el,id,name,role,ini,color){
+  document.querySelectorAll('.luser').forEach(u=>u.classList.remove('on'));
+  el.classList.add('on');
+  curUser = {id,name,role,ini,bg:(id==='sthella'?'var(--pu-xl)':'var(--bl-xl)'),fg:(id==='sthella'?'var(--pu)':'var(--bl)')};
+}
+// ⚠️ Senhas definidas localmente — não versionar senhas reais em repositório público
+// Para definir suas senhas: altere os valores abaixo e NÃO faça commit desta linha
+const senhas={sthella:'fratres2026',cleisson:'fratres2026'};
+const eyeOpen=`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+const eyeClosed=`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+function toggleSenha(){
+  const inp=document.getElementById('loginPass');
+  const btn=document.getElementById('eyeBtn');
+  const showing=inp.type==='text';
+  inp.type=showing?'password':'text';
+  btn.innerHTML=showing?eyeOpen:eyeClosed;
+  btn.style.color=showing?'rgba(255,255,255,.3)':'rgba(255,255,255,.7)';
+  inp.focus();
+}
+function doLogin(){
+  const p = document.getElementById('loginPass').value;
+  if(!p||p!==senhas[curUser.id]){document.getElementById('loginErr').style.display='block';return}
+  document.getElementById('loginErr').style.display='none';
+  document.getElementById('tbAva').textContent = curUser.ini;
+  document.getElementById('tbAva').style.background = curUser.bg;
+  document.getElementById('tbAva').style.color = curUser.fg;
+  document.getElementById('mbAva').textContent = curUser.ini;
+  document.getElementById('sbUser').innerHTML = `${curUser.name}<br><span style="color:rgba(255,255,255,.2)">${curUser.role}</span>`;
+  document.getElementById('login').classList.remove('show');
+  setTimeout(()=>{document.getElementById('app').classList.add('show');refreshAll()},100);
+}
+function doLogout(){document.getElementById('app').classList.remove('show');setTimeout(()=>document.getElementById('login').classList.add('show'),200)}
+document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+
+// ══ NAV ════════════════════════════════════════════════
+const titles={db:'Dashboard',al:'Alunos',ki:'Kids',ci:'Check-in',gr:'Graduações',ps:'Prospects',lj:'Lojinha',fi:'Financeiro',nt:'Notificações'};
+function go(id,el){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.sb-it,.bn-it').forEach(i=>i.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  const t=titles[id]||'';
+  document.getElementById('tb-title').textContent=t;
+  document.getElementById('mbPg').textContent=t;
+  if(el){el.classList.add('on');const oc=`go('${id}'`;document.querySelectorAll('.sb-it').forEach(i=>{if(i.getAttribute('onclick')?.includes(oc))i.classList.add('on')});document.querySelectorAll('.bn-it').forEach(i=>{if(i.getAttribute('onclick')?.includes(oc))i.classList.add('on')})}
+  window.scrollTo(0,0);
+}
+
+// ══ TOAST ══════════════════════════════════════════════
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';clearTimeout(t._t);t._t=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(10px)'},2800)}
+
+// ══ MODAL ══════════════════════════════════════════════
+function abrirModal(id){document.getElementById(id).classList.add('show')}
+function fecharModal(id){document.getElementById(id).classList.remove('show')}
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}));
+
+// ══ HELPERS ════════════════════════════════════════════
+let editandoAlunoId=null;
+const beltMap={Branca:'bW',Cinza:'kbG',Amarelo:'kbY',Laranja:'kbO',Verde:'kbGr',Azul:'bB',Roxa:'bP',Marrom:'bBr',Preta:'bBk'};
+const beltTopColor={Branca:'#bdbdbd',Cinza:'#757575',Amarelo:'#F9A825',Laranja:'#E65100',Verde:'#1B5E20',Azul:'#1565C0',Roxa:'#6A1B9A',Marrom:'#4E342E',Preta:'#111'};
+function graus(n){let s='';for(let i=0;i<n;i++)s+='<span class="stripe"></span>';return s}
+function fc(f){return !f?'b-ch':f>80?'b-ok':f>60?'b-wa':'b-er'}
+function idade(nasc){if(!nasc)return '—';const d=new Date(nasc),now=new Date();return Math.floor((now-d)/31557600000)+'a'}
+function formatDate(d){if(!d)return '—';const[y,m,dd]=d.split('-');return`${dd}/${m}/${y}`}
+function nowStr(){return new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}
+
+// ══ ALUNOS ═════════════════════════════════════════════
+function abrirModalAluno(isKid=false){
+  editandoAlunoId=null;
+  ['aNome','aCpf','aTel','aEmail','aEndereco','aRespNome','aRespTel','aObs'].forEach(id=>document.getElementById(id).value='');
+  ['aSexo','aFaixa','aGraus','aKimono','aStatus'].forEach(id=>document.getElementById(id).selectedIndex=0);
+  document.getElementById('aPlano').value=isKid?'Kids — R$250/mês':'Mensal — R$300';
+  document.getElementById('aNasc').value='';
+  document.getElementById('aIngresso').value=today();
+  document.getElementById('aEditId').value='';
+  document.getElementById('modalAlunoTitle').textContent=isKid?'Nova Ficha Kid':'Nova Ficha Cadastral';
+  abrirModal('modalAluno');
+  setTimeout(()=>document.getElementById('aNome').focus(),200);
+}
+function editarAluno(id){
+  const a=alunos.find(x=>x.id===id);if(!a)return;
+  editandoAlunoId=id;
+  document.getElementById('aNome').value=a.nome||'';
+  document.getElementById('aCpf').value=a.cpf||'';
+  document.getElementById('aNasc').value=a.nasc||'';
+  document.getElementById('aSexo').value=a.sexo||'';
+  document.getElementById('aTel').value=a.tel||'';
+  document.getElementById('aEmail').value=a.email||'';
+  document.getElementById('aEndereco').value=a.endereco||'';
+  document.getElementById('aRespNome').value=a.respNome||'';
+  document.getElementById('aRespTel').value=a.respTel||'';
+  document.getElementById('aFaixa').value=a.faixa||'';
+  document.getElementById('aGraus').value=a.graus||0;
+  document.getElementById('aKimono').value=a.kimono||'';
+  document.getElementById('aIngresso').value=a.ingresso||'';
+  document.getElementById('aPlano').value=a.plano||'Mensal — R$300';
+  document.getElementById('aStatus').value=a.status||'Ativo';
+  document.getElementById('aObs').value=a.obs||'';
+  document.getElementById('aEditId').value=id;
+  document.getElementById('modalAlunoTitle').textContent='Editar Ficha — '+a.nome;
+  abrirModal('modalAluno');
+}
+function salvarAluno(){
+  const nome=document.getElementById('aNome').value.trim();
+  const tel=document.getElementById('aTel').value.trim();
+  const faixa=document.getElementById('aFaixa').value;
+  const kimono=document.getElementById('aKimono').value;
+  if(!nome||!tel||!faixa||!kimono){showToast('⚠ Preencha os campos obrigatórios (*)');return}
+  const editId=document.getElementById('aEditId').value;
+  const obj={
+    id:editId||Date.now().toString(),
+    nome,cpf:document.getElementById('aCpf').value,
+    nasc:document.getElementById('aNasc').value,
+    sexo:document.getElementById('aSexo').value,
+    tel,email:document.getElementById('aEmail').value,
+    endereco:document.getElementById('aEndereco').value,
+    respNome:document.getElementById('aRespNome').value,
+    respTel:document.getElementById('aRespTel').value,
+    faixa,graus:parseInt(document.getElementById('aGraus').value)||0,
+    kimono,
+    ingresso:document.getElementById('aIngresso').value,
+    plano:document.getElementById('aPlano').value,
+    status:document.getElementById('aStatus').value,
+    obs:document.getElementById('aObs').value,
+    kids:kimono.startsWith('M')||faixa==='Cinza'||faixa==='Amarelo'||faixa==='Laranja'||faixa==='Verde',
+    treinos:editId?(alunos.find(a=>a.id===editId)?.treinos||0):0,
+    criadoEm:editId?(alunos.find(a=>a.id===editId)?.criadoEm||nowStr()):nowStr()
+  };
+  if(editId){const i=alunos.findIndex(a=>a.id===editId);alunos[i]=obj}else alunos.unshift(obj);
+  save();fecharModal('modalAluno');refreshAll();
+  showToast(`✓ ${nome} ${editId?'atualizado':'cadastrado'} com sucesso!`);
+}
+function excluirAluno(id){
+  const a=alunos.find(x=>x.id===id);
+  if(!a)return;
+  if(!confirm(`Excluir ficha de ${a.nome}?`))return;
+  alunos=alunos.filter(x=>x.id!==id);save();refreshAll();showToast(`Ficha de ${a.nome} removida.`);
+}
+function renderAlunos(){
+  const q=(document.getElementById('busca')?.value||'').toLowerCase();
+  const f=document.getElementById('filtFaixa')?.value||'';
+  const adults=alunos.filter(a=>!a.kids&&(!q||a.nome.toLowerCase().includes(q))&&(!f||a.faixa===f));
+  const tb=document.getElementById('tbAlunos');
+  if(!adults.length){tb.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text3)">${alunos.length?'Nenhum resultado encontrado.':'Nenhum aluno cadastrado ainda.'}</td></tr>`;return}
+  tb.innerHTML=adults.map(a=>`<tr>
+    <td style="padding-left:12px"><div style="display:flex;align-items:center;gap:7px"><span class="ava">${a.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span><div><div style="font-weight:600;font-size:13px">${a.nome}</div><div style="font-size:10.5px;color:var(--text3)">${a.email||'—'}</div></div></div></td>
+    <td><span class="belt ${beltMap[a.faixa]||'bW'}">${a.faixa}</span>${graus(a.graus)}</td>
+    <td><code style="font-size:11px;background:var(--ch-xl);padding:2px 5px;border-radius:3px">${a.kimono}</code></td>
+    <td style="font-size:12px">${formatDate(a.nasc)} <span style="color:var(--text3)">${idade(a.nasc)}</span></td>
+    <td style="font-size:12px">${a.tel||'—'}</td>
+    <td style="font-size:12px">${a.plano.split('—')[0].trim()}</td>
+    <td><span class="badge ${a.status==='Ativo'?'b-ok':a.status==='Inadimplente'?'b-er':'b-wa'}">${a.status}</span></td>
+    <td><button class="btn-ghost" onclick="editarAluno('${a.id}')">Editar</button><button class="btn-ghost" style="color:var(--er)" onclick="excluirAluno('${a.id}')">✕</button></td>
+  </tr>`).join('');
+}
+function renderKids(){
+  const q=(document.getElementById('buscaKids')?.value||'').toLowerCase();
+  const kids=alunos.filter(a=>a.kids&&(!q||a.nome.toLowerCase().includes(q)));
+  const grid=document.getElementById('kidGrid');
+  const tb=document.getElementById('tbKids');
+  if(!kids.length){grid.innerHTML=`<div style="font-size:13px;color:var(--text3);padding:20px;grid-column:1/-1;text-align:center">Nenhum kid cadastrado.</div>`;tb.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text3)">Nenhum kid.</td></tr>`;return}
+  grid.innerHTML=kids.map(k=>{
+    const top=beltTopColor[k.faixa]||'#bdbdbd';
+    const prog=Math.min(100,Math.round((k.treinos||0)/80*100));
+    return`<div class="kdc" onclick="editarAluno('${k.id}')">
+      <div class="kdc-top" style="background:${top}"></div>
+      <div class="kdc-body">
+        <div class="kdc-name">${k.nome.split(' ')[0]}</div>
+        <div class="kdc-meta">${idade(k.nasc)} · <span class="belt ${beltMap[k.faixa]||'kbW'}" style="font-size:10px;padding:1px 5px">${k.faixa}</span>${graus(k.graus)}</div>
+        <div class="kdc-prog"><div class="kdc-pf" style="width:${prog}%"></div></div>
+        <div class="kdc-ft"><span>${prog}% prox. faixa</span><span style="color:var(--go)">🥋</span></div>
+        <div style="font-size:10.5px;color:var(--text3);margin-top:4px">${k.respNome||'Resp: —'}</div>
+      </div>
+    </div>`;
+  }).join('');
+  tb.innerHTML=kids.map(k=>`<tr>
+    <td style="padding-left:12px"><div style="display:flex;align-items:center;gap:7px"><span class="ava ava-bl">${k.nome[0]}</span>${k.nome}</div></td>
+    <td>${idade(k.nasc)}</td>
+    <td><span class="belt ${beltMap[k.faixa]||'kbW'}">${k.faixa}</span>${graus(k.graus)}</td>
+    <td style="font-size:12px">${k.respNome||'—'}</td>
+    <td style="font-size:12px">${k.respTel||'—'}</td>
+    <td><code style="font-size:11px;background:var(--ch-xl);padding:2px 5px;border-radius:3px">${k.kimono}</code></td>
+    <td><span class="badge ${k.status==='Ativo'?'b-ok':'b-wa'}">${k.status}</span></td>
+    <td><button class="btn-ghost" onclick="editarAluno('${k.id}')">Editar</button><button class="btn-ghost" style="color:var(--er)" onclick="excluirAluno('${k.id}')">✕</button></td>
+  </tr>`).join('');
+}
+
+// ══ CHECK-IN ═══════════════════════════════════════════
+function renderCI(){
+  const all=alunos;
+  const total=all.length;
+  const present=Object.values(ciState).filter(Boolean).length;
+  document.getElementById('ciTotal').textContent=present;
+  document.getElementById('ciAusentes').textContent=total-present;
+  document.getElementById('ciTaxa').textContent=total?Math.round(present/total*100)+'%':'0%';
+  document.getElementById('ciTotalAlunos').textContent=total;
+  document.getElementById('ciBadge').textContent=`${present} presentes`;
+  document.getElementById('dbCiCount').textContent=present;
+  const tb=document.getElementById('tbCI');
+  if(!all.length){tb.innerHTML='<div style="font-size:13px;color:var(--text3);text-align:center;padding:20px">Cadastre alunos para habilitar o check-in.</div>';return}
+  tb.innerHTML=all.map(a=>{
+    const done=!!ciState[a.id];
+    return`<div class="ci-t${done?' done':''}" onclick="toggleCI('${a.id}')">
+      <div class="ci-dot"></div>
+      <span class="ava" style="${done?'background:var(--ok-bg);color:var(--ok)':''}">${a.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span>
+      <div class="ci-in"><div class="ci-nm">${a.nome}</div><div class="ci-sub"><span class="belt ${beltMap[a.faixa]||'bW'}" style="font-size:10px;padding:1px 5px">${a.faixa}</span> · ${a.kids?'Kids':'Adulto'}</div></div>
+      <button class="ci-btn${done?' dn':''}">${done?'✓ Presente':'Registrar'}</button>
+    </div>`;
+  }).join('');
+}
+function toggleCI(id){
+  ciState[id]=!ciState[id];
+  save();renderCI();
+  const a=alunos.find(x=>x.id===id);
+  if(ciState[id]&&a){a.treinos=(a.treinos||0)+1;save()}
+  showToast(ciState[id]?`✓ Check-in: ${alunos.find(x=>x.id===id)?.nome}`:`Removido: ${alunos.find(x=>x.id===id)?.nome}`);
+}
+
+// ══ GRADUAÇÕES ══════════════════════════════════════════
+function renderGrad(){
+  const tb=document.getElementById('tbGrad');
+  const adults=alunos.filter(a=>!a.kids);
+  if(!adults.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text3)">Cadastre alunos para acompanhar graduações.</td></tr>';return}
+  const reqs={Branca:80,Cinza:60,Azul:120,Roxa:200,Marrom:300};
+  tb.innerHTML=adults.map(a=>{
+    const req=reqs[a.faixa]||80;
+    const t=a.treinos||0;
+    const pct=Math.min(100,Math.round(t/req*100));
+    return`<tr>
+      <td><div style="display:flex;align-items:center;gap:7px"><span class="ava">${a.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span>${a.nome}</div></td>
+      <td><span class="belt ${beltMap[a.faixa]||'bW'}">${a.faixa}</span>${graus(a.graus)}</td>
+      <td>${t}/${req}</td>
+      <td><div class="pw"><div class="pb"><div class="pf" style="width:${pct}%"></div></div><span class="pl">${pct}%</span></div></td>
+      <td>${pct>=100?`<button class="btn btn-pu btn-sm" onclick="promover('${a.id}')">Promover</button>`:`<span style="font-size:12px;color:var(--text3)">${req-t} treinos</span>`}</td>
+    </tr>`;
+  }).join('');
+}
+const beltNext={Branca:'Azul',Azul:'Roxa',Roxa:'Marrom',Marrom:'Preta'};
+function promover(id){
+  const a=alunos.find(x=>x.id===id);if(!a)return;
+  const prox=beltNext[a.faixa];
+  if(!prox){showToast('Faixa máxima atingida!');return}
+  if(!confirm(`Promover ${a.nome} para faixa ${prox}?`))return;
+  a.faixa=prox;a.graus=0;a.treinos=0;save();refreshAll();
+  showToast(`🥋 ${a.nome} promovido para faixa ${prox}!`);
+}
+
+// ══ PROSPECTS ══════════════════════════════════════════
+function abrirModalProspect(){['prNome','prTel','prObs'].forEach(i=>document.getElementById(i).value='');document.getElementById('prInteresse').selectedIndex=0;abrirModal('modalProspect')}
+function salvarProspect(){
+  const nome=document.getElementById('prNome').value.trim();
+  const tel=document.getElementById('prTel').value.trim();
+  if(!nome||!tel){showToast('⚠ Nome e telefone são obrigatórios');return}
+  prospects.unshift({id:Date.now().toString(),nome,tel,interesse:document.getElementById('prInteresse').value,obs:document.getElementById('prObs').value,status:'Visita',data:nowStr()});
+  save();renderProspects();fecharModal('modalProspect');showToast(`✓ Prospect ${nome} cadastrado!`);
+}
+const psNext={Visita:'Avaliação',Avaliação:'Proposta',Proposta:'Convertido'};
+const psBadge={Visita:'b-bl',Avaliação:'b-wa',Proposta:'b-pu',Convertido:'b-ok',Perdido:'b-er'};
+function avancarProspect(id){
+  const p=prospects.find(x=>x.id===id);if(!p)return;
+  const prox=psNext[p.status];
+  if(!prox){showToast('Prospect já convertido!');return}
+  p.status=prox;save();renderProspects();showToast(`${p.nome} → ${prox}`);
+}
+function renderProspects(){
+  const tb=document.getElementById('tbProspects');
+  if(!prospects.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text3)">Nenhum prospect cadastrado.</td></tr>';return}
+  tb.innerHTML=prospects.map(p=>`<tr>
+    <td style="padding-left:12px"><div style="font-weight:600">${p.nome}</div></td>
+    <td style="font-size:12px">${p.tel}</td>
+    <td><span class="badge b-ch">${p.interesse}</span></td>
+    <td style="font-size:12px;color:var(--text3)">${p.data}</td>
+    <td><span class="badge ${psBadge[p.status]||'b-ch'}">${p.status}</span></td>
+    <td><button class="btn-ghost" onclick="avancarProspect('${p.id}')">${p.status==='Convertido'?'✓':'Avançar →'}</button>
+    <button class="btn-ghost" style="color:var(--er)" onclick="remProspect('${p.id}')">✕</button></td>
+  </tr>`).join('');
+}
+function remProspect(id){prospects=prospects.filter(x=>x.id!==id);save();renderProspects()}
+
+// ══ PRODUTOS / ESTOQUE ══════════════════════════════════
+const tamAdulto=['A0','A1','A2','A3','A4'];
+const tamFem=['F0','F1','F2','F3'];
+const tamKids=['M0','M1','M2','M3','M4'];
+const tamVest=['PP','P','M','G','GG'];
+const tamUniq=['Único'];
+let editProdId=null;
+let curCat='';
+function getTams(cat,nome){
+  const n=nome.toLowerCase();
+  if(n.includes('kids')||n.includes('infantil')) return [...tamKids];
+  if(n.includes('feminino')) return [...tamFem];
+  if(cat==='Kimono') return [...tamAdulto];
+  if(cat==='Vestuário') return [...tamVest];
+  return [...tamUniq];
+}
+function abrirModalProduto(id){
+  editProdId=id||null;
+  const p=id?produtos.find(x=>x.id===id):null;
+  document.getElementById('pNome').value=p?.nome||'';
+  document.getElementById('pCat').value=p?.cat||'';
+  document.getElementById('pPreco').value=p?.preco||'';
+  document.getElementById('pCusto').value=p?.custo||'';
+  document.getElementById('pCor').value=p?.cor||'';
+  document.getElementById('modalProdTitle').textContent=p?'Editar Produto':'Cadastrar Produto';
+  buildTamGrid(p);
+  abrirModal('modalProduto');
+}
+function buildTamGrid(p){
+  const cat=document.getElementById('pCat').value;
+  const nome=document.getElementById('pNome').value;
+  const tams=getTams(cat,nome);
+  const grid=document.getElementById('tamanhosGrid');
+  grid.innerHTML=tams.map(t=>`
+    <div style="text-align:center">
+      <div style="font-size:10px;font-weight:700;color:var(--text3);margin-bottom:4px">${t}</div>
+      <input class="fi" type="number" min="0" placeholder="0" id="tam_${t}" value="${p?.estoque?.[t]||0}" style="text-align:center;padding:0 4px">
+    </div>`).join('');
+}
+document.getElementById('pCat').addEventListener('change',()=>buildTamGrid(null));
+document.getElementById('pNome').addEventListener('blur',()=>buildTamGrid(null));
+function salvarProduto(){
+  const nome=document.getElementById('pNome').value.trim();
+  const cat=document.getElementById('pCat').value;
+  const preco=parseFloat(document.getElementById('pPreco').value);
+  if(!nome||!cat||!preco){showToast('⚠ Preencha nome, categoria e preço');return}
+  const tams=getTams(cat,nome);
+  const estoque={};
+  tams.forEach(t=>{estoque[t]=parseInt(document.getElementById('tam_'+t)?.value||0)||0});
+  const obj={id:editProdId||Date.now().toString(),nome,cat,preco,custo:parseFloat(document.getElementById('pCusto').value)||0,cor:document.getElementById('pCor').value,estoque,criadoEm:editProdId?(produtos.find(p=>p.id===editProdId)?.criadoEm||nowStr()):nowStr()};
+  if(editProdId){const i=produtos.findIndex(p=>p.id===editProdId);produtos[i]=obj}else produtos.unshift(obj);
+  save();fecharModal('modalProduto');renderEstoque();refreshDash();
+  showToast(`✓ ${nome} ${editProdId?'atualizado':'cadastrado'}!`);
+  editProdId=null;
+}
+function renderEstoque(){
+  const tb=document.getElementById('tbEstoque');
+  const list=curCat?produtos.filter(p=>p.cat===curCat):produtos;
+  const low=produtos.filter(p=>Object.values(p.estoque||{}).some(v=>v>0&&v<=3)).length;
+  document.getElementById('kpiProd').textContent=produtos.length;
+  document.getElementById('kpiLow2').textContent=low;
+  if(!list.length){tb.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text3)">Nenhum produto${curCat?' nesta categoria':''} cadastrado.</td></tr>`;return}
+  tb.innerHTML=list.map(p=>{
+    const tams=Object.entries(p.estoque||{});
+    const tamHtml=tams.map(([t,q])=>`<div class="stk-cell"><div class="stk-v ${q<=0?'stk-low':q<=3?'stk-wa-v':'stk-ok-v'}">${q}</div><div class="stk-s">${t}</div></div>`).join('');
+    const totalQtd=tams.reduce((s,[,v])=>s+v,0);
+    return`<tr>
+      <td style="padding-left:12px"><div style="font-weight:600">${p.nome}</div><div style="font-size:11px;color:var(--text3)">${p.cor||''}</div></td>
+      <td><span class="badge b-ch">${p.cat}</span></td>
+      <td><div style="display:flex;gap:6px;flex-wrap:wrap">${tamHtml}</div></td>
+      <td><div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--pu)">R$${p.preco}</div></td>
+      <td style="font-size:12px;color:var(--text3)">${p.custo?'R$'+p.custo:'—'}</td>
+      <td>${totalQtd<=0?'<span class="badge b-er">Esgotado</span>':totalQtd<=3?'<span class="badge b-wa">Baixo</span>':'<span class="badge b-ok">Ok</span>'}</td>
+      <td>
+        <button class="btn-ghost" onclick="abrirVenda('${p.id}')">Vender</button>
+        <button class="btn-ghost" onclick="abrirModalProduto('${p.id}')">Editar</button>
+        <button class="btn-ghost" style="color:var(--er)" onclick="excluirProduto('${p.id}')">✕</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+function filtProd(el,cat){document.querySelectorAll('#ljChips .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');curCat=cat;renderEstoque()}
+function excluirProduto(id){const p=produtos.find(x=>x.id===id);if(!p||!confirm(`Remover ${p.nome}?`))return;produtos=produtos.filter(x=>x.id!==id);save();renderEstoque();refreshDash()}
+
+// ══ PEDIDOS / VENDA ═════════════════════════════════════
+let vendaProdId=null;
+function abrirVenda(id){
+  vendaProdId=id;
+  const p=produtos.find(x=>x.id===id);if(!p)return;
+  document.getElementById('modalPedidoTitle').textContent='Vender: '+p.nome;
+  const tams=Object.entries(p.estoque||{}).filter(([,v])=>v>0);
+  const tamSel=document.getElementById('pedTam');
+  tamSel.innerHTML=tams.map(([t,q])=>`<option value="${t}">${t} (${q} disp.)</option>`).join('');
+  const aluSel=document.getElementById('pedAluno');
+  aluSel.innerHTML='<option value="—">— (Avulso)</option>'+alunos.map(a=>`<option value="${a.nome}">${a.nome} (${a.kimono})</option>`).join('');
+  document.getElementById('pedQtd').value=1;
+  atualizarResumo(p);
+  tamSel.onchange=()=>atualizarResumo(p);
+  document.getElementById('pedQtd').oninput=()=>atualizarResumo(p);
+  abrirModal('modalPedido');
+}
+function atualizarResumo(p){
+  const qtd=parseInt(document.getElementById('pedQtd').value)||1;
+  const total=p.preco*qtd;
+  document.getElementById('pedResumo').innerHTML=`<strong>${p.nome}</strong><br>${document.getElementById('pedTam').value||''} × ${qtd} = <strong style="color:var(--pu)">R$${total}</strong>`;
+}
+function finalizarVenda(){
+  const p=produtos.find(x=>x.id===vendaProdId);if(!p)return;
+  const tam=document.getElementById('pedTam').value;
+  const qtd=parseInt(document.getElementById('pedQtd').value)||1;
+  if(p.estoque[tam]<qtd){showToast('⚠ Estoque insuficiente!');return}
+  p.estoque[tam]-=qtd;
+  const pedido={id:Date.now().toString(),data:nowStr(),aluno:document.getElementById('pedAluno').value,prod:p.nome,tam,qtd,valor:p.preco*qtd,forma:document.getElementById('pedForma').value,status:'Retirar'};
+  pedidos.unshift(pedido);
+  financeiro.unshift({id:Date.now().toString(),desc:`Loja: ${p.nome} (${tam})`,tipo:'Entrada',forma:pedido.forma,valor:pedido.valor,data:nowStr()});
+  save();fecharModal('modalPedido');renderEstoque();renderPedidos();renderFinanceiro();refreshDash();
+  showToast(`✓ Venda de R$${pedido.valor} registrada!`);
+}
+function renderPedidos(){
+  const tb=document.getElementById('tbPedidos');
+  document.getElementById('kpiPedidos').textContent=pedidos.filter(p=>p.data.includes(new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}))).length;
+  if(!pedidos.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:16px;color:var(--text3)">Nenhum pedido.</td></tr>';return}
+  tb.innerHTML=pedidos.map((p,i)=>`<tr>
+    <td style="font-size:12px">${p.data}</td><td>${p.aluno}</td><td>${p.prod}</td>
+    <td><code style="font-size:11px;background:var(--ch-xl);padding:2px 5px;border-radius:3px">${p.tam}</code></td>
+    <td>${p.qtd}</td>
+    <td style="font-weight:700;color:var(--pu)">R$${p.valor}</td>
+    <td><span class="badge ${p.status==='Entregue'?'b-ok':'b-wa'}">${p.status}</span>
+      ${p.status!=='Entregue'?`<button class="btn-ghost" onclick="entregarPedido(${i})">Entregar</button>`:''}</td>
+  </tr>`).join('');
+}
+function entregarPedido(i){pedidos[i].status='Entregue';save();renderPedidos();showToast('Pedido marcado como entregue!')}
+
+// ══ FINANCEIRO ══════════════════════════════════════════
+function abrirModalLancamento(){['lDesc','lValor'].forEach(i=>document.getElementById(i).value='');document.getElementById('lTipo').selectedIndex=0;document.getElementById('lForma').selectedIndex=0;abrirModal('modalLancamento')}
+function salvarLancamento(){
+  const desc=document.getElementById('lDesc').value.trim();
+  const valor=parseFloat(document.getElementById('lValor').value);
+  if(!desc||!valor){showToast('⚠ Descrição e valor são obrigatórios');return}
+  financeiro.unshift({id:Date.now().toString(),desc,tipo:document.getElementById('lTipo').value,forma:document.getElementById('lForma').value,valor,data:nowStr()});
+  save();fecharModal('modalLancamento');renderFinanceiro();showToast('✓ Lançamento registrado!');
+}
+function renderFinanceiro(){
+  const tb=document.getElementById('tbFinanceiro');
+  let ent=0,sai=0;
+  financeiro.forEach(f=>{if(f.tipo==='Entrada')ent+=f.valor;else sai+=f.valor});
+  document.getElementById('fiEntradas').textContent='R$'+ent.toLocaleString('pt-BR',{minimumFractionDigits:0});
+  document.getElementById('fiSaidas').textContent='R$'+sai.toLocaleString('pt-BR',{minimumFractionDigits:0});
+  const saldo=ent-sai;
+  document.getElementById('fiSaldo').textContent='R$'+Math.abs(saldo).toLocaleString('pt-BR',{minimumFractionDigits:0});
+  document.getElementById('fiSaldo').style.color=saldo>=0?'var(--ok)':'var(--er)';
+  document.getElementById('fiCount').textContent=financeiro.length;
+  if(!financeiro.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text3)">Nenhum lançamento.</td></tr>';return}
+  tb.innerHTML=financeiro.map(f=>`<tr>
+    <td style="font-size:12px;color:var(--text3)">${f.data}</td>
+    <td>${f.desc}</td>
+    <td><span class="badge b-ch">${f.forma}</span></td>
+    <td><span class="badge ${f.tipo==='Entrada'?'b-ok':'b-er'}">${f.tipo}</span></td>
+    <td style="font-weight:700;color:${f.tipo==='Entrada'?'var(--ok)':'var(--er)'}">${f.tipo==='Entrada'?'+':'-'}R$${f.valor}</td>
+  </tr>`).join('');
+}
+
+// ══ DASHBOARD ══════════════════════════════════════════
+function refreshDash(){
+  const adultos=alunos.filter(a=>!a.kids).length;
+  const kids=alunos.filter(a=>a.kids).length;
+  const total=alunos.length;
+  const totalItens=produtos.reduce((s,p)=>s+Object.values(p.estoque||{}).reduce((a,b)=>a+b,0),0);
+  const low=produtos.filter(p=>Object.values(p.estoque||{}).some(v=>v>0&&v<=3)).length;
+  document.getElementById('sbAdultos').textContent=adultos;
+  document.getElementById('sbKids').textContent=kids;
+  document.getElementById('sbEstoque').textContent=produtos.length;
+  document.getElementById('kpiAdultos').textContent=adultos;
+  document.getElementById('kpiKids').textContent=kids;
+  document.getElementById('kpiEstoque').textContent=totalItens;
+  document.getElementById('kpiLow').textContent=low;
+  document.getElementById('dbAlunos').textContent=total;
+  document.getElementById('dbItems').textContent=totalItens;
+  const ultEl=document.getElementById('dbUltAlunos');
+  const rec=alunos.slice(0,4);
+  if(!rec.length)ultEl.innerHTML='<div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">Nenhum aluno cadastrado ainda.</div>';
+  else ultEl.innerHTML=rec.map(a=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)"><span class="ava">${a.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span><div style="flex:1"><div style="font-size:13px;font-weight:600">${a.nome}</div><div style="font-size:11px;color:var(--text3)">${a.faixa} · ${a.kimono}</div></div><span class="badge ${a.status==='Ativo'?'b-ok':'b-wa'}">${a.status}</span></div>`).join('');
+  const lowProds=produtos.filter(p=>Object.values(p.estoque||{}).some(v=>v>0&&v<=3)).slice(0,4);
+  const alEl=document.getElementById('dbEstoqueAlert');
+  if(!lowProds.length)alEl.innerHTML='<div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">'+(!produtos.length?'Nenhum produto cadastrado.':'Estoque ok — sem alertas.')+'</div>';
+  else alEl.innerHTML=lowProds.map(p=>{const lowTams=Object.entries(p.estoque||{}).filter(([,v])=>v>0&&v<=3);return`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)"><div style="flex:1"><div style="font-size:13px;font-weight:600">${p.nome}</div><div style="font-size:11px;color:var(--er)">${lowTams.map(([t,q])=>t+':'+q).join(' · ')}</div></div><span class="badge b-wa">Baixo</span></div>`}).join('');
+}
+
+// ══ REFRESH ALL ════════════════════════════════════════
+function refreshAll(){renderAlunos();renderKids();renderCI();renderGrad();renderProspects();renderEstoque();renderPedidos();renderFinanceiro();refreshDash()}
+</script>
+</body>
+</html>
