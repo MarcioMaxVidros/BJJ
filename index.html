@@ -124,7 +124,7 @@ button,select,input,textarea{font-family:'Barlow',sans-serif}
 .kv{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:700;line-height:1}
 .ks{font-size:11px;color:var(--text3);margin-top:3px}
 .kpi.a-pu{border-top:3px solid var(--pu)}.kpi.a-bl{border-top:3px solid var(--bl)}
-.kpi.a-ok{border-top:3px solid var(--ok)}.kpi.a-er{border-top:3px solid var(--er)}
+.kpi.a-ok{border-top:3px solid var(--ok)}.kpi.a-er{border-top:3px solid var(--er)}.kpi.a-wa{border-top:3px solid var(--wa)}
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--r12);padding:15px;margin-bottom:13px;box-shadow:var(--sh)}
 .card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .ct{font-size:10px;letter-spacing:1px;font-weight:700;color:var(--text3)}
@@ -362,6 +362,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
     <div class="sb-it" onclick="go('ki',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="5"/><path d="M3 21c0-4 3.6-7 9-7s9 3 9 7"/></svg><span class="sb-lb">Kids</span></div>
     <div class="sb-it" onclick="go('gr',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 15l-2 5L8 8l10 4-5 3z"/><circle cx="19" cy="5" r="2"/></svg><span class="sb-lb">Graduações</span></div>
     <div class="sb-it" onclick="go('ps',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class="sb-lb">Prospects</span></div>
+    <div class="sb-it" onclick="go('ms',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span class="sb-lb">Mensalidades</span></div>
     <div class="sb-sec">OPERAÇÃO</div>
     <div class="sb-it" onclick="go('pf',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7 7 0 0 1 13 0"/><path d="M15 11l1 1 3-3"/></svg><span class="sb-lb">Professores</span></div>
     <div class="sb-it" onclick="go('lj',this)"><svg class="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="sb-lb">Lojinha</span></div>
@@ -410,8 +411,12 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
       </div>
       <div class="bd-banner"><span style="font-size:16px">⚡</span><div><strong>Quando será necessário banco de dados:</strong> ao precisar acessar o app em dois dispositivos ao mesmo tempo, ou integrar com Wellhub/TotalPass via API real. Até lá, tudo persiste aqui mesmo via localStorage.</div></div>
       <div class="g2">
-        <div class="card"><div class="card-hd"><span class="ct">ÚLTIMOS ALUNOS CADASTRADOS</span><button class="btn-ghost" onclick="go('al',null)">Ver todos →</button></div><div id="dbUltAlunos"><div style="font-size:13px;color:var(--text3);text-align:center;padding:16px">Nenhum aluno cadastrado ainda.</div></div></div>
-        <div class="card"><div class="card-hd"><span class="ct">ESTOQUE — ALERTAS</span><button class="btn-ghost" onclick="go('lj',null)">Ver loja →</button></div><div id="dbEstoqueAlert"><div style="font-size:13px;color:var(--text3);text-align:center;padding:16px">Nenhum produto cadastrado.</div></div></div>
+        <div class="card"><div class="card-hd"><span class="ct">AULAS DE HOJE</span><button class="btn-ghost" onclick="go('pf',null);filtPfView(document.querySelector('#pfChips .chip:nth-child(2)'), 'grade')">Grade →</button></div><div id="dbAulasHoje"><div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">Nenhuma aula hoje.</div></div></div>
+        <div class="card"><div class="card-hd"><span class="ct">INADIMPLENTES</span><button class="btn-ghost" onclick="go('ms',null)">Ver todos →</button></div><div id="dbInadimpl"><div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">Carregando...</div></div></div>
+      </div>
+      <div class="g2">
+        <div class="card"><div class="card-hd"><span class="ct">ÚLTIMOS CADASTRADOS</span><button class="btn-ghost" onclick="go('al',null)">Ver todos →</button></div><div id="dbUltAlunos"><div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">Nenhum aluno ainda.</div></div></div>
+        <div class="card"><div class="card-hd"><span class="ct">ESTOQUE — ALERTAS</span><button class="btn-ghost" onclick="go('lj',null)">Ver loja →</button></div><div id="dbEstoqueAlert"><div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">Nenhum produto.</div></div></div>
       </div>
     </div>
 
@@ -440,13 +445,33 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
         <div class="kpi a-bl"><div class="kl">TAXA HOJE</div><div class="kv" id="ciTaxa" style="color:var(--bl)">0%</div></div>
         <div class="kpi"><div class="kl">TOTAL ALUNOS</div><div class="kv" id="ciTotalAlunos">0</div></div>
       </div>
-      <div class="bd-banner" style="background:#EDE9F5;border-color:var(--pu)"><span style="font-size:16px">🔄</span><div><strong>BD necessário para:</strong> sincronizar check-ins em tempo real entre múltiplos dispositivos (ex: tablet na recepção + celular do professor ao mesmo tempo).</div></div>
+      <div class="bd-banner" style="background:#EDE9F5;border-color:var(--pu)"><span style="font-size:16px">🔄</span><div><strong>BD necessário para:</strong> sincronizar check-ins em tempo real entre múltiplos dispositivos.</div></div>
+
+      <!-- Seletor de turma/aula -->
+      <div class="card" style="padding:12px 14px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.5px;white-space:nowrap">FILTRAR POR TURMA</div>
+          <div class="chips" id="ciTurmaChips" style="margin-bottom:0;flex:1">
+            <span class="chip on" onclick="filtCiTurma(this,'')">Todos</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+            <div style="font-size:11px;color:var(--text3)">Tipo:</div>
+            <select class="fi" id="ciTipoFilt" style="height:32px;font-size:12px;width:90px" onchange="renderCI()">
+              <option value="">Todos</option><option value="Adulto">Adulto</option><option value="Kids">Kids</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <div class="card" style="padding:0">
         <div style="padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
-          <span class="ct">CHECK-IN — <span id="ciAulaLabel">HOJE</span></span>
+          <div>
+            <span class="ct" id="ciAulaLabel">TODOS OS ALUNOS</span>
+            <span style="font-size:11px;color:var(--text3);margin-left:8px" id="ciProfLabel"></span>
+          </div>
           <span class="badge b-ch" id="ciBadge">0 presentes</span>
         </div>
-        <div id="tbCI" style="padding:8px 10px;max-height:450px;overflow-y:auto">
+        <div id="tbCI" style="padding:8px 10px;max-height:500px;overflow-y:auto">
           <div style="font-size:13px;color:var(--text3);text-align:center;padding:20px">Cadastre alunos para habilitar o check-in.</div>
         </div>
       </div>
@@ -486,6 +511,31 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
         <div class="tw"><table>
           <thead><tr><th style="padding-left:12px">Nome</th><th>Contato</th><th>Interesse</th><th>Visita</th><th>Status</th><th>Ações</th></tr></thead>
           <tbody id="tbProspects"><tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text3)">Nenhum prospect cadastrado.</td></tr></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- ══ MENSALIDADES ══ -->
+    <div class="sec" id="s-ms">
+      <div class="g4">
+        <div class="kpi a-ok"><div class="kl">EM DIA</div><div class="kv" id="msEmDia" style="color:var(--ok)">0</div></div>
+        <div class="kpi a-er"><div class="kl">VENCIDOS</div><div class="kv" id="msVencidos" style="color:var(--er)">0</div></div>
+        <div class="kpi a-wa"><div class="kl">VENCE ESTA SEMANA</div><div class="kv" id="msVenceSemana" style="color:var(--wa)">0</div></div>
+        <div class="kpi a-bl"><div class="kl">RECEITA ESPERADA/MÊS</div><div class="kv" id="msReceitaEsp">R$0</div></div>
+      </div>
+      <div class="bd-banner"><span style="font-size:16px">💳</span><div><strong>BD para cobranças automáticas:</strong> débito automático, Pix agendado e e-mails/WhatsApp de cobrança recorrente precisam de servidor. Aqui você registra e acompanha manualmente.</div></div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div style="padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+          <span class="ct">CONTROLE DE MENSALIDADES</span>
+          <div style="display:flex;gap:8px;align-items:center">
+            <select class="fi" id="msFiltStatus" style="height:30px;font-size:12px;width:120px" onchange="renderMensalidades()">
+              <option value="">Todos</option><option>Em dia</option><option>Vencido</option><option>Vence hoje</option>
+            </select>
+          </div>
+        </div>
+        <div class="tw"><table>
+          <thead><tr><th style="padding-left:12px">Aluno</th><th>Plano</th><th>Vencimento</th><th>Situação</th><th>Últ. Pagto</th><th>Valor</th><th>Ação</th></tr></thead>
+          <tbody id="tbMensalidades"><tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text3)">Cadastre alunos para controlar mensalidades.</td></tr></tbody>
         </table></div>
       </div>
     </div>
@@ -617,6 +667,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
     <button class="bn-it" onclick="go('lj',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="bn-lb">Loja</span></button>
     <button class="bn-it" onclick="go('fi',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="bn-lb">Financeiro</span></button>
     <button class="bn-it" onclick="go('ps',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class="bn-lb">Leads</span></button>
+    <button class="bn-it" onclick="go('ms',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span class="bn-lb">Mensalid.</span></button>
     <button class="bn-it" onclick="go('pf',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7 7 0 0 1 13 0"/><path d="M15 11l1 1 3-3"/></svg><span class="bn-lb">Profs</span></button>
     <button class="bn-it" onclick="go('nt',this)"><svg class="bn-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="bn-lb">Avisos</span></button>
   </div>
@@ -874,6 +925,38 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
   </div>
 </div>
 
+<!-- MODAL PAGAMENTO MENSALIDADE -->
+<div class="modal-overlay" id="modalPagto">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-hd">
+      <div><div class="modal-title" id="modalPagtoTitle">Registrar Pagamento</div></div>
+      <button class="modal-close" onclick="fecharModal('modalPagto')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="pagtoInfo" style="background:var(--ch-xl);border-radius:var(--r8);padding:12px;margin-bottom:14px;font-size:13px"></div>
+      <div class="form-grid">
+        <div class="fg"><label class="fl">FORMA DE PAGAMENTO</label>
+          <select class="fi" id="pagtoForma"><option>Pix</option><option>Dinheiro</option><option>Débito</option><option>Crédito</option><option>Cheque</option></select>
+        </div>
+        <div class="fg"><label class="fl">VALOR (R$)</label>
+          <input class="fi" type="number" id="pagtoValor" placeholder="300">
+        </div>
+        <div class="full fg"><label class="fl">REFERÊNCIA (mês/ano)</label>
+          <input class="fi" id="pagtoRef" placeholder="Abril/2026">
+        </div>
+        <div class="full fg"><label class="fl">OBSERVAÇÃO</label>
+          <input class="fi" id="pagtoObs" placeholder="Retroativo, desconto, etc...">
+        </div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <input type="hidden" id="pagtoAlunoId">
+      <button class="btn btn-sec" onclick="fecharModal('modalPagto')">Cancelar</button>
+      <button class="btn btn-ok" onclick="confirmarPagto()">✓ Confirmar pagamento</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div id="toast"></div>
 
@@ -941,7 +1024,7 @@ function doLogout(){document.getElementById('app').classList.remove('show');setT
 document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
 
 // ══ NAV ════════════════════════════════════════════════
-const titles={db:'Dashboard',al:'Alunos',ki:'Kids',ci:'Check-in',gr:'Graduações',ps:'Prospects',lj:'Lojinha',fi:'Financeiro',nt:'Notificações',pf:'Professores'};
+const titles={db:'Dashboard',al:'Alunos',ki:'Kids',ci:'Check-in',gr:'Graduações',ps:'Prospects',ms:'Mensalidades',lj:'Lojinha',fi:'Financeiro',nt:'Notificações',pf:'Professores'};
 function go(id,el){
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('.sb-it,.bn-it').forEach(i=>i.classList.remove('on'));
@@ -1098,25 +1181,55 @@ function renderKids(){
   </tr>`).join('');
 }
 
-// ══ CHECK-IN ═══════════════════════════════════════════
+// ══ CHECK-IN COM FILTRO DE TURMA ═══════════════════════
+let ciTurmaFiltro = '';
+
+function buildCiTurmaChips(){
+  const chips = document.getElementById('ciTurmaChips');
+  const turmas = [...new Set(alunos.map(a=>a.turma).filter(Boolean))].sort();
+  chips.innerHTML = `<span class="chip on" onclick="filtCiTurma(this,'')">Todos</span>`
+    + turmas.map(t=>`<span class="chip" onclick="filtCiTurma(this,'${t}')">${t}</span>`).join('');
+}
+function filtCiTurma(el, turma){
+  document.querySelectorAll('#ciTurmaChips .chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  ciTurmaFiltro = turma;
+  // try to find matching professor
+  const prof = aulas.find(au=>au.turma===turma&&au.data===today());
+  document.getElementById('ciProfLabel').textContent = prof ? '· '+prof.profNome : '';
+  document.getElementById('ciAulaLabel').textContent = turma ? turma.toUpperCase() : 'TODOS OS ALUNOS';
+  renderCI();
+}
 function renderCI(){
-  const all=alunos;
-  const total=all.length;
-  const present=Object.values(ciState).filter(Boolean).length;
-  document.getElementById('ciTotal').textContent=present;
-  document.getElementById('ciAusentes').textContent=total-present;
-  document.getElementById('ciTaxa').textContent=total?Math.round(present/total*100)+'%':'0%';
-  document.getElementById('ciTotalAlunos').textContent=total;
-  document.getElementById('ciBadge').textContent=`${present} presentes`;
-  document.getElementById('dbCiCount').textContent=present;
-  const tb=document.getElementById('tbCI');
-  if(!all.length){tb.innerHTML='<div style="font-size:13px;color:var(--text3);text-align:center;padding:20px">Cadastre alunos para habilitar o check-in.</div>';return}
-  tb.innerHTML=all.map(a=>{
-    const done=!!ciState[a.id];
+  const tipoFilt = document.getElementById('ciTipoFilt')?.value || '';
+  let lista = alunos;
+  if(ciTurmaFiltro) lista = lista.filter(a=>a.turma===ciTurmaFiltro);
+  if(tipoFilt) lista = lista.filter(a=>(tipoFilt==='Kids'?a.kids:!a.kids));
+  const present = lista.filter(a=>!!ciState[a.id]).length;
+  const total = lista.length;
+  const allPresent = Object.values(ciState).filter(Boolean).length;
+  document.getElementById('ciTotal').textContent = allPresent;
+  document.getElementById('ciAusentes').textContent = alunos.length - allPresent;
+  document.getElementById('ciTaxa').textContent = alunos.length ? Math.round(allPresent/alunos.length*100)+'%' : '0%';
+  document.getElementById('ciTotalAlunos').textContent = alunos.length;
+  document.getElementById('ciBadge').textContent = `${present} / ${total} presentes`;
+  document.getElementById('dbCiCount').textContent = allPresent;
+  const tb = document.getElementById('tbCI');
+  if(!alunos.length){tb.innerHTML='<div style="font-size:13px;color:var(--text3);text-align:center;padding:20px">Cadastre alunos para habilitar o check-in.</div>';return}
+  if(!lista.length){tb.innerHTML='<div style="font-size:13px;color:var(--text3);text-align:center;padding:20px">Nenhum aluno nesta turma.</div>';return}
+  tb.innerHTML = lista.map(a=>{
+    const done = !!ciState[a.id];
     return`<div class="ci-t${done?' done':''}" onclick="toggleCI('${a.id}')">
       <div class="ci-dot"></div>
       <span class="ava" style="${done?'background:var(--ok-bg);color:var(--ok)':''}">${a.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span>
-      <div class="ci-in"><div class="ci-nm">${a.nome}</div><div class="ci-sub"><span class="belt ${beltMap[a.faixa]||'bW'}" style="font-size:10px;padding:1px 5px">${a.faixa}</span> · ${a.kids?'Kids':'Adulto'}</div></div>
+      <div class="ci-in">
+        <div class="ci-nm">${a.nome}</div>
+        <div class="ci-sub">
+          <span class="belt ${beltMap[a.faixa]||'bW'}" style="font-size:10px;padding:1px 5px">${a.faixa}</span>
+          · ${a.kids?'Kids':'Adulto'}
+          ${a.turma?`· <span style="color:var(--pu-d)">${a.turma}</span>`:''}
+        </div>
+      </div>
       <button class="ci-btn${done?' dn':''}">${done?'✓ Presente':'Registrar'}</button>
     </div>`;
   }).join('');
@@ -1126,7 +1239,193 @@ function toggleCI(id){
   save();renderCI();
   const a=alunos.find(x=>x.id===id);
   if(ciState[id]&&a){a.treinos=(a.treinos||0)+1;save()}
-  showToast(ciState[id]?`✓ Check-in: ${alunos.find(x=>x.id===id)?.nome}`:`Removido: ${alunos.find(x=>x.id===id)?.nome}`);
+  showToast(ciState[id]?`✓ ${alunos.find(x=>x.id===id)?.nome} — presente!`:`Removido: ${alunos.find(x=>x.id===id)?.nome}`);
+}
+
+// ══ MENSALIDADES ═══════════════════════════════════════
+const planoValor = v => {
+  if(v.includes('300'))return 300;
+  if(v.includes('270'))return 270;
+  if(v.includes('250'))return 250;
+  if(v.includes('230'))return 230;
+  return 0;
+};
+function getVencimento(a){
+  const key = KEY+'venc_'+a.id;
+  try{ const v=localStorage.getItem(key); if(v)return v; }catch{}
+  // default: dia do ingresso ou dia 10
+  if(a.ingresso){
+    const d=new Date(a.ingresso);
+    const now=new Date();
+    return new Date(now.getFullYear(),now.getMonth(),d.getDate()).toISOString().slice(0,10);
+  }
+  const now=new Date();
+  return new Date(now.getFullYear(),now.getMonth(),10).toISOString().slice(0,10);
+}
+function getUltPagto(id){
+  try{return JSON.parse(localStorage.getItem(KEY+'pagto_'+id)||'null')}catch{return null}
+}
+function setUltPagto(id,obj){try{localStorage.setItem(KEY+'pagto_'+id,JSON.stringify(obj))}catch{}}
+
+function situacaoMensalidade(venc){
+  const hoje=new Date(); hoje.setHours(0,0,0,0);
+  const v=new Date(venc+'T00:00:00');
+  const diff=Math.round((v-hoje)/86400000);
+  if(diff<0) return{label:'Vencido',badge:'b-er',days:Math.abs(diff)};
+  if(diff===0) return{label:'Vence hoje',badge:'b-wa',days:0};
+  if(diff<=7) return{label:`Vence em ${diff}d`,badge:'b-wa',days:diff};
+  return{label:'Em dia',badge:'b-ok',days:diff};
+}
+
+function abrirPagto(id){
+  const a=alunos.find(x=>x.id===id); if(!a)return;
+  const valor=planoValor(a.plano||'');
+  document.getElementById('pagtoAlunoId').value=id;
+  document.getElementById('pagtoValor').value=valor||'';
+  const now=new Date();
+  document.getElementById('pagtoRef').value=now.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+  document.getElementById('pagtoForma').selectedIndex=0;
+  document.getElementById('pagtoObs').value='';
+  document.getElementById('modalPagtoTitle').textContent='Pagamento — '+a.nome;
+  document.getElementById('pagtoInfo').innerHTML=`<strong>${a.nome}</strong><br>Plano: ${a.plano||'—'} · Valor esperado: <strong style="color:var(--pu)">R$${valor}</strong>`;
+  abrirModal('modalPagto');
+}
+function confirmarPagto(){
+  const id=document.getElementById('pagtoAlunoId').value;
+  const valor=parseFloat(document.getElementById('pagtoValor').value);
+  const forma=document.getElementById('pagtoForma').value;
+  const ref=document.getElementById('pagtoRef').value;
+  const obs=document.getElementById('pagtoObs').value;
+  const a=alunos.find(x=>x.id===id); if(!a||!valor){showToast('⚠ Informe o valor');return}
+  const pagto={data:nowStr(),valor,forma,ref,obs};
+  setUltPagto(id,pagto);
+  // avançar vencimento 1 mês
+  try{
+    const venc=new Date(getVencimento(a)+'T00:00:00');
+    venc.setMonth(venc.getMonth()+1);
+    localStorage.setItem(KEY+'venc_'+id,venc.toISOString().slice(0,10));
+  }catch{}
+  // lançar no financeiro
+  financeiro.unshift({id:Date.now().toString(),desc:`Mensalidade ${a.nome} — ${ref}`,tipo:'Entrada',forma,valor,data:nowStr()});
+  save();fecharModal('modalPagto');renderMensalidades();renderFinanceiro();refreshDash();
+  showToast(`✓ Pagamento de R$${valor} de ${a.nome} registrado!`);
+}
+function renderMensalidades(){
+  const filt=document.getElementById('msFiltStatus')?.value||'';
+  const ativos=alunos.filter(a=>a.status==='Ativo'||a.status==='Inadimplente');
+  let emDia=0,vencidos=0,venceSemana=0,receitaEsp=0;
+  const rows=ativos.map(a=>{
+    const venc=getVencimento(a);
+    const sit=situacaoMensalidade(venc);
+    const ultP=getUltPagto(a.id);
+    const valor=planoValor(a.plano||'');
+    if(valor>0)receitaEsp+=valor;
+    if(sit.label==='Em dia')emDia++;
+    else if(sit.label==='Vencido')vencidos++;
+    if(sit.label.startsWith('Vence em'))venceSemana++;
+    return{a,venc,sit,ultP,valor};
+  });
+  document.getElementById('msEmDia').textContent=emDia;
+  document.getElementById('msVencidos').textContent=vencidos;
+  document.getElementById('msVenceSemana').textContent=venceSemana;
+  document.getElementById('msReceitaEsp').textContent='R$'+receitaEsp.toLocaleString('pt-BR');
+  const tb=document.getElementById('tbMensalidades');
+  if(!ativos.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text3)">Nenhum aluno ativo cadastrado.</td></tr>';return}
+  let filtered=rows;
+  if(filt==='Em dia') filtered=rows.filter(r=>r.sit.label==='Em dia');
+  else if(filt==='Vencido') filtered=rows.filter(r=>r.sit.label==='Vencido');
+  else if(filt==='Vence hoje') filtered=rows.filter(r=>r.sit.label==='Vence hoje');
+  tb.innerHTML=filtered.map(({a,venc,sit,ultP,valor})=>`<tr>
+    <td style="padding-left:12px"><div style="display:flex;align-items:center;gap:7px">
+      <span class="ava ${a.kids?'ava-bl':''}">${a.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span>
+      <div><div style="font-weight:600;font-size:13px">${a.nome}</div><div style="font-size:10.5px;color:var(--text3)">${a.kids?'Kids':'Adulto'} · ${a.turma||'—'}</div></div>
+    </div></td>
+    <td style="font-size:12px">${a.plano?.split('—')[0].trim()||'—'}</td>
+    <td style="font-size:12px">${formatDate(venc)}</td>
+    <td><span class="badge ${sit.badge}">${sit.label}</span></td>
+    <td style="font-size:12px;color:var(--text3)">${ultP?ultP.data+' — '+ultP.forma:'—'}</td>
+    <td style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--pu)">${valor?'R$'+valor:'—'}</td>
+    <td><button class="btn btn-pu btn-sm" onclick="abrirPagto('${a.id}')">Registrar pagto</button></td>
+  </tr>`).join('');
+}
+
+// ══ DASHBOARD INTELIGENTE ══════════════════════════════
+function refreshDash(){
+  const adultos=alunos.filter(a=>!a.kids).length;
+  const kids=alunos.filter(a=>a.kids).length;
+  const total=alunos.length;
+  const totalItens=produtos.reduce((s,p)=>s+Object.values(p.estoque||{}).reduce((a,b)=>a+b,0),0);
+  const low=produtos.filter(p=>Object.values(p.estoque||{}).some(v=>v>0&&v<=3)).length;
+  document.getElementById('sbAdultos').textContent=adultos;
+  document.getElementById('sbKids').textContent=kids;
+  document.getElementById('sbEstoque').textContent=produtos.length;
+  document.getElementById('kpiAdultos').textContent=adultos;
+  document.getElementById('kpiKids').textContent=kids;
+  document.getElementById('kpiEstoque').textContent=totalItens;
+  document.getElementById('kpiLow').textContent=low;
+  document.getElementById('dbAlunos').textContent=total;
+  document.getElementById('dbItems').textContent=totalItens;
+
+  // aulas de hoje
+  const aulasHoje=aulas.filter(a=>a.data===today()).sort((a,b)=>a.horario.localeCompare(b.horario));
+  const aulaEl=document.getElementById('dbAulasHoje');
+  if(aulaEl){
+    if(!aulasHoje.length){
+      aulaEl.innerHTML='<div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">Nenhuma aula cadastrada para hoje.</div>';
+    } else {
+      aulaEl.innerHTML=aulasHoje.map(au=>{
+        const alunosTurma=alunos.filter(a=>a.turma===au.turma);
+        const presentes=alunosTurma.filter(a=>!!ciState[a.id]).length;
+        const pct=alunosTurma.length?Math.round(presentes/alunosTurma.length*100):0;
+        return`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+          <div style="width:42px;height:42px;border-radius:var(--r8);background:${au.tipo==='Kids'?'var(--bl-xl)':'var(--pu-xl)'};display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:${au.tipo==='Kids'?'var(--bl)':'var(--pu)'};flex-shrink:0">${au.horario}</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700">${au.turma} <span class="badge ${au.tipo==='Kids'?'b-bl':'b-pu'}" style="font-size:9.5px;padding:1px 6px">${au.tipo}</span></div>
+            <div style="font-size:11px;color:var(--text3)">${au.profNome} · ${alunosTurma.length} alunos</div>
+          </div>
+          <div style="text-align:right">
+            <span class="badge ${au.status==='Confirmada'?'b-ok':au.status==='Cancelada'?'b-er':'b-wa'}">${au.status}</span>
+            <div style="font-size:11px;color:var(--text3);margin-top:3px">${presentes}/${alunosTurma.length} presentes (${pct}%)</div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  // inadimplentes
+  const inadimEl=document.getElementById('dbInadimpl');
+  if(inadimEl){
+    const inad=alunos.filter(a=>{
+      const sit=situacaoMensalidade(getVencimento(a));
+      return sit.label==='Vencido';
+    }).slice(0,5);
+    if(!inad.length){inadimEl.innerHTML='<div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">Nenhuma inadimplência detectada.</div>';}
+    else inadimEl.innerHTML=inad.map(a=>{
+      const sit=situacaoMensalidade(getVencimento(a));
+      return`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)">
+        <span class="ava">${a.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600">${a.nome}</div><div style="font-size:11px;color:var(--text3)">${a.plano?.split('—')[0].trim()||'—'}</div></div>
+        <span class="badge b-er">${sit.days}d atraso</span>
+        <button class="btn-ghost" style="font-size:11px" onclick="abrirPagto('${a.id}')">Cobrar</button>
+      </div>`;
+    }).join('');
+  }
+
+  // últimos alunos
+  const ultEl=document.getElementById('dbUltAlunos');
+  const rec=alunos.slice(0,4);
+  if(!rec.length)ultEl.innerHTML='<div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">Nenhum aluno cadastrado ainda.</div>';
+  else ultEl.innerHTML=rec.map(a=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)">
+    <span class="ava ${a.kids?'ava-bl':''}">${a.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span>
+    <div style="flex:1"><div style="font-size:13px;font-weight:600">${a.nome}</div><div style="font-size:11px;color:var(--text3)">${a.faixa} · ${a.kimono} · ${a.turma||'—'}</div></div>
+    <span class="badge ${a.status==='Ativo'?'b-ok':'b-wa'}">${a.status}</span>
+  </div>`).join('');
+
+  // estoque alerta
+  const alEl=document.getElementById('dbEstoqueAlert');
+  const lowProds=produtos.filter(p=>Object.values(p.estoque||{}).some(v=>v>0&&v<=3)).slice(0,4);
+  if(!lowProds.length)alEl.innerHTML='<div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">'+(!produtos.length?'Nenhum produto cadastrado.':'Estoque ok — sem alertas.')+'</div>';
+  else alEl.innerHTML=lowProds.map(p=>{const lowTams=Object.entries(p.estoque||{}).filter(([,v])=>v>0&&v<=3);return`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)"><div style="flex:1"><div style="font-size:13px;font-weight:600">${p.nome}</div><div style="font-size:11px;color:var(--er)">${lowTams.map(([t,q])=>t+':'+q).join(' · ')}</div></div><span class="badge b-wa">Baixo</span></div>`}).join('');
 }
 
 // ══ GRADUAÇÕES ══════════════════════════════════════════
@@ -1634,7 +1933,7 @@ function atualizarFaixasPorTipo(){
 }
 
 // ══ REFRESH ALL ════════════════════════════════════════
-function refreshAll(){renderAlunos();renderKids();renderCI();renderGrad();renderProspects();renderEstoque();renderPedidos();renderFinanceiro();renderProfs();renderAulas();renderPfKpis();refreshDash()}
+function refreshAll(){buildCiTurmaChips();renderAlunos();renderKids();renderCI();renderGrad();renderProspects();renderMensalidades();renderEstoque();renderPedidos();renderFinanceiro();renderProfs();renderAulas();renderPfKpis();refreshDash()}
 </script>
 </body>
 </html>
