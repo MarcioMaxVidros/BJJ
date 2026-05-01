@@ -143,8 +143,24 @@ tbody tr:hover td{background:var(--ch-xl)}
 .belt{display:inline-flex;align-items:center;gap:2px;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700}
 .bW{background:#E5E5E5;color:#333}.bB{background:#1565C0;color:#fff}.bP{background:#6A1B9A;color:#fff}
 .bBr{background:#4E342E;color:#fff}.bBk{background:#111;color:#fff}
-.kbW{background:#E5E5E5;color:#333}.kbG{background:#616161;color:#fff}.kbY{background:#F9A825;color:#333}
-.kbO{background:#E65100;color:#fff}.kbGr{background:#1B5E20;color:#fff}
+/* Kids — Branca */
+.kbW{background:#E5E5E5;color:#333}
+/* Kids — Cinza */
+.kbGW{background:linear-gradient(90deg,#E5E5E5 50%,#757575 50%);color:#333;border:1px solid #ccc}
+.kbG{background:#757575;color:#fff}
+.kbGBk{background:linear-gradient(90deg,#757575 60%,#111 60%);color:#fff}
+/* Kids — Amarelo */
+.kbYW{background:linear-gradient(90deg,#E5E5E5 50%,#F9A825 50%);color:#333;border:1px solid #e0d000}
+.kbY{background:#F9A825;color:#333}
+.kbYBk{background:linear-gradient(90deg,#F9A825 60%,#111 60%);color:#333}
+/* Kids — Laranja */
+.kbOW{background:linear-gradient(90deg,#E5E5E5 50%,#E65100 50%);color:#333;border:1px solid #ffb74d}
+.kbO{background:#E65100;color:#fff}
+.kbOBk{background:linear-gradient(90deg,#E65100 60%,#111 60%);color:#fff}
+/* Kids — Verde */
+.kbGrW{background:linear-gradient(90deg,#E5E5E5 50%,#2E7D32 50%);color:#333;border:1px solid #81c784}
+.kbGr{background:#2E7D32;color:#fff}
+.kbGrBk{background:linear-gradient(90deg,#2E7D32 60%,#111 60%);color:#fff}
 .stripe{display:inline-block;width:5px;height:11px;background:var(--go);border-radius:1px;margin-left:2px;vertical-align:middle}
 
 /* ── BUTTONS ── */
@@ -253,6 +269,68 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
   .form-grid .full{grid-column:auto}
 }
 @media(max-width:480px){.g4{grid-template-columns:1fr 1fr}.kg{grid-template-columns:repeat(2,1fr)}.sg{grid-template-columns:repeat(2,1fr)}}
+/* ── PEDIDO DE COMPRA MODAL ── */
+#modalPedidoCompra .modal{max-width:820px}
+.pc-section{margin-bottom:18px}
+.pc-section-title{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:2px;color:#fff;background:var(--ch);padding:5px 10px;border-radius:var(--r4);margin-bottom:8px;text-transform:uppercase}
+.pc-sub-title{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--pu);padding:4px 0 4px 2px;border-bottom:1px solid var(--border);margin-bottom:6px;margin-top:10px;text-transform:uppercase}
+.pc-table{width:100%;border-collapse:collapse;font-size:12px}
+.pc-table th{background:var(--ch-xl);padding:5px 8px;text-align:left;font-weight:700;font-size:11px;letter-spacing:.4px;border:1px solid var(--border)}
+.pc-table td{padding:4px 8px;border:1px solid var(--border);vertical-align:middle}
+.pc-table tr:nth-child(even) td{background:#fafaf9}
+.pc-table input[type=number]{width:60px;height:26px;border:1px solid var(--border);border-radius:3px;text-align:center;font-size:12px;padding:0 4px}
+.pc-table input[type=text]{width:100%;height:26px;border:1px solid var(--border);border-radius:3px;font-size:12px;padding:0 6px}
+.pc-empty{font-size:11px;color:var(--text3);font-style:italic;padding:4px 2px}
+.pc-header-info{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding:12px;background:var(--ch-xl);border-radius:var(--r8)}
+.pc-header-info label{font-size:11px;font-weight:700;color:var(--text2);display:flex;flex-direction:column;gap:3px;flex:1;min-width:140px}
+.pc-header-info input{height:30px;border:1px solid var(--border);border-radius:var(--r4);padding:0 8px;font-size:12px}
+@media print{
+  body *{visibility:hidden!important}
+  #printPedido,#printPedido *{visibility:visible!important}
+  #printPedido{position:fixed;inset:0;background:#fff;padding:24px 28px;z-index:99999;overflow:visible}
+  .pp-logo{display:flex;align-items:center;gap:14px;border-bottom:2px solid #1A1A1A;padding-bottom:10px;margin-bottom:16px}
+  .pp-title{font-family:'Barlow Condensed',Arial Narrow,sans-serif;font-size:22px;font-weight:800;letter-spacing:3px}
+  .pp-sub{font-size:11px;color:#555;letter-spacing:1px}
+  .pp-meta{display:flex;gap:24px;margin-bottom:16px;font-size:12px;flex-wrap:wrap}
+  .pp-meta-item{display:flex;flex-direction:column;gap:2px}
+  .pp-meta-line{border-bottom:1px solid #999;min-width:160px;display:inline-block;padding-bottom:2px;font-weight:700}
+  .pp-meta-label{font-size:10px;color:#888}
+  .pp-section{margin-bottom:14px}
+  .pp-sec-hd{background:#2C2C2C;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:2px;padding:4px 8px;margin-bottom:6px}
+  .pp-sub-hd{font-size:10px;font-weight:700;letter-spacing:1px;color:#7B5EA7;border-bottom:1px solid #ccc;padding:3px 0;margin-bottom:4px;margin-top:8px}
+  .pp-table{width:100%;border-collapse:collapse;font-size:11px}
+  .pp-table th{background:#F5F4F2;padding:4px 6px;text-align:left;font-weight:700;font-size:10px;border:1px solid #ccc}
+  .pp-table td{padding:3px 6px;border:1px solid #ddd;vertical-align:middle;min-height:18px}
+  .pp-table tr:nth-child(even) td{background:#FAFAF9}
+  .pp-qtd{display:inline-block;width:40px;border-bottom:1px solid #999;text-align:center}
+  .pp-obs{margin-top:18px;border-top:1px solid #ccc;padding-top:10px;font-size:11px}
+  .pp-obs-line{border-bottom:1px solid #ddd;height:22px;margin-bottom:4px}
+  .pp-footer{margin-top:20px;display:flex;justify-content:space-between;font-size:11px;border-top:1px solid #ccc;padding-top:8px}
+  .pp-ass{border-bottom:1px solid #999;width:200px;height:18px;display:inline-block}
+  @page{margin:12mm}
+}
+
+/* ── PERÍODO / DIAS DA SEMANA ── */
+.dias-grid{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.dia-btn{width:36px;height:32px;border:1px solid var(--border);border-radius:var(--r4);background:var(--card);color:var(--text2);font-size:11px;font-weight:700;cursor:pointer;transition:all .12s;letter-spacing:.3px}
+.dia-btn.on{background:var(--pu);border-color:var(--pu);color:#fff}
+/* ── VALIDAÇÃO ── */
+.fi-err{border-color:var(--er)!important;background:#fff5f5!important}
+.fi-ok{border-color:var(--ok)!important}
+.fi-hint{font-size:10px;margin-top:2px;display:none;padding-left:2px}
+.fi-hint.err{color:var(--er);display:block}
+.fi-hint.ok{color:var(--ok);display:block}
+.cep-row{display:flex;gap:6px;align-items:flex-start}
+.cep-row .fi{flex:1}
+.btn-cep{height:38px;padding:0 12px;border:1px solid var(--border);border-radius:var(--r8);background:var(--ch-xl);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;color:var(--ch)}
+.btn-cep:hover{background:var(--pu);color:#fff;border-color:var(--pu)}
+/* ── PLANOS CONFIG ── */
+#modalPlanos .modal{max-width:520px}
+.plano-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
+.plano-row:last-child{border-bottom:none}
+.plano-nome{flex:1;font-size:13px;font-weight:600}
+.plano-val{width:90px;height:32px;border:1px solid var(--border);border-radius:var(--r4);padding:0 8px;font-size:13px;font-weight:700;text-align:right}
+.plano-periodo{font-size:11px;color:var(--text3);width:36px}
 </style>
 </head>
 <body>
@@ -265,7 +343,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
     <!-- anel externo: charcoal -->
     <circle cx="105" cy="100" r="89" fill="none" stroke="#2C2C2C" stroke-width="16"/>
     <!-- anel cinza -->
-    <circle cx="105" cy="100" r="71" fill="none" stroke="#888888" stroke-width="14"/>
+    <circle cx="105" cy="100" r="71" fill="none" stroke="#8B4513" stroke-width="14"/>
     <!-- anel roxo -->
     <circle cx="105" cy="100" r="55" fill="none" stroke="#7B5EA7" stroke-width="13"/>
     <!-- anel azul -->
@@ -296,7 +374,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
       <svg width="190" height="230" viewBox="0 0 210 245" xmlns="http://www.w3.org/2000/svg">
         <circle cx="105" cy="100" r="99" fill="white"/>
         <circle cx="105" cy="100" r="89" fill="none" stroke="#2C2C2C" stroke-width="16"/>
-        <circle cx="105" cy="100" r="71" fill="none" stroke="#888888" stroke-width="14"/>
+        <circle cx="105" cy="100" r="71" fill="none" stroke="#8B4513" stroke-width="14"/>
         <circle cx="105" cy="100" r="55" fill="none" stroke="#7B5EA7" stroke-width="13"/>
         <circle cx="105" cy="100" r="40" fill="none" stroke="#5B9BD5" stroke-width="12"/>
         <rect x="4" y="85" width="202" height="30" fill="white"/>
@@ -340,7 +418,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
   <div class="sb-logo">
     <svg width="36" height="36" viewBox="0 0 90 90" style="flex-shrink:0">
       <circle cx="45" cy="45" r="43" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1.5"/>
-      <circle cx="45" cy="45" r="34" fill="none" stroke="#555" stroke-width="4"/>
+      <circle cx="45" cy="45" r="34" fill="none" stroke="#8B4513" stroke-width="4"/>
       <circle cx="45" cy="45" r="24" fill="none" stroke="#7B5EA7" stroke-width="4"/>
       <circle cx="45" cy="45" r="14" fill="none" stroke="#5B9BD5" stroke-width="4"/>
       <rect x="8" y="40.5" width="74" height="9" fill="#2C2C2C"/>
@@ -383,7 +461,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
   </header>
   <header id="mbtop">
     <div style="display:flex;align-items:center;gap:8px;flex:1">
-      <svg width="28" height="28" viewBox="0 0 90 90"><circle cx="45" cy="45" r="43" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="2"/><circle cx="45" cy="45" r="34" fill="none" stroke="#555" stroke-width="4"/><circle cx="45" cy="45" r="24" fill="none" stroke="#7B5EA7" stroke-width="4"/><circle cx="45" cy="45" r="14" fill="none" stroke="#5B9BD5" stroke-width="4"/><rect x="8" y="40.5" width="74" height="9" fill="#2C2C2C"/><text x="45" y="48" text-anchor="middle" fill="white" font-size="8.5" font-weight="700" font-family="Barlow Condensed,sans-serif" letter-spacing="2.5">FRATRES</text></svg>
+      <svg width="28" height="28" viewBox="0 0 90 90"><circle cx="45" cy="45" r="43" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="2"/><circle cx="45" cy="45" r="34" fill="none" stroke="#8B4513" stroke-width="4"/><circle cx="45" cy="45" r="24" fill="none" stroke="#7B5EA7" stroke-width="4"/><circle cx="45" cy="45" r="14" fill="none" stroke="#5B9BD5" stroke-width="4"/><rect x="8" y="40.5" width="74" height="9" fill="#2C2C2C"/><text x="45" y="48" text-anchor="middle" fill="white" font-size="8.5" font-weight="700" font-family="Barlow Condensed,sans-serif" letter-spacing="2.5">FRATRES</text></svg>
       <div><div class="mb-bn">FRATRES BJJ</div><div class="mb-unit">UN. HAYDEE</div></div>
     </div>
     <span class="mb-pg" id="mbPg">Dashboard</span>
@@ -479,8 +557,24 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
 
     <!-- ══ KIDS ══ -->
     <div class="sec" id="s-ki">
-      <div class="sb-search">
-        <input class="si" type="text" id="buscaKids" placeholder="Buscar kid..." oninput="renderKids()">
+      <div class="sb-search" style="flex-wrap:wrap;gap:8px">
+        <input class="si" type="text" id="buscaKids" placeholder="Buscar kid..." oninput="renderKids()" style="flex:1;min-width:160px">
+        <select id="filtFaixaKids" onchange="renderKids()" style="height:38px;border:1px solid var(--border);border-radius:var(--r8);padding:0 10px;font-size:12px;font-family:inherit;background:var(--card);color:var(--text);cursor:pointer">
+          <option value="">Todas as faixas</option>
+          <option>Branca</option>
+          <optgroup label="──── Cinza ────">
+            <option>Cinza com Branco</option><option>Cinza</option><option>Cinza com Preto</option>
+          </optgroup>
+          <optgroup label="──── Amarelo ────">
+            <option>Amarelo com Branco</option><option>Amarelo</option><option>Amarelo com Preto</option>
+          </optgroup>
+          <optgroup label="──── Laranja ────">
+            <option>Laranja com Branco</option><option>Laranja</option><option>Laranja com Preto</option>
+          </optgroup>
+          <optgroup label="──── Verde ────">
+            <option>Verde com Branco</option><option>Verde</option><option>Verde com Preto</option>
+          </optgroup>
+        </select>
         <button class="btn btn-pu btn-sm" onclick="abrirModalAluno(true)">+ Novo kid</button>
       </div>
       <div class="kg" id="kidGrid"><div style="font-size:13px;color:var(--text3);padding:20px;grid-column:1/-1;text-align:center">Nenhum kid cadastrado ainda.</div></div>
@@ -555,6 +649,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
           <span class="chip" onclick="filtProd(this,'Acessório')">Acessórios</span>
         </div>
         <button class="btn btn-pu btn-sm" style="margin-left:auto" onclick="abrirModalProduto()">+ Cadastrar produto</button>
+        <button class="btn btn-sm" style="background:var(--ch);color:#fff" onclick="abrirPedidoCompra()">📋 Pedido de Compra</button>
       </div>
       <div class="card">
         <div class="card-hd"><span class="ct">ESTOQUE ATUAL</span><span class="bd-tag">⚡ BD para vários PDVs</span></div>
@@ -586,8 +681,8 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
       </div>
       <div class="card" style="padding:0;overflow:hidden">
         <div class="tw"><table>
-          <thead><tr><th>Data/Hora</th><th>Descrição</th><th>Forma</th><th>Tipo</th><th>Valor</th></tr></thead>
-          <tbody id="tbFinanceiro"><tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text3)">Nenhum lançamento.</td></tr></tbody>
+          <thead><tr><th>Data/Hora</th><th>Descrição</th><th>Forma</th><th>Tipo</th><th style="text-align:center">Qtd</th><th>Vlr Unit.</th><th>Total</th></tr></thead>
+          <tbody id="tbFinanceiro"><tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text3)">Nenhum lançamento.</td></tr></tbody>
         </table></div>
       </div>
     </div>
@@ -687,14 +782,38 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
       <div class="form-grid">
         <div class="section-sep full">DADOS PESSOAIS</div>
         <div class="full fg"><label class="fl">NOME COMPLETO *</label><input class="fi" id="aNome" placeholder="Nome completo do aluno"></div>
-        <div class="fg"><label class="fl">CPF</label><input class="fi" id="aCpf" placeholder="000.000.000-00"></div>
+        <div class="fg"><label class="fl">CPF</label>
+          <input class="fi" id="aCpf" placeholder="000.000.000-00" maxlength="14" oninput="maskCpf(this);validCpf('aCpf')">
+          <div class="fi-hint" id="hint-aCpf"></div>
+        </div>
         <div class="fg"><label class="fl">DATA DE NASCIMENTO *</label><input class="fi" type="date" id="aNasc"></div>
         <div class="fg"><label class="fl">SEXO</label>
           <select class="fi" id="aSexo"><option value="">Selecione</option><option>Masculino</option><option>Feminino</option><option>Outro</option></select>
         </div>
-        <div class="fg"><label class="fl">TELEFONE / WHATSAPP *</label><input class="fi" id="aTel" placeholder="(11) 9 0000-0000"></div>
-        <div class="full fg"><label class="fl">E-MAIL</label><input class="fi" type="email" id="aEmail" placeholder="email@exemplo.com"></div>
-        <div class="full fg"><label class="fl">ENDEREÇO</label><input class="fi" id="aEndereco" placeholder="Rua, número, bairro, cidade"></div>
+        <div class="fg"><label class="fl">TELEFONE / WHATSAPP *</label>
+          <input class="fi" id="aTel" placeholder="(11) 9 0000-0000" maxlength="16" oninput="maskTel(this);validTel('aTel')">
+          <div class="fi-hint" id="hint-aTel"></div>
+        </div>
+        <div class="full fg"><label class="fl">E-MAIL</label>
+          <input class="fi" type="email" id="aEmail" placeholder="email@exemplo.com" oninput="validEmail('aEmail')">
+          <div class="fi-hint" id="hint-aEmail"></div>
+        </div>
+        <div class="section-sep full">ENDEREÇO</div>
+        <div class="fg"><label class="fl">CEP</label>
+          <div class="cep-row">
+            <input class="fi" id="aCep" placeholder="00000-000" maxlength="9" oninput="maskCep(this)" style="max-width:130px">
+            <button type="button" class="btn-cep" onclick="buscarCep('a')">🔍 Buscar</button>
+          </div>
+          <div class="fi-hint" id="hint-aCep"></div>
+        </div>
+        <div class="fg"><label class="fl">ESTADO</label>
+          <input class="fi" id="aEstado" placeholder="SP" maxlength="2" style="text-transform:uppercase">
+        </div>
+        <div class="fg"><label class="fl">CIDADE</label><input class="fi" id="aCidade" placeholder="São Paulo"></div>
+        <div class="fg"><label class="fl">BAIRRO</label><input class="fi" id="aBairro" placeholder="Bairro"></div>
+        <div class="fg"><label class="fl">LOGRADOURO</label><input class="fi" id="aLogradouro" placeholder="Rua / Av."></div>
+        <div class="fg"><label class="fl">NÚMERO</label><input class="fi" id="aNumero" placeholder="123"></div>
+        <div class="fg"><label class="fl">COMPLEMENTO</label><input class="fi" id="aCompl" placeholder="Apto, Bloco..."></div>
         <div class="section-sep full">CONTATO DE EMERGÊNCIA</div>
         <div class="fg"><label class="fl">NOME DO RESPONSÁVEL</label><input class="fi" id="aRespNome" placeholder="Nome completo"></div>
         <div class="fg"><label class="fl">TELEFONE DO RESPONSÁVEL</label><input class="fi" id="aRespTel" placeholder="(11) 9 0000-0000"></div>
@@ -702,8 +821,19 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
         <div class="fg"><label class="fl">TIPO DE ALUNO *</label>
           <select class="fi" id="aTipo" onchange="atualizarFaixasPorTipo()"><option value="Adulto">Adulto</option><option value="Kids">Kids</option></select>
         </div>
-        <div class="fg"><label class="fl">TURMA</label>
-          <select class="fi" id="aTurma"><option>Fundamental</option><option>Avançado</option><option>Feminino</option><option>Open Mat</option><option>Kids — Infantil</option><option>Kids — Juvenil</option><option>Kids — Pré-teen</option></select>
+        <div class="fg"><label class="fl">PERÍODO</label>
+          <select class="fi" id="aPeriodo"><option value="Manhã">Manhã</option><option value="Tarde" selected>Tarde</option><option value="Noite">Noite</option></select>
+        </div>
+        <div class="full fg"><label class="fl">DIAS DA SEMANA</label>
+          <div class="dias-grid" id="aDiasGrid">
+            <button type="button" class="dia-btn" data-dia="Seg" onclick="toggleDia(this)">Seg</button>
+            <button type="button" class="dia-btn" data-dia="Ter" onclick="toggleDia(this)">Ter</button>
+            <button type="button" class="dia-btn" data-dia="Qua" onclick="toggleDia(this)">Qua</button>
+            <button type="button" class="dia-btn" data-dia="Qui" onclick="toggleDia(this)">Qui</button>
+            <button type="button" class="dia-btn" data-dia="Sex" onclick="toggleDia(this)">Sex</button>
+            <button type="button" class="dia-btn" data-dia="Sáb" onclick="toggleDia(this)">Sáb</button>
+            <button type="button" class="dia-btn" data-dia="Dom" onclick="toggleDia(this)">Dom</button>
+          </div>
         </div>
         <div class="fg"><label class="fl">FAIXA ATUAL *</label>
           <select class="fi" id="aFaixa"><option value="">Selecione</option><option>Branca</option><option>Cinza</option><option>Amarelo</option><option>Laranja</option><option>Verde</option><option>Azul</option><option>Roxa</option><option>Marrom</option><option>Preta</option></select>
@@ -716,8 +846,10 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
         </div>
         <div class="fg"><label class="fl">DATA DE INGRESSO</label><input class="fi" type="date" id="aIngresso"></div>
         <div class="section-sep full">CONTRATO &amp; PLANO</div>
-        <div class="fg"><label class="fl">PLANO</label>
-          <select class="fi" id="aPlano"><option>Mensal — R$300</option><option>Trimestral — R$270/mês</option><option>Semestral — R$250/mês</option><option>Anual — R$230/mês</option><option>Kids — R$250/mês</option><option>Wellhub</option><option>TotalPass</option></select>
+        <div class="fg"><label class="fl">PLANO
+          <button type="button" onclick="abrirModalPlanos()" style="margin-left:6px;background:none;border:none;cursor:pointer;font-size:13px;color:var(--pu)" title="Configurar valores dos planos">⚙</button>
+        </label>
+          <select class="fi" id="aPlano"></select>
         </div>
         <div class="fg"><label class="fl">STATUS</label>
           <select class="fi" id="aStatus"><option>Ativo</option><option>Inativo</option><option>Inadimplente</option><option>Trancado</option></select>
@@ -789,20 +921,32 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
 
 <!-- MODAL LANÇAMENTO -->
 <div class="modal-overlay" id="modalLancamento">
-  <div class="modal" style="max-width:420px">
+  <div class="modal" style="max-width:460px">
     <div class="modal-hd">
       <div><div class="modal-title">Novo Lançamento</div></div>
       <button class="modal-close" onclick="fecharModal('modalLancamento')">✕</button>
     </div>
     <div class="modal-body">
       <div class="form-grid">
-        <div class="full fg"><label class="fl">DESCRIÇÃO *</label><input class="fi" id="lDesc" placeholder="Ex: Mensalidade João, Aluguel..."></div>
+        <div class="full fg"><label class="fl">DESCRIÇÃO *</label><input class="fi" id="lDesc" placeholder="Ex: Mensalidade João, Kimono A2..."></div>
         <div class="fg"><label class="fl">TIPO</label>
-          <select class="fi" id="lTipo"><option value="Entrada">Entrada</option><option value="Saída">Saída</option></select>
+          <select class="fi" id="lTipo" onchange="calcTotalLanc()"><option value="Entrada">Entrada</option><option value="Saída">Saída</option></select>
         </div>
-        <div class="fg"><label class="fl">VALOR (R$) *</label><input class="fi" type="number" id="lValor" placeholder="300"></div>
+        <div class="fg"><label class="fl">VALOR UNITÁRIO (R$) *</label>
+          <input class="fi" type="number" id="lValor" placeholder="0,00" min="0" step="0.01" oninput="calcTotalLanc()">
+        </div>
+        <div class="fg"><label class="fl">QUANTIDADE</label>
+          <div style="display:flex;align-items:center;gap:6px">
+            <button type="button" onclick="stepQtdLanc(-1)" style="flex-shrink:0;width:36px;height:38px;border:1px solid var(--border);border-radius:var(--r4);background:var(--ch-xl);font-size:20px;font-weight:700;cursor:pointer;line-height:1;color:var(--ch)">−</button>
+            <input class="fi" type="number" id="lQtd" value="1" min="1" step="1" style="text-align:center;font-weight:700;font-size:16px" oninput="calcTotalLanc()">
+            <button type="button" onclick="stepQtdLanc(1)" style="flex-shrink:0;width:36px;height:38px;border:1px solid var(--border);border-radius:var(--r4);background:var(--ch-xl);font-size:20px;font-weight:700;cursor:pointer;line-height:1;color:var(--ch)">+</button>
+          </div>
+        </div>
         <div class="fg"><label class="fl">FORMA DE PAGAMENTO</label>
           <select class="fi" id="lForma"><option>Pix</option><option>Dinheiro</option><option>Débito</option><option>Crédito</option><option>Cheque</option><option>Transferência</option></select>
+        </div>
+        <div class="fg"><label class="fl">TOTAL DO LANÇAMENTO</label>
+          <div id="lTotalDisplay" style="height:38px;display:flex;align-items:center;padding:0 14px;background:var(--ch-xl);border-radius:var(--r8);font-size:17px;font-weight:800;color:var(--ok);letter-spacing:.3px">R$ 0,00</div>
         </div>
       </div>
     </div>
@@ -877,6 +1021,29 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
           <input class="fi" id="pfTurmas" placeholder="Ex: Fundamental 06:30, Kids 16:00, Open Mat 19:00">
         </div>
         <div class="full fg"><label class="fl">OBSERVAÇÕES</label><textarea class="fi" id="pfObs" rows="2" placeholder="Especialidades, observações..."></textarea></div>
+        <div class="section-sep full">DADOS BANCÁRIOS</div>
+        <div class="fg"><label class="fl">BANCO</label>
+          <select class="fi" id="pfBanco">
+            <option value="">Selecione</option>
+            <option>Nubank</option><option>Inter</option><option>Itaú</option><option>Bradesco</option>
+            <option>Santander</option><option>Caixa Econômica</option><option>Banco do Brasil</option>
+            <option>Sicoob</option><option>C6 Bank</option><option>PicPay</option><option>Outro</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">TIPO DE CONTA</label>
+          <select class="fi" id="pfTipoConta">
+            <option>Corrente</option><option>Poupança</option><option>Salário</option><option>PIX</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">AGÊNCIA</label>
+          <input class="fi" id="pfAgencia" placeholder="0000">
+        </div>
+        <div class="fg"><label class="fl">CONTA / DÍGITO</label>
+          <input class="fi" id="pfConta" placeholder="00000-0">
+        </div>
+        <div class="full fg"><label class="fl">CHAVE PIX</label>
+          <input class="fi" id="pfPix" placeholder="CPF, e-mail, telefone ou chave aleatória">
+        </div>
       </div>
     </div>
     <div class="modal-ft">
@@ -1046,8 +1213,8 @@ document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click
 
 // ══ HELPERS ════════════════════════════════════════════
 let editandoAlunoId=null;
-const beltMap={Branca:'bW',Cinza:'kbG',Amarelo:'kbY',Laranja:'kbO',Verde:'kbGr',Azul:'bB',Roxa:'bP',Marrom:'bBr',Preta:'bBk'};
-const beltTopColor={Branca:'#bdbdbd',Cinza:'#757575',Amarelo:'#F9A825',Laranja:'#E65100',Verde:'#1B5E20',Azul:'#1565C0',Roxa:'#6A1B9A',Marrom:'#4E342E',Preta:'#111'};
+const beltMap={'Branca':'bW','Cinza com Branco':'kbGW','Cinza':'kbG','Cinza com Preto':'kbGBk','Amarelo com Branco':'kbYW','Amarelo':'kbY','Amarelo com Preto':'kbYBk','Laranja com Branco':'kbOW','Laranja':'kbO','Laranja com Preto':'kbOBk','Verde com Branco':'kbGrW','Verde':'kbGr','Verde com Preto':'kbGrBk','Azul':'bB','Roxa':'bP','Marrom':'bBr','Preta':'bBk'};
+const beltTopColor={'Branca':'#bdbdbd','Cinza com Branco':'#B0B0B0','Cinza':'#757575','Cinza com Preto':'#424242','Amarelo com Branco':'#FFF176','Amarelo':'#F9A825','Amarelo com Preto':'#F57F17','Laranja com Branco':'#FFCC80','Laranja':'#E65100','Laranja com Preto':'#BF360C','Verde com Branco':'#A5D6A7','Verde':'#2E7D32','Verde com Preto':'#1B5E20','Azul':'#1565C0','Roxa':'#6A1B9A','Marrom':'#4E342E','Preta':'#111'};
 function graus(n){let s='';for(let i=0;i<n;i++)s+='<span class="stripe"></span>';return s}
 function fc(f){return !f?'b-ch':f>80?'b-ok':f>60?'b-wa':'b-er'}
 function idade(nasc){if(!nasc)return '—';const d=new Date(nasc),now=new Date();return Math.floor((now-d)/31557600000)+'a'}
@@ -1056,6 +1223,7 @@ function nowStr(){return new Date().toLocaleString('pt-BR',{day:'2-digit',month:
 
 // ══ ALUNOS ═════════════════════════════════════════════
 function abrirModalAluno(isKid=false){
+  popularSelectPlano();
   editandoAlunoId=null;
   ['aNome','aCpf','aTel','aEmail','aEndereco','aRespNome','aRespTel','aObs'].forEach(id=>document.getElementById(id).value='');
   ['aSexo','aFaixa','aGraus','aKimono','aStatus'].forEach(id=>document.getElementById(id).selectedIndex=0);
@@ -1078,7 +1246,16 @@ function editarAluno(id){
   document.getElementById('aSexo').value=a.sexo||'';
   document.getElementById('aTel').value=a.tel||'';
   document.getElementById('aEmail').value=a.email||'';
-  document.getElementById('aEndereco').value=a.endereco||'';
+  document.getElementById('aCep').value=a.cep||'';
+  document.getElementById('aLogradouro').value=a.logradouro||'';
+  document.getElementById('aNumero').value=a.numero||'';
+  document.getElementById('aCompl').value=a.compl||'';
+  document.getElementById('aBairro').value=a.bairro||'';
+  document.getElementById('aCidade').value=a.cidade||'';
+  document.getElementById('aEstado').value=a.estado||'';
+  const pt=parseTurma(a.turma);
+  if(document.getElementById('aPeriodo')) document.getElementById('aPeriodo').value=pt.periodo;
+  setDias('aDiasGrid', a.dias||pt.dias);
   document.getElementById('aRespNome').value=a.respNome||'';
   document.getElementById('aRespTel').value=a.respTel||'';
   document.getElementById('aTipo').value=a.kids?'Kids':'Adulto';
@@ -1102,13 +1279,23 @@ function salvarAluno(){
   const kimono=document.getElementById('aKimono').value;
   if(!nome||!tel||!faixa||!kimono){showToast('⚠ Preencha os campos obrigatórios (*)');return}
   const editId=document.getElementById('aEditId').value;
+  const periodo=document.getElementById('aPeriodo')?.value||'Tarde';
+  const diasSel=getDiasSelecionados('aDiasGrid');
+  const turmaVal=turmaStr(periodo, diasSel);
   const obj={
     id:editId||Date.now().toString(),
     nome,cpf:document.getElementById('aCpf').value,
     nasc:document.getElementById('aNasc').value,
     sexo:document.getElementById('aSexo').value,
     tel,email:document.getElementById('aEmail').value,
-    endereco:document.getElementById('aEndereco').value,
+    cep:document.getElementById('aCep')?.value||'',
+    logradouro:document.getElementById('aLogradouro')?.value||'',
+    numero:document.getElementById('aNumero')?.value||'',
+    compl:document.getElementById('aCompl')?.value||'',
+    bairro:document.getElementById('aBairro')?.value||'',
+    cidade:document.getElementById('aCidade')?.value||'',
+    estado:document.getElementById('aEstado')?.value||'',
+    endereco:[document.getElementById('aLogradouro')?.value,document.getElementById('aNumero')?.value,document.getElementById('aBairro')?.value,document.getElementById('aCidade')?.value].filter(Boolean).join(', '),
     respNome:document.getElementById('aRespNome').value,
     respTel:document.getElementById('aRespTel').value,
     faixa,graus:parseInt(document.getElementById('aGraus').value)||0,
@@ -1117,7 +1304,7 @@ function salvarAluno(){
     plano:document.getElementById('aPlano').value,
     status:document.getElementById('aStatus').value,
     obs:document.getElementById('aObs').value,
-    turma:document.getElementById('aTurma').value,
+    turma:turmaVal, periodo, dias:diasSel,
     kids:document.getElementById('aTipo').value==='Kids',
     treinos:editId?(alunos.find(a=>a.id===editId)?.treinos||0):0,
     criadoEm:editId?(alunos.find(a=>a.id===editId)?.criadoEm||nowStr()):nowStr()
@@ -1151,7 +1338,8 @@ function renderAlunos(){
 }
 function renderKids(){
   const q=(document.getElementById('buscaKids')?.value||'').toLowerCase();
-  const kids=alunos.filter(a=>a.kids&&(!q||a.nome.toLowerCase().includes(q)));
+  const f=(document.getElementById('filtFaixaKids')?.value||'');
+  const kids=alunos.filter(a=>a.kids&&(!q||a.nome.toLowerCase().includes(q))&&(!f||a.faixa===f));
   const grid=document.getElementById('kidGrid');
   const tb=document.getElementById('tbKids');
   if(!kids.length){grid.innerHTML=`<div style="font-size:13px;color:var(--text3);padding:20px;grid-column:1/-1;text-align:center">Nenhum kid cadastrado.</div>`;tb.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text3)">Nenhum kid.</td></tr>`;return}
@@ -1623,18 +1811,44 @@ function renderPedidos(){
 function entregarPedido(i){pedidos[i].status='Entregue';save();renderPedidos();showToast('Pedido marcado como entregue!')}
 
 // ══ FINANCEIRO ══════════════════════════════════════════
-function abrirModalLancamento(){['lDesc','lValor'].forEach(i=>document.getElementById(i).value='');document.getElementById('lTipo').selectedIndex=0;document.getElementById('lForma').selectedIndex=0;abrirModal('modalLancamento')}
+function abrirModalLancamento(){
+  ['lDesc','lValor'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('lQtd').value='1';
+  document.getElementById('lTipo').selectedIndex=0;
+  document.getElementById('lForma').selectedIndex=0;
+  document.getElementById('lTotalDisplay').textContent='R$ 0,00';
+  document.getElementById('lTotalDisplay').style.color='var(--ok)';
+  abrirModal('modalLancamento');
+}
+function stepQtdLanc(d){
+  const el=document.getElementById('lQtd');
+  el.value=Math.max(1,(parseInt(el.value)||1)+d);
+  calcTotalLanc();
+}
+function calcTotalLanc(){
+  const v=parseFloat(document.getElementById('lValor').value)||0;
+  const q=parseInt(document.getElementById('lQtd').value)||1;
+  const t=v*q;
+  const tipo=document.getElementById('lTipo').value;
+  const el=document.getElementById('lTotalDisplay');
+  el.textContent='R$ '+t.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  el.style.color=tipo==='Entrada'?'var(--ok)':'var(--er)';
+}
 function salvarLancamento(){
   const desc=document.getElementById('lDesc').value.trim();
-  const valor=parseFloat(document.getElementById('lValor').value);
-  if(!desc||!valor){showToast('⚠ Descrição e valor são obrigatórios');return}
-  financeiro.unshift({id:Date.now().toString(),desc,tipo:document.getElementById('lTipo').value,forma:document.getElementById('lForma').value,valor,data:nowStr()});
+  const valorUnit=parseFloat(document.getElementById('lValor').value);
+  const qtd=parseInt(document.getElementById('lQtd').value)||1;
+  if(!desc||!valorUnit){showToast('⚠ Descrição e valor são obrigatórios');return}
+  const total=parseFloat((valorUnit*qtd).toFixed(2));
+  const tipo=document.getElementById('lTipo').value;
+  const descFinal=qtd>1?`${desc} (${qtd}×)`:desc;
+  financeiro.unshift({id:Date.now().toString(),desc:descFinal,tipo,forma:document.getElementById('lForma').value,valorUnit,qtd,total,valor:total,data:nowStr()});
   save();fecharModal('modalLancamento');renderFinanceiro();showToast('✓ Lançamento registrado!');
 }
 function renderFinanceiro(){
   const tb=document.getElementById('tbFinanceiro');
   let ent=0,sai=0;
-  financeiro.forEach(f=>{if(f.tipo==='Entrada')ent+=f.valor;else sai+=f.valor});
+  financeiro.forEach(f=>{const tot=f.total||f.valor;if(f.tipo==='Entrada')ent+=tot;else sai+=tot;});
   document.getElementById('fiEntradas').textContent='R$'+ent.toLocaleString('pt-BR',{minimumFractionDigits:0});
   document.getElementById('fiSaidas').textContent='R$'+sai.toLocaleString('pt-BR',{minimumFractionDigits:0});
   const saldo=ent-sai;
@@ -1647,7 +1861,9 @@ function renderFinanceiro(){
     <td>${f.desc}</td>
     <td><span class="badge b-ch">${f.forma}</span></td>
     <td><span class="badge ${f.tipo==='Entrada'?'b-ok':'b-er'}">${f.tipo}</span></td>
-    <td style="font-weight:700;color:${f.tipo==='Entrada'?'var(--ok)':'var(--er)'}">${f.tipo==='Entrada'?'+':'-'}R$${f.valor}</td>
+    <td style="text-align:center;font-weight:600">${f.qtd||1}×</td>
+    <td style="color:var(--text2)">R$${(f.valorUnit||f.valor).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+    <td style="font-weight:700;color:${f.tipo==='Entrada'?'var(--ok)':'var(--er)'}">${f.tipo==='Entrada'?'+':'-'}R$${(f.total||f.valor).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
   </tr>`).join('');
 }
 
@@ -1708,6 +1924,11 @@ function abrirModalProf(id){
   document.getElementById('pfEmail').value=p?.email||'';
   document.getElementById('pfCref').value=p?.cref||'';
   document.getElementById('pfTurmas').value=p?.turmas||'';
+  document.getElementById('pfBanco').value=p?.banco||'';
+  document.getElementById('pfTipoConta').value=p?.tipoConta||'Corrente';
+  document.getElementById('pfAgencia').value=p?.agencia||'';
+  document.getElementById('pfConta').value=p?.conta||'';
+  document.getElementById('pfPix').value=p?.pix||'';
   document.getElementById('pfObs').value=p?.obs||'';
   document.getElementById('pfNasc').value=p?.nasc||'';
   document.getElementById('pfInicio').value=p?.inicio||today();
@@ -1742,6 +1963,11 @@ function salvarProf(){
     turmas:document.getElementById('pfTurmas').value,
     status:document.getElementById('pfStatus').value,
     obs:document.getElementById('pfObs').value,
+    banco:document.getElementById('pfBanco').value,
+    tipoConta:document.getElementById('pfTipoConta').value,
+    agencia:document.getElementById('pfAgencia').value,
+    conta:document.getElementById('pfConta').value,
+    pix:document.getElementById('pfPix').value,
   };
   if(editId){const i=professores.findIndex(p=>p.id===editId);professores[i]=obj}
   else professores.unshift(obj);
@@ -1924,16 +2150,456 @@ function atualizarFaixasPorTipo(){
   const sel=document.getElementById('aFaixa');
   const turma=document.getElementById('aTurma');
   if(tipo==='Kids'){
-    sel.innerHTML='<option value="">Selecione</option><option>Branca</option><option>Cinza</option><option>Amarelo</option><option>Laranja</option><option>Verde</option>';
-    turma.innerHTML='<option>Kids — Infantil</option><option>Kids — Juvenil</option><option>Kids — Pré-teen</option>';
+    sel.innerHTML='<option value="">Selecione</option><option>Branca</option><optgroup label="──── Cinza ────"><option>Cinza com Branco</option><option>Cinza</option><option>Cinza com Preto</option></optgroup><optgroup label="──── Amarelo ────"><option>Amarelo com Branco</option><option>Amarelo</option><option>Amarelo com Preto</option></optgroup><optgroup label="──── Laranja ────"><option>Laranja com Branco</option><option>Laranja</option><option>Laranja com Preto</option></optgroup><optgroup label="──── Verde ────"><option>Verde com Branco</option><option>Verde</option><option>Verde com Preto</option></optgroup>';
   } else {
     sel.innerHTML='<option value="">Selecione</option><option>Branca</option><option>Azul</option><option>Roxa</option><option>Marrom</option><option>Preta</option>';
-    turma.innerHTML='<option>Fundamental</option><option>Avançado</option><option>Feminino</option><option>Open Mat</option>';
   }
 }
 
 // ══ REFRESH ALL ════════════════════════════════════════
+
+// ══ PLANOS ═══════════════════════════════════════════════════
+const PLANOS_DEFAULT=[
+  {id:'mensal',    nome:'Mensal',      valor:300, sufixo:'/mês',  tipo:'normal'},
+  {id:'trimestral',nome:'Trimestral',  valor:270, sufixo:'/mês',  tipo:'normal'},
+  {id:'semestral', nome:'Semestral',   valor:250, sufixo:'/mês',  tipo:'normal'},
+  {id:'anual',     nome:'Anual',       valor:230, sufixo:'/mês',  tipo:'normal'},
+  {id:'kids',      nome:'Kids',        valor:250, sufixo:'/mês',  tipo:'normal'},
+  {id:'wellhub',   nome:'Wellhub',     valor:0,   sufixo:'',      tipo:'convenio'},
+  {id:'totalpass', nome:'TotalPass',   valor:0,   sufixo:'',      tipo:'convenio'},
+];
+let planos = ls('planos') || PLANOS_DEFAULT;
+
+function planoLabel(p){
+  if(p.tipo==='convenio') return p.nome;
+  return p.valor>0 ? `${p.nome} — R$${p.valor}${p.sufixo}` : p.nome;
+}
+function popularSelectPlano(){
+  const sel=document.getElementById('aPlano');
+  if(!sel) return;
+  const cur=sel.value;
+  sel.innerHTML=planos.map(p=>`<option value="${p.id}">${planoLabel(p)}</option>`).join('');
+  if(cur) sel.value=cur;
+}
+function abrirModalPlanos(){
+  const body=document.getElementById('planosBody');
+  body.innerHTML=planos.map(p=>`
+    <div class="plano-row">
+      <div class="plano-nome">${p.nome}</div>
+      ${p.tipo==='normal'
+        ? `<span style="font-size:11px;color:var(--text3)">R$</span>
+           <input class="plano-val" type="number" id="pv_${p.id}" value="${p.valor}" min="0">
+           <span class="plano-periodo">${p.sufixo}</span>`
+        : `<span style="font-size:11px;color:var(--pu);font-weight:600">Convênio — sem cobrança direta</span>`
+      }
+    </div>`).join('');
+  abrirModal('modalPlanos');
+}
+function salvarPlanos(){
+  planos.forEach(p=>{
+    if(p.tipo==='normal'){
+      const el=document.getElementById('pv_'+p.id);
+      if(el) p.valor=parseFloat(el.value)||0;
+    }
+  });
+  ss('planos',planos);
+  popularSelectPlano();
+  fecharModal('modalPlanos');
+  showToast('✓ Valores dos planos atualizados!');
+}
+
+// ══ PERÍODO / DIAS DA SEMANA ══════════════════════════════════
+function toggleDia(btn){btn.classList.toggle('on')}
+function getDiasSelecionados(gridId){
+  return [...document.querySelectorAll(`#${gridId} .dia-btn.on`)].map(b=>b.dataset.dia);
+}
+function setDias(gridId, diasArr){
+  document.querySelectorAll(`#${gridId} .dia-btn`).forEach(b=>{
+    b.classList.toggle('on', diasArr.includes(b.dataset.dia));
+  });
+}
+function turmaStr(periodo, dias){
+  return dias && dias.length ? `${periodo} — ${dias.join('/')}` : (periodo||'Tarde');
+}
+function parseTurma(turma){
+  if(turma && turma.includes(' — ')){
+    const [periodo, diasStr]=turma.split(' — ');
+    return {periodo, dias: diasStr.split('/')};
+  }
+  // legado — tenta mapear turma antiga para período
+  const map={Fundamental:'Tarde',Avançado:'Noite','Open Mat':'Noite',Feminino:'Tarde',
+    'Kids — Infantil':'Tarde','Kids — Juvenil':'Tarde','Kids — Pré-teen':'Tarde'};
+  return {periodo: map[turma]||'Tarde', dias:[]};
+}
+
+// ══ MÁSCARAS ══════════════════════════════════════════════════
+function maskCpf(el){
+  let v=el.value.replace(/\D/g,'').slice(0,11);
+  if(v.length>9) v=v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/,'$1.$2.$3-$4');
+  else if(v.length>6) v=v.replace(/(\d{3})(\d{3})(\d{1,3})/,'$1.$2.$3');
+  else if(v.length>3) v=v.replace(/(\d{3})(\d{1,3})/,'$1.$2');
+  el.value=v;
+}
+function maskTel(el){
+  let v=el.value.replace(/\D/g,'').slice(0,11);
+  if(v.length>10) v=v.replace(/(\d{2})(\d{5})(\d{4})/,'($1) $2-$3');
+  else if(v.length>6) v=v.replace(/(\d{2})(\d{4,5})(\d{0,4})/,'($1) $2-$3');
+  else if(v.length>2) v=v.replace(/(\d{2})(\d*)/,'($1) $2');
+  el.value=v;
+}
+function maskCep(el){
+  let v=el.value.replace(/\D/g,'').slice(0,8);
+  if(v.length>5) v=v.replace(/(\d{5})(\d{1,3})/,'$1-$2');
+  el.value=v;
+}
+
+// ══ VALIDAÇÕES ════════════════════════════════════════════════
+function setHint(id, msg, tipo){
+  const h=document.getElementById('hint-'+id);
+  const i=document.getElementById(id);
+  if(!h||!i) return;
+  h.textContent=msg; h.className='fi-hint '+(tipo||'');
+  i.classList.toggle('fi-err', tipo==='err');
+  i.classList.toggle('fi-ok',  tipo==='ok');
+}
+function validCpf(id){
+  const v=document.getElementById(id)?.value.replace(/\D/g,'')||'';
+  if(!v){setHint(id,'',null);return true}
+  if(v.length<11){setHint(id,'CPF incompleto','err');return false}
+  if(/^(\d)\1+$/.test(v)){setHint(id,'CPF inválido','err');return false}
+  let s=0; for(let i=0;i<9;i++) s+=+v[i]*(10-i);
+  let r=s%11; let d1=r<2?0:11-r;
+  s=0; for(let i=0;i<10;i++) s+=+v[i]*(11-i);
+  r=s%11; let d2=r<2?0:11-r;
+  if(+v[9]!==d1||+v[10]!==d2){setHint(id,'CPF inválido','err');return false}
+  setHint(id,'CPF válido ✓','ok'); return true;
+}
+function validEmail(id){
+  const v=document.getElementById(id)?.value||'';
+  if(!v){setHint(id,'',null);return true}
+  const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  setHint(id, ok?'E-mail válido ✓':'Formato inválido', ok?'ok':'err');
+  return ok;
+}
+function validTel(id){
+  const v=document.getElementById(id)?.value.replace(/\D/g,'')||'';
+  if(!v){setHint(id,'',null);return true}
+  const ok=v.length>=10&&v.length<=11;
+  setHint(id, ok?'Telefone válido ✓':'Número incompleto', ok?'ok':'err');
+  return ok;
+}
+
+// ══ CEP / VIACEP ══════════════════════════════════════════════
+async function buscarCep(prefix){
+  const cep=(document.getElementById(prefix+'Cep')?.value||'').replace(/\D/g,'');
+  const hint=document.getElementById('hint-'+prefix+'Cep');
+  if(cep.length!==8){setHint(prefix+'Cep','CEP deve ter 8 dígitos','err');return}
+  setHint(prefix+'Cep','🔍 Buscando...', null);
+  try{
+    const r=await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const d=await r.json();
+    if(d.erro){setHint(prefix+'Cep','CEP não encontrado','err');return}
+    if(document.getElementById(prefix+'Logradouro')) document.getElementById(prefix+'Logradouro').value=d.logradouro||'';
+    if(document.getElementById(prefix+'Bairro'))     document.getElementById(prefix+'Bairro').value=d.bairro||'';
+    if(document.getElementById(prefix+'Cidade'))     document.getElementById(prefix+'Cidade').value=d.localidade||'';
+    if(document.getElementById(prefix+'Estado'))     document.getElementById(prefix+'Estado').value=d.uf||'';
+    setHint(prefix+'Cep',`${d.localidade} — ${d.uf} ✓`,'ok');
+    document.getElementById(prefix+'Numero')?.focus();
+  }catch{setHint(prefix+'Cep','Erro ao buscar CEP. Preencha manualmente.','err')}
+}
+
 function refreshAll(){buildCiTurmaChips();renderAlunos();renderKids();renderCI();renderGrad();renderProspects();renderMensalidades();renderEstoque();renderPedidos();renderFinanceiro();renderProfs();renderAulas();renderPfKpis();refreshDash()}
+
+// ══ PEDIDO DE COMPRA ════════════════════════════════════════
+
+const PC_ESTRUTURA = [
+  {
+    grupo: 'KIMONOS',
+    itens: [
+      { tipo: 'Kimono', cat: 'Kimono', colunas: ['Produto','Tamanho','Cor/Modelo','Estoque Atual','Qtd Pedido','Obs'] }
+    ]
+  },
+  {
+    grupo: 'ACESSÓRIOS',
+    itens: [
+      { tipo: 'Faixas',   cat: 'Acessório', filtro: 'faixa',   colunas: ['Produto','Tamanho','Cor','Estoque Atual','Qtd Pedido','Obs'] },
+      { tipo: 'Mochilas', cat: 'Acessório', filtro: 'mochila', colunas: ['Produto','Modelo','Cor','Estoque Atual','Qtd Pedido','Obs'] },
+      { tipo: 'Bolsas',   cat: 'Acessório', filtro: 'bolsa',   colunas: ['Produto','Modelo','Cor','Estoque Atual','Qtd Pedido','Obs'] }
+    ]
+  },
+  {
+    grupo: 'VESTUÁRIO',
+    itens: [
+      { tipo: 'Camisetas',    cat: 'Vestuário', filtro: 'camiseta',   colunas: ['Produto','Modelo','Tamanho','Estoque Atual','Qtd Pedido','Obs'] },
+      { tipo: 'Bermudas',     cat: 'Vestuário', filtro: 'bermuda',    colunas: ['Produto','Modelo','Tamanho','Estoque Atual','Qtd Pedido','Obs'] },
+      { tipo: 'Hash Guards',  cat: 'Vestuário', filtro: 'hash|rash',  colunas: ['Produto','Modelo','Tamanho','Estoque Atual','Qtd Pedido','Obs'] }
+    ]
+  }
+];
+
+function abrirPedidoCompra(){
+  // Preenche data atual
+  const hoje = new Date();
+  document.getElementById('pcData').valueAsDate = hoje;
+  document.getElementById('pcResponsavel').value = curUser.name || '';
+  renderPcCorpo();
+  document.getElementById('modalPedidoCompra').classList.add('show');
+}
+
+function fecharPedidoCompra(){
+  document.getElementById('modalPedidoCompra').classList.remove('show');
+}
+
+function getTotalEstoque(p){
+  return Object.values(p.estoque||{}).reduce((a,b)=>a+b,0);
+}
+
+function renderPcCorpo(){
+  const corpo = document.getElementById('pcCorpo');
+  let html = '';
+
+  PC_ESTRUTURA.forEach(grupo => {
+    html += `<div class="pc-section">`;
+    html += `<div class="pc-section-title">${grupo.grupo}</div>`;
+
+    grupo.itens.forEach(item => {
+      // Filtra produtos do localStorage por categoria e filtro de nome
+      let prods = produtos.filter(p => p.cat === item.cat);
+      if(item.filtro){
+        const re = new RegExp(item.filtro,'i');
+        prods = prods.filter(p => re.test(p.nome));
+      }
+
+      html += `<div class="pc-sub-title">${item.tipo}</div>`;
+      html += `<table class="pc-table"><thead><tr>`;
+      item.colunas.forEach(c => { html += `<th>${c}</th>`; });
+      html += `</tr></thead><tbody>`;
+
+      if(prods.length === 0){
+        // Linha em branco para preencher manualmente
+        for(let r=0;r<3;r++){
+          html += `<tr>`;
+          item.colunas.forEach((c,i) => {
+            if(c === 'Qtd Pedido'){
+              html += `<td><input type="number" min="0" value="" placeholder="0" style="width:60px"></td>`;
+            } else if(c === 'Estoque Atual'){
+              html += `<td style="text-align:center;color:var(--text3)">—</td>`;
+            } else {
+              html += `<td><input type="text" placeholder="${c}..."></td>`;
+            }
+          });
+          html += `</tr>`;
+        }
+      } else {
+        prods.forEach(p => {
+          const tams = Object.entries(p.estoque||{});
+          if(tams.length === 0){
+            // Sem tamanhos
+            html += `<tr>`;
+            item.colunas.forEach(c => {
+              if(c==='Produto') html += `<td>${p.nome}</td>`;
+              else if(c==='Cor/Modelo'||c==='Cor'||c==='Modelo') html += `<td>${p.cor||'—'}</td>`;
+              else if(c==='Tamanho') html += `<td>—</td>`;
+              else if(c==='Estoque Atual') html += `<td style="text-align:center">0</td>`;
+              else if(c==='Qtd Pedido') html += `<td><input type="number" min="0" value="" placeholder="0" style="width:60px"></td>`;
+              else html += `<td><input type="text" placeholder="obs..."></td>`;
+            });
+            html += `</tr>`;
+          } else {
+            tams.forEach(([tam, qtd]) => {
+              html += `<tr>`;
+              item.colunas.forEach(c => {
+                if(c==='Produto') html += `<td>${p.nome}</td>`;
+                else if(c==='Cor/Modelo'||c==='Cor'||c==='Modelo') html += `<td>${p.cor||'—'}</td>`;
+                else if(c==='Tamanho') html += `<td style="font-weight:700;text-align:center">${tam}</td>`;
+                else if(c==='Estoque Atual') html += `<td style="text-align:center;font-weight:600;color:${qtd<=3?'var(--er)':'var(--ok)'}">${qtd}</td>`;
+                else if(c==='Qtd Pedido') html += `<td><input type="number" min="0" value="" placeholder="0" style="width:60px"></td>`;
+                else html += `<td><input type="text" placeholder="obs..."></td>`;
+              });
+              html += `</tr>`;
+            });
+          }
+        });
+        // Linha extra em branco para adicionar item não cadastrado
+        html += `<tr style="background:var(--ch-xl)">`;
+        item.colunas.forEach((c,i) => {
+          if(c==='Qtd Pedido') html += `<td><input type="number" min="0" placeholder="0" style="width:60px"></td>`;
+          else if(c==='Estoque Atual') html += `<td style="text-align:center;color:var(--text3)">—</td>`;
+          else html += `<td><input type="text" placeholder="+ outro..."></td>`;
+        });
+        html += `</tr>`;
+      }
+
+      html += `</tbody></table>`;
+    });
+
+    html += `</div>`;
+  });
+
+  html += `<div style="margin-top:10px;padding:8px 10px;background:var(--ch-xl);border-radius:var(--r8);font-size:11px;color:var(--text2)">
+    <strong>Observações gerais:</strong><br>
+    <textarea style="width:100%;margin-top:6px;height:52px;border:1px solid var(--border);border-radius:var(--r4);padding:6px;font-size:12px;resize:vertical" id="pcObs" placeholder="Prazo, condições de pagamento, observações especiais..."></textarea>
+  </div>`;
+
+  corpo.innerHTML = html;
+}
+
+function imprimirPedidoCompra(){
+  const data    = document.getElementById('pcData').value;
+  const fornec  = document.getElementById('pcFornecedor').value || '___________________';
+  const resp    = document.getElementById('pcResponsavel').value || '___________________';
+  const entrega = document.getElementById('pcEntrega').value;
+  const obs     = document.getElementById('pcObs').value;
+
+  const fmtDate = d => { if(!d) return '___/___/______'; const [y,m,dd]=d.split('-'); return dd+'/'+m+'/'+y; };
+
+  // Coleta dados preenchidos da tabela modal
+  function coletaTabelas(){
+    const tables = document.querySelectorAll('#pcCorpo .pc-table');
+    const secTitles = document.querySelectorAll('#pcCorpo .pc-section-title');
+    const subTitles = document.querySelectorAll('#pcCorpo .pc-sub-title');
+    return {tables, secTitles, subTitles};
+  }
+
+  let printHTML = `
+    <div class="pp-logo">
+      <svg width="52" height="60" viewBox="0 0 210 245" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="105" cy="100" r="99" fill="white"/>
+        <circle cx="105" cy="100" r="89" fill="none" stroke="#2C2C2C" stroke-width="16"/>
+        <circle cx="105" cy="100" r="71" fill="none" stroke="#8B4513" stroke-width="14"/>
+        <circle cx="105" cy="100" r="55" fill="none" stroke="#7B5EA7" stroke-width="13"/>
+        <circle cx="105" cy="100" r="40" fill="none" stroke="#5B9BD5" stroke-width="12"/>
+        <rect x="5" y="91" width="200" height="18" fill="#2C2C2C"/>
+        <text x="105" y="107" text-anchor="middle" fill="white" font-size="22" font-weight="800" font-family="Arial Narrow,sans-serif" letter-spacing="5">FRATRES</text>
+      </svg>
+      <div>
+        <div class="pp-title">FRATRES BJJ · UNIDADE HAYDEE</div>
+        <div class="pp-sub">PEDIDO DE COMPRA</div>
+      </div>
+      <div style="margin-left:auto;font-size:10px;text-align:right;color:#666">
+        Nº ________ / ${new Date().getFullYear()}
+      </div>
+    </div>
+    <div class="pp-meta">
+      <div class="pp-meta-item"><div class="pp-meta-label">DATA DO PEDIDO</div><div class="pp-meta-line">${fmtDate(data)}</div></div>
+      <div class="pp-meta-item"><div class="pp-meta-label">FORNECEDOR</div><div class="pp-meta-line">${fornec}</div></div>
+      <div class="pp-meta-item"><div class="pp-meta-label">RESPONSÁVEL</div><div class="pp-meta-line">${resp}</div></div>
+      <div class="pp-meta-item"><div class="pp-meta-label">PREVISÃO DE ENTREGA</div><div class="pp-meta-line">${fmtDate(entrega)}</div></div>
+    </div>`;
+
+  // Rebuild sections from modal DOM
+  PC_ESTRUTURA.forEach(grupo => {
+    printHTML += `<div class="pp-section">`;
+    printHTML += `<div class="pp-sec-hd">${grupo.grupo}</div>`;
+
+    grupo.itens.forEach(item => {
+      // Find the sub table in modal
+      const subEls = document.querySelectorAll('#pcCorpo .pc-sub-title');
+      let tbl = null;
+      subEls.forEach(el => {
+        if(el.textContent.trim().toLowerCase() === item.tipo.toLowerCase()){
+          tbl = el.nextElementSibling;
+        }
+      });
+
+      printHTML += `<div class="pp-sub-hd">${item.tipo}</div>`;
+      printHTML += `<table class="pp-table"><thead><tr>`;
+      item.colunas.forEach(c => { printHTML += `<th>${c}</th>`; });
+      printHTML += `</tr></thead><tbody>`;
+
+      if(tbl){
+        const rows = tbl.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+          const cells = row.querySelectorAll('td');
+          printHTML += `<tr>`;
+          cells.forEach((td, i) => {
+            const inp = td.querySelector('input');
+            const val = inp ? (inp.value || '') : td.textContent.trim();
+            const col = item.colunas[i] || '';
+            if(col === 'Qtd Pedido'){
+              printHTML += `<td style="text-align:center;font-weight:700">${val || ''}&nbsp;</td>`;
+            } else {
+              printHTML += `<td>${val}&nbsp;</td>`;
+            }
+          });
+          printHTML += `</tr>`;
+        });
+      }
+
+      printHTML += `</tbody></table>`;
+    });
+    printHTML += `</div>`;
+  });
+
+  if(obs){
+    printHTML += `<div class="pp-obs"><strong>OBSERVAÇÕES:</strong><br>${obs.replace(/\n/g,'<br>')}</div>`;
+  } else {
+    printHTML += `<div class="pp-obs"><strong>OBSERVAÇÕES:</strong>
+      <div class="pp-obs-line"></div>
+      <div class="pp-obs-line"></div>
+    </div>`;
+  }
+
+  printHTML += `<div class="pp-footer">
+    <div>Recebido por: <span class="pp-ass"></span>&nbsp; Data: _____/_____/_______</div>
+    <div>Assinatura Responsável: <span class="pp-ass"></span></div>
+  </div>`;
+
+  const pDiv = document.getElementById('printPedido');
+  pDiv.innerHTML = printHTML;
+  pDiv.style.display = 'block';
+  setTimeout(()=>{
+    window.print();
+    setTimeout(()=>{ pDiv.style.display='none'; },500);
+  },150);
+}
+
 </script>
+
+<!-- ══ PEDIDO DE COMPRA - PRINT ══ -->
+<div id="printPedido" style="display:none"></div>
+
+<!-- ══ MODAL PEDIDO DE COMPRA ══ -->
+<div class="modal-overlay" id="modalPedidoCompra">
+  <div class="modal" style="max-width:820px">
+    <div class="modal-hd">
+      <div>
+        <div class="modal-title">📋 Pedido de Compra</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">Fratres BJJ · Unidade Haydee</div>
+      </div>
+      <button class="modal-close" onclick="fecharPedidoCompra()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="pc-header-info">
+        <label>Data do Pedido<input type="date" id="pcData"></label>
+        <label>Fornecedor<input type="text" id="pcFornecedor" placeholder="Nome do fornecedor"></label>
+        <label>Responsável<input type="text" id="pcResponsavel" placeholder="Quem está pedindo"></label>
+        <label>Previsão de Entrega<input type="date" id="pcEntrega"></label>
+      </div>
+      <div id="pcCorpo"></div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn" style="background:var(--ch-xl);color:var(--text)" onclick="fecharPedidoCompra()">Fechar</button>
+      <button class="btn btn-pu" onclick="imprimirPedidoCompra()">🖨 Gerar PDF / Imprimir</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PLANOS CONFIG -->
+<div class="modal-overlay" id="modalPlanos">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-hd">
+      <div><div class="modal-title">⚙ Configurar Planos</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">Valores salvos localmente na unidade</div>
+      </div>
+      <button class="modal-close" onclick="fecharModal('modalPlanos')">✕</button>
+    </div>
+    <div class="modal-body" id="planosBody"></div>
+    <div class="modal-ft">
+      <button class="btn btn-sec" onclick="fecharModal('modalPlanos')">Cancelar</button>
+      <button class="btn btn-pu" onclick="salvarPlanos()">Salvar planos</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
