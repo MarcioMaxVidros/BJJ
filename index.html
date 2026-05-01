@@ -1223,11 +1223,23 @@ function nowStr(){return new Date().toLocaleString('pt-BR',{day:'2-digit',month:
 
 // ══ ALUNOS ═════════════════════════════════════════════
 function abrirModalAluno(isKid=false){
-  popularSelectPlano();
   editandoAlunoId=null;
-  ['aNome','aCpf','aTel','aEmail','aEndereco','aRespNome','aRespTel','aObs'].forEach(id=>document.getElementById(id).value='');
+  ['aNome','aCpf','aTel','aEmail','aRespNome','aRespTel','aObs',
+   'aCep','aLogradouro','aNumero','aCompl','aBairro','aCidade','aEstado'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  ['hint-aCpf','hint-aTel','hint-aEmail','hint-aCep'].forEach(id=>{
+    const el=document.getElementById(id); if(el){el.textContent='';el.className='fi-hint';}
+  });
+  ['aCpf','aTel','aEmail','aCep'].forEach(id=>{
+    const el=document.getElementById(id); if(el){el.classList.remove('fi-err','fi-ok');}
+  });
   ['aSexo','aFaixa','aGraus','aKimono','aStatus'].forEach(id=>document.getElementById(id).selectedIndex=0);
-  document.getElementById('aPlano').value=isKid?'Kids — R$250/mês':'Mensal — R$300';
+  if(document.getElementById('aPeriodo')) document.getElementById('aPeriodo').value='Tarde';
+  setDias('aDiasGrid',[]);
+  popularSelectPlano();
+  const defaultPlano=isKid?'kids':'mensal';
+  if(document.getElementById('aPlano')) document.getElementById('aPlano').value=defaultPlano;
   document.getElementById('aTipo').value=isKid?'Kids':'Adulto';
   atualizarFaixasPorTipo();
   document.getElementById('aNasc').value='';
@@ -1260,12 +1272,17 @@ function editarAluno(id){
   document.getElementById('aRespTel').value=a.respTel||'';
   document.getElementById('aTipo').value=a.kids?'Kids':'Adulto';
   atualizarFaixasPorTipo();
-  document.getElementById('aTurma').value=a.turma||'Fundamental';
+  // período e dias preenchidos acima via parseTurma
   document.getElementById('aFaixa').value=a.faixa||'';
   document.getElementById('aGraus').value=a.graus||0;
   document.getElementById('aKimono').value=a.kimono||'';
   document.getElementById('aIngresso').value=a.ingresso||'';
-  document.getElementById('aPlano').value=a.plano||'Mensal — R$300';
+  popularSelectPlano();
+  const selPlano=document.getElementById('aPlano');
+  if(selPlano){
+    selPlano.value=a.plano||'mensal';
+    if(!selPlano.value) selPlano.selectedIndex=0;
+  }
   document.getElementById('aStatus').value=a.status||'Ativo';
   document.getElementById('aObs').value=a.obs||'';
   document.getElementById('aEditId').value=id;
@@ -2148,7 +2165,6 @@ function renderPfKpis(){
 function atualizarFaixasPorTipo(){
   const tipo=document.getElementById('aTipo').value;
   const sel=document.getElementById('aFaixa');
-  const turma=document.getElementById('aTurma');
   if(tipo==='Kids'){
     sel.innerHTML='<option value="">Selecione</option><option>Branca</option><optgroup label="──── Cinza ────"><option>Cinza com Branco</option><option>Cinza</option><option>Cinza com Preto</option></optgroup><optgroup label="──── Amarelo ────"><option>Amarelo com Branco</option><option>Amarelo</option><option>Amarelo com Preto</option></optgroup><optgroup label="──── Laranja ────"><option>Laranja com Branco</option><option>Laranja</option><option>Laranja com Preto</option></optgroup><optgroup label="──── Verde ────"><option>Verde com Branco</option><option>Verde</option><option>Verde com Preto</option></optgroup>';
   } else {
