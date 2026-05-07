@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>Fratres BJJ — Unidade Haydee</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>/* Supabase via REST — sem SDK */</script>
 <style>
 :root{
   --pu:#7B5EA7;--pu-l:#9B7EC7;--pu-xl:#EDE9F5;--pu-d:#5A3F86;
@@ -973,10 +973,32 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
 <div id="toast"></div>
 
 <script>
-// ══ SUPABASE ═══════════════════════════════════════════
+// ══ SUPABASE REST (sem SDK) ════════════════════════════
 const SUPA_URL = 'https://fozbfkvezggxinybtuxg.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvemJma3ZlemdneGlueWJ0dXhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNTQwMjEsImV4cCI6MjA5MzczMDAyMX0.jEHcbI39bMD14q_HSCv8qaWK7TQEdtiGc4X3_0yNBOc';
-const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+const SUPA_H = {
+  'apikey': SUPA_KEY,
+  'Authorization': 'Bearer ' + SUPA_KEY,
+  'Content-Type': 'application/json',
+  'Prefer': 'resolution=merge-duplicates'
+};
+
+async function sbLoad(){
+  const r = await fetch(`${SUPA_URL}/rest/v1/store?select=key,value`, {
+    headers: {'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY}
+  });
+  if(!r.ok) throw new Error(`HTTP ${r.status}: ${await r.text()}`);
+  return r.json();
+}
+
+async function sbSave(records){
+  const r = await fetch(`${SUPA_URL}/rest/v1/store`, {
+    method: 'POST',
+    headers: SUPA_H,
+    body: JSON.stringify(records)
+  });
+  if(!r.ok) throw new Error(`HTTP ${r.status}: ${await r.text()}`);
+}
 
 // ══ STORAGE (híbrido: localStorage + Supabase) ══════════
 const KEY = 'fratres_haydee_';
@@ -998,7 +1020,6 @@ function save(){
 
 async function syncToSupabase(){
   try{
-    // coleta vencimentos individuais do localStorage
     const vencimentos={};
     for(let i=0;i<localStorage.length;i++){
       const k=localStorage.key(i);
@@ -1006,25 +1027,25 @@ async function syncToSupabase(){
         try{vencimentos[k.replace(KEY,'')]=JSON.parse(localStorage.getItem(k))}catch{}
       }
     }
-    await Promise.all([
-      sb.from('store').upsert({key:'alunos',    value:alunos}),
-      sb.from('store').upsert({key:'produtos',  value:produtos}),
-      sb.from('store').upsert({key:'prospects', value:prospects}),
-      sb.from('store').upsert({key:'financeiro',value:financeiro}),
-      sb.from('store').upsert({key:'pedidos',   value:pedidos}),
-      sb.from('store').upsert({key:'ci_'+today(),value:ciState}),
-      sb.from('store').upsert({key:'professores',value:professores}),
-      sb.from('store').upsert({key:'aulas',     value:aulas}),
-      sb.from('store').upsert({key:'vencimentos',value:vencimentos}),
+    await sbSave([
+      {key:'alunos',     value:alunos},
+      {key:'produtos',   value:produtos},
+      {key:'prospects',  value:prospects},
+      {key:'financeiro', value:financeiro},
+      {key:'pedidos',    value:pedidos},
+      {key:'ci_'+today(),value:ciState},
+      {key:'professores',value:professores},
+      {key:'aulas',      value:aulas},
+      {key:'vencimentos',value:vencimentos},
     ]);
-  }catch(e){console.warn('Supabase sync:',e)}
+    console.log('✓ Sync Supabase OK');
+  }catch(e){console.warn('Sync error:',e.message)}
 }
 
 async function initFromSupabase(){
   document.getElementById('loadingOverlay').style.display='flex';
   try{
-    const {data,error}=await sb.from('store').select('key,value');
-    if(error) throw error;
+    const data = await sbLoad();
     const map={};
     (data||[]).forEach(r=>{ map[r.key]=r.value; });
     alunos      = map['alunos']      || ls('alunos')      || [];
@@ -1035,14 +1056,13 @@ async function initFromSupabase(){
     ciState     = map['ci_'+today()] || ls('ci_'+today()) || {};
     professores = map['professores'] || ls('professores') || [];
     aulas       = map['aulas']       || ls('aulas')       || [];
-    // restaura vencimentos individuais
     const venc  = map['vencimentos'] || {};
     Object.entries(venc).forEach(([k,v])=>{
       try{localStorage.setItem(KEY+k,JSON.stringify(v))}catch{}
     });
     console.log('✓ Dados carregados do Supabase');
   }catch(e){
-    console.warn('Supabase indisponível, usando localStorage:',e);
+    console.error('❌ Supabase erro:', e.message);
     alunos      = ls('alunos')      || [];
     produtos    = ls('produtos')    || [];
     prospects   = ls('prospects')   || [];
