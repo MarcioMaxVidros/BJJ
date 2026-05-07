@@ -1046,7 +1046,12 @@ async function syncToSupabase(){
 async function initFromSupabase(){
   document.getElementById('loadingOverlay').style.display='flex';
   try{
-    const data = await sbLoad();
+    const url = `${SUPA_URL}/rest/v1/store?select=key,value&apikey=${SUPA_KEY}`;
+    console.log('🔌 Tentando conectar:', url.substring(0,60)+'...');
+    const r = await fetch(url, {mode:'cors', credentials:'omit'});
+    console.log('📡 Status HTTP:', r.status);
+    if(!r.ok) throw new Error(`HTTP ${r.status}: ${await r.text()}`);
+    const data = await r.json();
     const map={};
     (data||[]).forEach(r=>{ map[r.key]=r.value; });
     alunos      = map['alunos']      || ls('alunos')      || [];
@@ -1061,9 +1066,10 @@ async function initFromSupabase(){
     Object.entries(venc).forEach(([k,v])=>{
       try{localStorage.setItem(KEY+k,JSON.stringify(v))}catch{}
     });
-    console.log('✓ Dados carregados do Supabase');
+    console.log('✓ Dados carregados do Supabase — registros:', (data||[]).length);
   }catch(e){
-    console.error('❌ Supabase erro:', e.message);
+    console.error('❌ Supabase erro:', e.message, e);
+    alert('❌ Supabase: ' + e.message);
     alunos      = ls('alunos')      || [];
     produtos    = ls('produtos')    || [];
     prospects   = ls('prospects')   || [];
