@@ -269,8 +269,8 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
     <circle cx="105" cy="100" r="99" fill="white"/>
     <!-- anel externo: charcoal -->
     <circle cx="105" cy="100" r="89" fill="none" stroke="#2C2C2C" stroke-width="16"/>
-    <!-- anel cinza -->
-    <circle cx="105" cy="100" r="71" fill="none" stroke="#888888" stroke-width="14"/>
+    <!-- anel marrom -->
+    <circle cx="105" cy="100" r="71" fill="none" stroke="#8B4513" stroke-width="14"/>
     <!-- anel roxo -->
     <circle cx="105" cy="100" r="55" fill="none" stroke="#7B5EA7" stroke-width="13"/>
     <!-- anel azul -->
@@ -301,7 +301,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
       <svg width="190" height="230" viewBox="0 0 210 245" xmlns="http://www.w3.org/2000/svg">
         <circle cx="105" cy="100" r="99" fill="white"/>
         <circle cx="105" cy="100" r="89" fill="none" stroke="#2C2C2C" stroke-width="16"/>
-        <circle cx="105" cy="100" r="71" fill="none" stroke="#888888" stroke-width="14"/>
+        <circle cx="105" cy="100" r="71" fill="none" stroke="#8B4513" stroke-width="14"/>
         <circle cx="105" cy="100" r="55" fill="none" stroke="#7B5EA7" stroke-width="13"/>
         <circle cx="105" cy="100" r="40" fill="none" stroke="#5B9BD5" stroke-width="12"/>
         <rect x="4" y="85" width="202" height="30" fill="white"/>
@@ -984,17 +984,18 @@ const SUPA_H = {
 };
 
 async function sbLoad(){
-  const r = await fetch(`${SUPA_URL}/rest/v1/store?select=key,value`, {
-    headers: {'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY}
-  });
+  const r = await fetch(`${SUPA_URL}/rest/v1/store?select=key,value&apikey=${SUPA_KEY}`);
   if(!r.ok) throw new Error(`HTTP ${r.status}: ${await r.text()}`);
   return r.json();
 }
 
 async function sbSave(records){
-  const r = await fetch(`${SUPA_URL}/rest/v1/store`, {
+  const r = await fetch(`${SUPA_URL}/rest/v1/store?apikey=${SUPA_KEY}`, {
     method: 'POST',
-    headers: SUPA_H,
+    headers: {
+      'Content-Type': 'application/json',
+      'Prefer': 'resolution=merge-duplicates'
+    },
     body: JSON.stringify(records)
   });
   if(!r.ok) throw new Error(`HTTP ${r.status}: ${await r.text()}`);
