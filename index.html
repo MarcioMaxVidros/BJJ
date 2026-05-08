@@ -148,8 +148,21 @@ tbody tr:hover td{background:var(--ch-xl)}
 .belt{display:inline-flex;align-items:center;gap:2px;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700}
 .bW{background:#E5E5E5;color:#333}.bB{background:#1565C0;color:#fff}.bP{background:#6A1B9A;color:#fff}
 .bBr{background:#4E342E;color:#fff}.bBk{background:#111;color:#fff}
-.kbW{background:#E5E5E5;color:#333}.kbG{background:#616161;color:#fff}.kbY{background:#F9A825;color:#333}
-.kbO{background:#E65100;color:#fff}.kbGr{background:#1B5E20;color:#fff}
+.kbW{background:#E5E5E5;color:#333}
+.kbG{background:#616161;color:#fff}
+.kbY{background:#F9A825;color:#333}
+.kbO{background:#E65100;color:#fff}
+.kbGr{background:#1B5E20;color:#fff}
+/* Kids bicolor — listra branca */
+.kbGW{background:linear-gradient(90deg,#616161 60%,#fff 60%);color:#333;border:1px solid #aaa}
+.kbYW{background:linear-gradient(90deg,#F9A825 60%,#fff 60%);color:#333;border:1px solid #ddd}
+.kbOW{background:linear-gradient(90deg,#E65100 60%,#fff 60%);color:#fff;border:1px solid #c44}
+.kbGrW{background:linear-gradient(90deg,#1B5E20 60%,#fff 60%);color:#fff;border:1px solid #4a4}
+/* Kids bicolor — listra preta */
+.kbGBk{background:linear-gradient(90deg,#616161 60%,#111 60%);color:#fff}
+.kbYBk{background:linear-gradient(90deg,#F9A825 60%,#111 60%);color:#333}
+.kbOBk{background:linear-gradient(90deg,#E65100 60%,#111 60%);color:#fff}
+.kbGrBk{background:linear-gradient(90deg,#1B5E20 60%,#111 60%);color:#fff}
 .stripe{display:inline-block;width:5px;height:11px;background:var(--go);border-radius:1px;margin-left:2px;vertical-align:middle}
 
 /* ── BUTTONS ── */
@@ -692,14 +705,21 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
       <div class="form-grid">
         <div class="section-sep full">DADOS PESSOAIS</div>
         <div class="full fg"><label class="fl">NOME COMPLETO *</label><input class="fi" id="aNome" placeholder="Nome completo do aluno"></div>
-        <div class="fg"><label class="fl">CPF</label><input class="fi" id="aCpf" placeholder="000.000.000-00"></div>
+        <div class="fg"><label class="fl">CPF</label><input class="fi" id="aCpf" placeholder="000.000.000-00" oninput="maskCPF(this)"></div>
         <div class="fg"><label class="fl">DATA DE NASCIMENTO *</label><input class="fi" type="date" id="aNasc"></div>
         <div class="fg"><label class="fl">SEXO</label>
           <select class="fi" id="aSexo"><option value="">Selecione</option><option>Masculino</option><option>Feminino</option><option>Outro</option></select>
         </div>
-        <div class="fg"><label class="fl">TELEFONE / WHATSAPP *</label><input class="fi" id="aTel" placeholder="(11) 9 0000-0000"></div>
-        <div class="full fg"><label class="fl">E-MAIL</label><input class="fi" type="email" id="aEmail" placeholder="email@exemplo.com"></div>
-        <div class="full fg"><label class="fl">ENDEREÇO</label><input class="fi" id="aEndereco" placeholder="Rua, número, bairro, cidade"></div>
+        <div class="fg"><label class="fl">TELEFONE / WHATSAPP *</label><input class="fi" id="aTel" placeholder="(11) 9 0000-0000" oninput="maskPhone(this)"></div>
+        <div class="full fg"><label class="fl">E-MAIL</label><input class="fi" type="email" id="aEmail" placeholder="email@exemplo.com" oninput="validaEmail(this)"></div>
+        <div class="section-sep full">ENDEREÇO</div>
+        <div class="fg"><label class="fl">CEP</label><input class="fi" id="aCep" placeholder="00000-000" oninput="maskCep(this)" onblur="buscaCEP()"></div>
+        <div class="fg"><label class="fl">NÚMERO</label><input class="fi" id="aNumero" placeholder="123"></div>
+        <div class="full fg"><label class="fl">LOGRADOURO</label><input class="fi" id="aLogradouro" placeholder="Rua, Avenida..."></div>
+        <div class="fg"><label class="fl">COMPLEMENTO</label><input class="fi" id="aComplemento" placeholder="Apto, Bloco..."></div>
+        <div class="fg"><label class="fl">BAIRRO</label><input class="fi" id="aBairro" placeholder="Bairro"></div>
+        <div class="fg"><label class="fl">CIDADE</label><input class="fi" id="aCidade" placeholder="Cidade"></div>
+        <div class="fg"><label class="fl">ESTADO</label><input class="fi" id="aEstado" placeholder="SP" maxlength="2" style="text-transform:uppercase"></div>
         <div class="section-sep full">CONTATO DE EMERGÊNCIA</div>
         <div class="fg"><label class="fl">NOME DO RESPONSÁVEL</label><input class="fi" id="aRespNome" placeholder="Nome completo"></div>
         <div class="fg"><label class="fl">TELEFONE DO RESPONSÁVEL</label><input class="fi" id="aRespTel" placeholder="(11) 9 0000-0000"></div>
@@ -711,7 +731,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
           <select class="fi" id="aTurma"><option>Fundamental</option><option>Avançado</option><option>Feminino</option><option>Open Mat</option><option>Kids — Infantil</option><option>Kids — Juvenil</option><option>Kids — Pré-teen</option></select>
         </div>
         <div class="fg"><label class="fl">FAIXA ATUAL *</label>
-          <select class="fi" id="aFaixa"><option value="">Selecione</option><option>Branca</option><option>Cinza</option><option>Amarelo</option><option>Laranja</option><option>Verde</option><option>Azul</option><option>Roxa</option><option>Marrom</option><option>Preta</option></select>
+          <select class="fi" id="aFaixa"><option value="">Selecione</option><option>Branca</option><option>Azul</option><option>Roxa</option><option>Marrom</option><option>Preta</option></select>
         </div>
         <div class="fg"><label class="fl">GRAUS (0–4)</label>
           <select class="fi" id="aGraus"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select>
@@ -1084,6 +1104,54 @@ async function initFromSupabase(){
 
 function today(){ return new Date().toISOString().slice(0,10) }
 
+// ══ VALIDAÇÕES ══════════════════════════════════════════
+function validaCPF(cpf){
+  cpf=cpf.replace(/\D/g,'');
+  if(cpf.length!==11||/^(\d)\1+$/.test(cpf))return false;
+  let s=0;
+  for(let i=0;i<9;i++)s+=parseInt(cpf[i])*(10-i);
+  let r=11-(s%11);if(r>=10)r=0;if(r!==parseInt(cpf[9]))return false;
+  s=0;for(let i=0;i<10;i++)s+=parseInt(cpf[i])*(11-i);
+  r=11-(s%11);if(r>=10)r=0;return r===parseInt(cpf[10]);
+}
+function maskCPF(el){
+  let v=el.value.replace(/\D/g,'').substring(0,11);
+  v=v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1-$2');
+  el.value=v;
+  const ok=!v||v.length<14||validaCPF(v);
+  el.style.borderColor=ok?'':'var(--er)';
+}
+function maskPhone(el){
+  let v=el.value.replace(/\D/g,'').substring(0,11);
+  if(v.length>10) v=v.replace(/^(\d{2})(\d{5})(\d{4}).*/,'($1) $2-$3');
+  else if(v.length>6) v=v.replace(/^(\d{2})(\d{4})(\d*)/,'($1) $2-$3');
+  else if(v.length>2) v=v.replace(/^(\d{2})(\d*)/,'($1) $2');
+  el.value=v;
+}
+function maskCep(el){
+  let v=el.value.replace(/\D/g,'').substring(0,8);
+  if(v.length>5)v=v.replace(/(\d{5})(\d)/,'$1-$2');
+  el.value=v;
+}
+function validaEmail(el){
+  const ok=!el.value||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value);
+  el.style.borderColor=ok?'':'var(--er)';
+}
+async function buscaCEP(){
+  const cep=document.getElementById('aCep').value.replace(/\D/g,'');
+  if(cep.length!==8)return;
+  try{
+    const r=await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const d=await r.json();
+    if(d.erro){showToast('⚠ CEP não encontrado');return}
+    document.getElementById('aLogradouro').value=d.logradouro||'';
+    document.getElementById('aBairro').value=d.bairro||'';
+    document.getElementById('aCidade').value=d.localidade||'';
+    document.getElementById('aEstado').value=d.uf||'';
+    document.getElementById('aNumero').focus();
+  }catch(e){showToast('⚠ Erro ao buscar CEP')}
+}
+
 // ══ SPLASH ═════════════════════════════════════════════
 window.addEventListener('load',async ()=>{
   const d = new Date();
@@ -1157,8 +1225,20 @@ document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click
 
 // ══ HELPERS ════════════════════════════════════════════
 let editandoAlunoId=null;
-const beltMap={Branca:'bW',Cinza:'kbG',Amarelo:'kbY',Laranja:'kbO',Verde:'kbGr',Azul:'bB',Roxa:'bP',Marrom:'bBr',Preta:'bBk'};
-const beltTopColor={Branca:'#bdbdbd',Cinza:'#757575',Amarelo:'#F9A825',Laranja:'#E65100',Verde:'#1B5E20',Azul:'#1565C0',Roxa:'#6A1B9A',Marrom:'#4E342E',Preta:'#111'};
+const beltMap={
+  'Branca':'bW','Azul':'bB','Roxa':'bP','Marrom':'bBr','Preta':'bBk',
+  'Cinza com Branco':'kbGW','Cinza':'kbG','Cinza com Preto':'kbGBk',
+  'Amarelo com Branco':'kbYW','Amarelo':'kbY','Amarelo com Preto':'kbYBk',
+  'Laranja com Branco':'kbOW','Laranja':'kbO','Laranja com Preto':'kbOBk',
+  'Verde com Branco':'kbGrW','Verde':'kbGr','Verde com Preto':'kbGrBk'
+};
+const beltTopColor={
+  'Branca':'#bdbdbd','Azul':'#1565C0','Roxa':'#6A1B9A','Marrom':'#4E342E','Preta':'#111',
+  'Cinza com Branco':'#9e9e9e','Cinza':'#616161','Cinza com Preto':'#424242',
+  'Amarelo com Branco':'#F9A825','Amarelo':'#F57F17','Amarelo com Preto':'#E65100',
+  'Laranja com Branco':'#F4511E','Laranja':'#E65100','Laranja com Preto':'#BF360C',
+  'Verde com Branco':'#2E7D32','Verde':'#1B5E20','Verde com Preto':'#004D40'
+};
 function graus(n){let s='';for(let i=0;i<n;i++)s+='<span class="stripe"></span>';return s}
 function fc(f){return !f?'b-ch':f>80?'b-ok':f>60?'b-wa':'b-er'}
 function idade(nasc){if(!nasc)return '—';const d=new Date(nasc),now=new Date();return Math.floor((now-d)/31557600000)+'a'}
@@ -1168,7 +1248,10 @@ function nowStr(){return new Date().toLocaleString('pt-BR',{day:'2-digit',month:
 // ══ ALUNOS ═════════════════════════════════════════════
 function abrirModalAluno(isKid=false){
   editandoAlunoId=null;
-  ['aNome','aCpf','aTel','aEmail','aEndereco','aRespNome','aRespTel','aObs'].forEach(id=>document.getElementById(id).value='');
+  ['aNome','aCpf','aTel','aEmail','aRespNome','aRespTel','aObs',
+   'aCep','aLogradouro','aNumero','aComplemento','aBairro','aCidade','aEstado'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
   ['aSexo','aFaixa','aGraus','aKimono','aStatus'].forEach(id=>document.getElementById(id).selectedIndex=0);
   document.getElementById('aPlano').value=isKid?'Kids — R$250/mês':'Mensal — R$300';
   document.getElementById('aTipo').value=isKid?'Kids':'Adulto';
@@ -1189,7 +1272,13 @@ function editarAluno(id){
   document.getElementById('aSexo').value=a.sexo||'';
   document.getElementById('aTel').value=a.tel||'';
   document.getElementById('aEmail').value=a.email||'';
-  document.getElementById('aEndereco').value=a.endereco||'';
+  document.getElementById('aCep').value=a.cep||'';
+  document.getElementById('aLogradouro').value=a.logradouro||'';
+  document.getElementById('aNumero').value=a.numero||'';
+  document.getElementById('aComplemento').value=a.complemento||'';
+  document.getElementById('aBairro').value=a.bairro||'';
+  document.getElementById('aCidade').value=a.cidade||'';
+  document.getElementById('aEstado').value=a.estado||'';
   document.getElementById('aRespNome').value=a.respNome||'';
   document.getElementById('aRespTel').value=a.respTel||'';
   document.getElementById('aTipo').value=a.kids?'Kids':'Adulto';
@@ -1211,15 +1300,23 @@ function salvarAluno(){
   const tel=document.getElementById('aTel').value.trim();
   const faixa=document.getElementById('aFaixa').value;
   const kimono=document.getElementById('aKimono').value;
+  const cpf=document.getElementById('aCpf').value;
   if(!nome||!tel||!faixa||!kimono){showToast('⚠ Preencha os campos obrigatórios (*)');return}
+  if(cpf&&!validaCPF(cpf)){showToast('⚠ CPF inválido — verifique o número');return}
   const editId=document.getElementById('aEditId').value;
   const obj={
     id:editId||Date.now().toString(),
-    nome,cpf:document.getElementById('aCpf').value,
+    nome,cpf,
     nasc:document.getElementById('aNasc').value,
     sexo:document.getElementById('aSexo').value,
     tel,email:document.getElementById('aEmail').value,
-    endereco:document.getElementById('aEndereco').value,
+    cep:document.getElementById('aCep').value,
+    logradouro:document.getElementById('aLogradouro').value,
+    numero:document.getElementById('aNumero').value,
+    complemento:document.getElementById('aComplemento').value,
+    bairro:document.getElementById('aBairro').value,
+    cidade:document.getElementById('aCidade').value,
+    estado:document.getElementById('aEstado').value,
     respNome:document.getElementById('aRespNome').value,
     respTel:document.getElementById('aRespTel').value,
     faixa,graus:parseInt(document.getElementById('aGraus').value)||0,
@@ -2035,7 +2132,7 @@ function atualizarFaixasPorTipo(){
   const sel=document.getElementById('aFaixa');
   const turma=document.getElementById('aTurma');
   if(tipo==='Kids'){
-    sel.innerHTML='<option value="">Selecione</option><option>Branca</option><option>Cinza</option><option>Amarelo</option><option>Laranja</option><option>Verde</option>';
+    sel.innerHTML='<option value="">Selecione</option><option>Cinza com Branco</option><option>Cinza</option><option>Cinza com Preto</option><option>Amarelo com Branco</option><option>Amarelo</option><option>Amarelo com Preto</option><option>Laranja com Branco</option><option>Laranja</option><option>Laranja com Preto</option><option>Verde com Branco</option><option>Verde</option><option>Verde com Preto</option>';
     turma.innerHTML='<option>Kids — Infantil</option><option>Kids — Juvenil</option><option>Kids — Pré-teen</option>';
   } else {
     sel.innerHTML='<option value="">Selecione</option><option>Branca</option><option>Azul</option><option>Roxa</option><option>Marrom</option><option>Preta</option>';
