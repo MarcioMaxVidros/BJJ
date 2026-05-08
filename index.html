@@ -164,6 +164,8 @@ tbody tr:hover td{background:var(--ch-xl)}
 .kbOBk{background:linear-gradient(90deg,#E65100 60%,#111 60%);color:#fff}
 .kbGrBk{background:linear-gradient(90deg,#1B5E20 60%,#111 60%);color:#fff}
 .stripe{display:inline-block;width:5px;height:11px;background:var(--go);border-radius:1px;margin-left:2px;vertical-align:middle}
+.dia-btn{padding:6px 10px;border-radius:var(--r8);border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:.5px}
+.dia-btn.on{background:var(--pu);color:#fff;border-color:var(--pu)}
 
 /* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:var(--r8);font-size:13px;font-weight:600;cursor:pointer;border:1px solid transparent;transition:all .12s;white-space:nowrap}
@@ -501,7 +503,6 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
         <input class="si" type="text" id="buscaKids" placeholder="Buscar kid..." oninput="renderKids()">
         <button class="btn btn-pu btn-sm" onclick="abrirModalAluno(true)">+ Novo kid</button>
       </div>
-      <div class="kg" id="kidGrid"><div style="font-size:13px;color:var(--text3);padding:20px;grid-column:1/-1;text-align:center">Nenhum kid cadastrado ainda.</div></div>
       <div class="card" style="padding:0;overflow:hidden">
         <div class="tw"><table>
           <thead><tr><th style="padding-left:12px">Nome</th><th>Idade</th><th>Faixa</th><th>Responsável</th><th>Contato</th><th>Kimono</th><th>Status</th><th>Ações</th></tr></thead>
@@ -611,8 +612,8 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
       </div>
       <div class="card" style="padding:0;overflow:hidden">
         <div class="tw"><table>
-          <thead><tr><th>Data/Hora</th><th>Descrição</th><th>Forma</th><th>Tipo</th><th>Valor</th></tr></thead>
-          <tbody id="tbFinanceiro"><tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text3)">Nenhum lançamento.</td></tr></tbody>
+          <thead><tr><th>Data/Hora</th><th>Descrição</th><th>Qtd × Vlr Unit</th><th>Forma</th><th>Tipo</th><th>Total</th></tr></thead>
+          <tbody id="tbFinanceiro"><tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text3)">Nenhum lançamento.</td></tr></tbody>
         </table></div>
       </div>
     </div>
@@ -737,6 +738,21 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
         <div class="fg"><label class="fl">TURMA</label>
           <select class="fi" id="aTurma"><option>Fundamental</option><option>Avançado</option><option>Feminino</option><option>Open Mat</option><option>Kids — Infantil</option><option>Kids — Juvenil</option><option>Kids — Pré-teen</option></select>
         </div>
+        <div class="fg"><label class="fl">PERÍODO</label>
+          <select class="fi" id="aPeriodo"><option value="">Selecione</option><option>Manhã</option><option>Tarde</option><option>Noite</option></select>
+        </div>
+        <div class="full fg">
+          <label class="fl">DIAS DE TREINO</label>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
+            <button type="button" class="dia-btn" data-dia="Seg" onclick="toggleDia(this)">Seg</button>
+            <button type="button" class="dia-btn" data-dia="Ter" onclick="toggleDia(this)">Ter</button>
+            <button type="button" class="dia-btn" data-dia="Qua" onclick="toggleDia(this)">Qua</button>
+            <button type="button" class="dia-btn" data-dia="Qui" onclick="toggleDia(this)">Qui</button>
+            <button type="button" class="dia-btn" data-dia="Sex" onclick="toggleDia(this)">Sex</button>
+            <button type="button" class="dia-btn" data-dia="Sáb" onclick="toggleDia(this)">Sáb</button>
+            <button type="button" class="dia-btn" data-dia="Dom" onclick="toggleDia(this)">Dom</button>
+          </div>
+        </div>
         <div class="fg"><label class="fl">FAIXA ATUAL *</label>
           <select class="fi" id="aFaixa"><option value="">Selecione</option><option>Branca</option><option>Azul</option><option>Roxa</option><option>Marrom</option><option>Preta</option></select>
         </div>
@@ -843,13 +859,24 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
     </div>
     <div class="modal-body">
       <div class="form-grid">
-        <div class="full fg"><label class="fl">DESCRIÇÃO *</label><input class="fi" id="lDesc" placeholder="Ex: Mensalidade João, Aluguel..."></div>
+        <div class="full fg"><label class="fl">DESCRIÇÃO *</label><input class="fi" id="lDesc" placeholder="Ex: 3 almoços, Mensalidade João..."></div>
         <div class="fg"><label class="fl">TIPO</label>
           <select class="fi" id="lTipo"><option value="Entrada">Entrada</option><option value="Saída">Saída</option></select>
         </div>
-        <div class="fg"><label class="fl">VALOR (R$) *</label><input class="fi" type="number" id="lValor" placeholder="300"></div>
         <div class="fg"><label class="fl">FORMA DE PAGAMENTO</label>
           <select class="fi" id="lForma"><option>Pix</option><option>Dinheiro</option><option>Débito</option><option>Crédito</option><option>Cheque</option><option>Transferência</option></select>
+        </div>
+        <div class="fg"><label class="fl">QUANTIDADE</label>
+          <div style="display:flex;align-items:center;gap:6px">
+            <button type="button" onclick="adjQtd(-1)" style="width:32px;height:36px;border:1px solid var(--border);border-radius:var(--r4);background:var(--card);cursor:pointer;font-size:16px">−</button>
+            <input class="fi" type="number" id="lQtd" value="1" min="1" style="text-align:center;flex:1" oninput="calcTotal()">
+            <button type="button" onclick="adjQtd(1)" style="width:32px;height:36px;border:1px solid var(--border);border-radius:var(--r4);background:var(--card);cursor:pointer;font-size:16px">+</button>
+          </div>
+        </div>
+        <div class="fg"><label class="fl">VALOR UNITÁRIO (R$) *</label><input class="fi" type="number" id="lValor" placeholder="10,00" oninput="calcTotal()"></div>
+        <div class="full" style="background:var(--ch-xl);border-radius:var(--r8);padding:10px 14px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:var(--text2);font-weight:600">TOTAL</span>
+          <span id="lTotal" style="font-size:18px;font-weight:800;color:var(--ok)">R$ 0,00</span>
         </div>
       </div>
     </div>
@@ -1174,6 +1201,14 @@ async function buscaCEP(){
   }catch(e){showToast('⚠ Erro ao buscar CEP')}
 }
 
+function toggleDia(el){ el.classList.toggle('on') }
+function getDias(){ return [...document.querySelectorAll('.dia-btn.on')].map(b=>b.dataset.dia) }
+function setDias(dias=[]){
+  document.querySelectorAll('.dia-btn').forEach(b=>{
+    b.classList.toggle('on', dias.includes(b.dataset.dia));
+  });
+}
+
 // ══ SPLASH ═════════════════════════════════════════════
 window.addEventListener('load',async ()=>{
   const d = new Date();
@@ -1279,7 +1314,13 @@ function abrirModalAluno(isKid=false){
     const el=document.getElementById(id);if(el)el.value='';
   });
   ['aSexo','aFaixa','aGraus','aKimono','aStatus'].forEach(id=>document.getElementById(id).selectedIndex=0);
-  document.getElementById('aPlano').value=isKid?'Kids — R$250/mês':'Mensal — R$300';
+  // popula planos dinamicamente
+  const plSel=document.getElementById('aPlano');
+  const pl=getPlanos();
+  plSel.innerHTML=Object.entries(pl).map(([n,v])=>`<option value="${n} — R$${v}">${n} — R$${v}/mês</option>`).join('');
+  setDias([]);
+  document.getElementById('aPeriodo').value='';
+  document.getElementById('aPlano').value=isKid?`Kids — R$${pl['Kids']||250}`:`Mensal — R$${pl['Mensal']||300}`;
   document.getElementById('aTipo').value=isKid?'Kids':'Adulto';
   atualizarFaixasPorTipo();
   document.getElementById('aNasc').value='';
@@ -1307,6 +1348,8 @@ function editarAluno(id){
   document.getElementById('aEstado').value=a.estado||'';
   document.getElementById('aRespNome').value=a.respNome||'';
   document.getElementById('aRespTel').value=a.respTel||'';
+  setDias(a.dias||[]);
+  document.getElementById('aPeriodo').value=a.periodo||'';
   document.getElementById('aTipo').value=a.kids?'Kids':'Adulto';
   atualizarFaixasPorTipo();
   document.getElementById('aTurma').value=a.turma||'Fundamental';
@@ -1352,6 +1395,8 @@ function salvarAluno(){
     status:document.getElementById('aStatus').value,
     obs:document.getElementById('aObs').value,
     turma:document.getElementById('aTurma').value,
+    periodo:document.getElementById('aPeriodo').value,
+    dias:getDias(),
     kids:document.getElementById('aTipo').value==='Kids',
     treinos:editId?(alunos.find(a=>a.id===editId)?.treinos||0):0,
     criadoEm:editId?(alunos.find(a=>a.id===editId)?.criadoEm||nowStr()):nowStr()
@@ -1386,23 +1431,8 @@ function renderAlunos(){
 function renderKids(){
   const q=(document.getElementById('buscaKids')?.value||'').toLowerCase();
   const kids=alunos.filter(a=>a.kids&&(!q||a.nome.toLowerCase().includes(q)));
-  const grid=document.getElementById('kidGrid');
   const tb=document.getElementById('tbKids');
-  if(!kids.length){grid.innerHTML=`<div style="font-size:13px;color:var(--text3);padding:20px;grid-column:1/-1;text-align:center">Nenhum kid cadastrado.</div>`;tb.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text3)">Nenhum kid.</td></tr>`;return}
-  grid.innerHTML=kids.map(k=>{
-    const top=beltTopColor[k.faixa]||'#bdbdbd';
-    const prog=Math.min(100,Math.round((k.treinos||0)/80*100));
-    return`<div class="kdc" onclick="editarAluno('${k.id}')">
-      <div class="kdc-top" style="background:${top}"></div>
-      <div class="kdc-body">
-        <div class="kdc-name">${k.nome.split(' ')[0]}</div>
-        <div class="kdc-meta">${idade(k.nasc)} · <span class="belt ${beltMap[k.faixa]||'kbW'}" style="font-size:10px;padding:1px 5px">${k.faixa}</span>${graus(k.graus)}</div>
-        <div class="kdc-prog"><div class="kdc-pf" style="width:${prog}%"></div></div>
-        <div class="kdc-ft"><span>${prog}% prox. faixa</span><span style="color:var(--go)">🥋</span></div>
-        <div style="font-size:10.5px;color:var(--text3);margin-top:4px">${k.respNome||'Resp: —'}</div>
-      </div>
-    </div>`;
-  }).join('');
+  if(!kids.length){tb.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text3)">Nenhum kid cadastrado.</td></tr>`;return}
   tb.innerHTML=kids.map(k=>`<tr>
     <td style="padding-left:12px"><div style="display:flex;align-items:center;gap:7px"><span class="ava ava-bl">${k.nome[0]}</span>${k.nome}</div></td>
     <td>${idade(k.nasc)}</td>
@@ -1910,12 +1940,39 @@ function renderPedidos(){
 function entregarPedido(i){pedidos[i].status='Entregue';save();renderPedidos();showToast('Pedido marcado como entregue!')}
 
 // ══ FINANCEIRO ══════════════════════════════════════════
-function abrirModalLancamento(){['lDesc','lValor'].forEach(i=>document.getElementById(i).value='');document.getElementById('lTipo').selectedIndex=0;document.getElementById('lForma').selectedIndex=0;abrirModal('modalLancamento')}
+function _oldLancamento(){['lDesc','lValor'].forEach(i=>document.getElementById(i).value='');document.getElementById('lTipo').selectedIndex=0;document.getElementById('lForma').selectedIndex=0;abrirModal('modalLancamento')}
+function calcTotal(){
+  const qtd=parseFloat(document.getElementById('lQtd')?.value)||1;
+  const vlr=parseFloat(document.getElementById('lValor')?.value)||0;
+  const total=qtd*vlr;
+  const tipo=document.getElementById('lTipo')?.value;
+  const el=document.getElementById('lTotal');
+  if(el){
+    el.textContent='R$ '+total.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+    el.style.color=tipo==='Saída'?'var(--er)':'var(--ok)';
+  }
+}
+function adjQtd(d){
+  const el=document.getElementById('lQtd');
+  el.value=Math.max(1,(parseInt(el.value)||1)+d);
+  calcTotal();
+}
+function abrirModalLancamento(){
+  document.getElementById('lDesc').value='';
+  document.getElementById('lValor').value='';
+  document.getElementById('lQtd').value='1';
+  document.getElementById('lTotal').textContent='R$ 0,00';
+  document.getElementById('lTipo').selectedIndex=0;
+  document.getElementById('lForma').selectedIndex=0;
+  abrirModal('modalLancamento');
+}
 function salvarLancamento(){
   const desc=document.getElementById('lDesc').value.trim();
-  const valor=parseFloat(document.getElementById('lValor').value);
-  if(!desc||!valor){showToast('⚠ Descrição e valor são obrigatórios');return}
-  financeiro.unshift({id:Date.now().toString(),desc,tipo:document.getElementById('lTipo').value,forma:document.getElementById('lForma').value,valor,data:nowStr()});
+  const vlrUnit=parseFloat(document.getElementById('lValor').value);
+  const qtd=parseFloat(document.getElementById('lQtd').value)||1;
+  if(!desc||!vlrUnit){showToast('⚠ Descrição e valor são obrigatórios');return}
+  const total=qtd*vlrUnit;
+  financeiro.unshift({id:Date.now().toString(),desc,tipo:document.getElementById('lTipo').value,forma:document.getElementById('lForma').value,qtd,vlrUnit,valor:total,data:nowStr()});
   save();fecharModal('modalLancamento');renderFinanceiro();showToast('✓ Lançamento registrado!');
 }
 function renderFinanceiro(){
@@ -1928,13 +1985,14 @@ function renderFinanceiro(){
   document.getElementById('fiSaldo').textContent='R$'+Math.abs(saldo).toLocaleString('pt-BR',{minimumFractionDigits:0});
   document.getElementById('fiSaldo').style.color=saldo>=0?'var(--ok)':'var(--er)';
   document.getElementById('fiCount').textContent=financeiro.length;
-  if(!financeiro.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text3)">Nenhum lançamento.</td></tr>';return}
+  if(!financeiro.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text3)">Nenhum lançamento.</td></tr>';return}
   tb.innerHTML=financeiro.map(f=>`<tr>
     <td style="font-size:12px;color:var(--text3)">${f.data}</td>
     <td>${f.desc}</td>
+    <td style="font-size:12px;text-align:center">${f.qtd||1} × R$${(f.vlrUnit||f.valor).toFixed(2)}</td>
     <td><span class="badge b-ch">${f.forma}</span></td>
     <td><span class="badge ${f.tipo==='Entrada'?'b-ok':'b-er'}">${f.tipo}</span></td>
-    <td style="font-weight:700;color:${f.tipo==='Entrada'?'var(--ok)':'var(--er)'}">${f.tipo==='Entrada'?'+':'-'}R$${f.valor}</td>
+    <td style="font-weight:700;color:${f.tipo==='Entrada'?'var(--ok)':'var(--er)'}">${f.tipo==='Entrada'?'+':'-'}R$${f.valor.toFixed(2)}</td>
   </tr>`).join('');
 }
 
