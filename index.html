@@ -1346,13 +1346,9 @@ function abrirModalAluno(isKid=false){
     const el=document.getElementById(id);if(el)el.value='';
   });
   ['aSexo','aFaixa','aGraus','aKimono','aStatus'].forEach(id=>document.getElementById(id).selectedIndex=0);
-  // popula planos dinamicamente
-  const plSel=document.getElementById('aPlano');
-  const pl=getPlanos();
-  plSel.innerHTML=Object.entries(pl).map(([n,v])=>`<option value="${n} — R$${v}">${n} — R$${v}/mês</option>`).join('');
   setDias([]);
   document.getElementById('aPeriodo').value='';
-  document.getElementById('aPlano').value=isKid?`Kids — R$${pl['Kids']||250}`:`Mensal — R$${pl['Mensal']||300}`;
+  document.getElementById('aPlano').selectedIndex=0;
   atualizarValorPlano();
   document.getElementById('aTipo').value=isKid?'Kids':'Adulto';
   atualizarFaixasPorTipo();
@@ -1390,11 +1386,7 @@ function editarAluno(id){
   document.getElementById('aGraus').value=a.graus||0;
   document.getElementById('aKimono').value=a.kimono||'';
   document.getElementById('aIngresso').value=a.ingresso||'';
-  // popula planos dinamicamente antes de setar o valor
-  const plSelEd=document.getElementById('aPlano');
-  const plEd=getPlanos();
-  plSelEd.innerHTML=Object.entries(plEd).map(([n,v])=>`<option value="${n} — R$${v}">${n} — R$${v}/mês</option>`).join('');
-  document.getElementById('aPlano').value=a.plano||`Mensal — R$${plEd['Mensal']||300}`;
+  document.getElementById('aPlano').value=a.plano||'Mensal — R$300';
   document.getElementById('aValorMens').value=a.valorMens||'';
   atualizarValorPlano();
   document.getElementById('aStatus').value=a.status||'Ativo';
@@ -1547,7 +1539,8 @@ function toggleCI(id){
 }
 
 // ══ MENSALIDADES ═══════════════════════════════════════
-const planoValor = v => {
+const planoValor = (v, a) => {
+  if(a?.valorMens) return a.valorMens;
   if(v.includes('300'))return 300;
   if(v.includes('270'))return 270;
   if(v.includes('250'))return 250;
@@ -1583,7 +1576,7 @@ function situacaoMensalidade(venc){
 
 function abrirPagto(id){
   const a=alunos.find(x=>x.id===id); if(!a)return;
-  const valor=planoValor(a.plano||'');
+  const valor=planoValor(a.plano||'', a);
   document.getElementById('pagtoAlunoId').value=id;
   document.getElementById('pagtoValor').value=valor||'';
   const now=new Date();
@@ -1622,7 +1615,7 @@ function renderMensalidades(){
     const venc=getVencimento(a);
     const sit=situacaoMensalidade(venc);
     const ultP=getUltPagto(a.id);
-    const valor=planoValor(a.plano||'');
+    const valor=planoValor(a.plano||'', a);
     if(valor>0)receitaEsp+=valor;
     if(sit.label==='Em dia')emDia++;
     else if(sit.label==='Vencido')vencidos++;
@@ -1644,7 +1637,7 @@ function renderMensalidades(){
       <span class="ava ${a.kids?'ava-bl':''}">${a.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span>
       <div><div style="font-weight:600;font-size:13px">${a.nome}</div><div style="font-size:10.5px;color:var(--text3)">${a.kids?'Kids':'Adulto'} · ${a.turma||'—'}</div></div>
     </div></td>
-    <td style="font-size:12px">${a.plano?.split('—')[0].trim()||'—'}</td>
+    <td style="font-size:12px">${a.plano==='Negociado'?'<span style="color:var(--wa);font-weight:600">Negociado</span>':a.plano?.split('—')[0].trim()||'—'}</td>
     <td style="font-size:12px">${formatDate(venc)}</td>
     <td><span class="badge ${sit.badge}">${sit.label}</span></td>
     <td style="font-size:12px;color:var(--text3)">${ultP?ultP.data+' — '+ultP.forma:'—'}</td>
@@ -1805,12 +1798,6 @@ function salvarPlanos(){
     if(el)pl[nome]=parseFloat(el.value)||0;
   });
   ss('planos',pl);syncToSupabase();
-  // atualiza select do cadastro
-  const sel=document.getElementById('aPlano');
-  if(sel){
-    sel.innerHTML=Object.entries(pl).map(([n,v])=>
-      `<option value="${n} — R$${v}">${n} — R$${v}/mês</option>`).join('');
-  }
   fecharModal('modalPlanos');showToast('✓ Valores dos planos atualizados!');
 }
 
