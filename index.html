@@ -765,7 +765,19 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
         <div class="fg"><label class="fl">DATA DE INGRESSO</label><input class="fi" type="date" id="aIngresso"></div>
         <div class="section-sep full">CONTRATO &amp; PLANO</div>
         <div class="fg"><label class="fl">PLANO</label>
-          <select class="fi" id="aPlano"><option>Mensal — R$300</option><option>Trimestral — R$270/mês</option><option>Semestral — R$250/mês</option><option>Anual — R$230/mês</option><option>Kids — R$250/mês</option><option>Wellhub</option><option>TotalPass</option></select>
+          <select class="fi" id="aPlano" onchange="atualizarValorPlano()">
+            <option>Mensal — R$300</option>
+            <option>Trimestral — R$270/mês</option>
+            <option>Semestral — R$250/mês</option>
+            <option>Anual — R$230/mês</option>
+            <option>Kids — R$250/mês</option>
+            <option>Negociado</option>
+            <option>Wellhub</option>
+            <option>TotalPass</option>
+          </select>
+        </div>
+        <div class="fg" id="fgValorMens"><label class="fl">VALOR MENSALIDADE (R$)</label>
+          <input class="fi" type="number" id="aValorMens" placeholder="300" min="0">
         </div>
         <div class="fg"><label class="fl">STATUS</label>
           <select class="fi" id="aStatus"><option>Ativo</option><option>Inativo</option><option>Inadimplente</option><option>Trancado</option></select>
@@ -1107,6 +1119,7 @@ async function syncToSupabase(){
       {key:'professores',value:professores},
       {key:'aulas',      value:aulas},
       {key:'vencimentos',value:vencimentos},
+      {key:'planos',     value:getPlanos()},
     ]);
     console.log('✓ Sync Supabase OK');
   }catch(e){console.warn('Sync error:',e.message)}
@@ -1131,6 +1144,7 @@ async function initFromSupabase(){
     ciState     = map['ci_'+today()] || ls('ci_'+today()) || {};
     professores = map['professores'] || ls('professores') || [];
     aulas       = map['aulas']       || ls('aulas')       || [];
+    if(map['planos']) ss('planos', map['planos']);
     const venc  = map['vencimentos'] || {};
     Object.entries(venc).forEach(([k,v])=>{
       try{localStorage.setItem(KEY+k,JSON.stringify(v))}catch{}
@@ -1207,6 +1221,24 @@ function setDias(dias=[]){
   document.querySelectorAll('.dia-btn').forEach(b=>{
     b.classList.toggle('on', dias.includes(b.dataset.dia));
   });
+}
+function atualizarValorPlano(){
+  const plano=document.getElementById('aPlano').value;
+  const semValor=['Wellhub','TotalPass'];
+  const fg=document.getElementById('fgValorMens');
+  if(semValor.includes(plano)){
+    fg.style.display='none';
+    document.getElementById('aValorMens').value='';
+  } else {
+    fg.style.display='';
+    if(plano!=='Negociado'){
+      const match=plano.match(/R\$(\d+)/);
+      if(match) document.getElementById('aValorMens').value=match[1];
+    } else {
+      document.getElementById('aValorMens').value='';
+      document.getElementById('aValorMens').focus();
+    }
+  }
 }
 
 // ══ SPLASH ═════════════════════════════════════════════
@@ -1321,6 +1353,7 @@ function abrirModalAluno(isKid=false){
   setDias([]);
   document.getElementById('aPeriodo').value='';
   document.getElementById('aPlano').value=isKid?`Kids — R$${pl['Kids']||250}`:`Mensal — R$${pl['Mensal']||300}`;
+  atualizarValorPlano();
   document.getElementById('aTipo').value=isKid?'Kids':'Adulto';
   atualizarFaixasPorTipo();
   document.getElementById('aNasc').value='';
@@ -1357,7 +1390,13 @@ function editarAluno(id){
   document.getElementById('aGraus').value=a.graus||0;
   document.getElementById('aKimono').value=a.kimono||'';
   document.getElementById('aIngresso').value=a.ingresso||'';
-  document.getElementById('aPlano').value=a.plano||'Mensal — R$300';
+  // popula planos dinamicamente antes de setar o valor
+  const plSelEd=document.getElementById('aPlano');
+  const plEd=getPlanos();
+  plSelEd.innerHTML=Object.entries(plEd).map(([n,v])=>`<option value="${n} — R$${v}">${n} — R$${v}/mês</option>`).join('');
+  document.getElementById('aPlano').value=a.plano||`Mensal — R$${plEd['Mensal']||300}`;
+  document.getElementById('aValorMens').value=a.valorMens||'';
+  atualizarValorPlano();
   document.getElementById('aStatus').value=a.status||'Ativo';
   document.getElementById('aObs').value=a.obs||'';
   document.getElementById('aEditId').value=id;
@@ -1392,6 +1431,7 @@ function salvarAluno(){
     kimono,
     ingresso:document.getElementById('aIngresso').value,
     plano:document.getElementById('aPlano').value,
+    valorMens:parseFloat(document.getElementById('aValorMens').value)||0,
     status:document.getElementById('aStatus').value,
     obs:document.getElementById('aObs').value,
     turma:document.getElementById('aTurma').value,
