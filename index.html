@@ -512,7 +512,13 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
 
     <!-- ══ GRADUAÇÕES ══ -->
     <div class="sec" id="s-gr">
-      <div class="card"><div class="card-hd"><span class="ct">ALUNOS — PROGRESSO</span></div>
+      <div class="card"><div class="card-hd">
+        <span class="ct">ALUNOS — PROGRESSO</span>
+        <div style="display:flex;gap:6px">
+          <button id="gradTabAdulto" class="chip on" onclick="gradTab='adulto';renderGrad()">Adultos</button>
+          <button id="gradTabKids" class="chip" onclick="gradTab='kids';renderGrad()">Kids</button>
+        </div>
+      </div>
         <div class="tw"><table>
           <thead><tr><th>Aluno</th><th>Faixa</th><th>Treinos</th><th>Progresso</th><th>Ação</th></tr></thead>
           <tbody id="tbGrad"><tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text3)">Cadastre alunos para acompanhar graduações.</td></tr></tbody>
@@ -546,6 +552,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
         <div style="padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
           <span class="ct">CONTROLE DE MENSALIDADES</span>
           <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn-ghost" style="font-size:11px" onclick="abrirModalPlanos()">⚙ Valores dos Planos</button>
             <select class="fi" id="msFiltStatus" style="height:30px;font-size:12px;width:120px" onchange="renderMensalidades()">
               <option value="">Todos</option><option>Em dia</option><option>Vencido</option><option>Vence hoje</option>
             </select>
@@ -754,6 +761,21 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
       <input type="hidden" id="aEditId">
       <button class="btn btn-sec" onclick="fecharModal('modalAluno')">Cancelar</button>
       <button class="btn btn-pu" onclick="salvarAluno()">Salvar ficha</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PLANOS -->
+<div class="modal-overlay" id="modalPlanos">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-hd">
+      <div><div class="modal-title">Valores dos Planos</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Edite os valores — salvo automaticamente</div></div>
+      <button class="modal-close" onclick="fecharModal('modalPlanos')">✕</button>
+    </div>
+    <div class="modal-body" id="planosModalBody"></div>
+    <div class="modal-ft">
+      <button class="btn btn-sec" onclick="fecharModal('modalPlanos')">Fechar</button>
+      <button class="btn btn-pu" onclick="salvarPlanos()">Salvar valores</button>
     </div>
   </div>
 </div>
@@ -1197,7 +1219,11 @@ function doLogin(){
   document.getElementById('mbAva').textContent = curUser.ini;
   document.getElementById('sbUser').innerHTML = `${curUser.name}<br><span style="color:rgba(255,255,255,.2)">${curUser.role}</span>`;
   document.getElementById('login').classList.remove('show');
-  setTimeout(()=>{document.getElementById('app').classList.add('show');refreshAll()},100);
+  // Recarrega dados do Supabase ao fazer login para garantir sincronia entre usuários
+  initFromSupabase().then(()=>{
+    document.getElementById('app').classList.add('show');
+    refreshAll();
+  });
 }
 function doLogout(){document.getElementById('app').classList.remove('show');setTimeout(()=>document.getElementById('login').classList.add('show'),200)}
 document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
@@ -1637,17 +1663,34 @@ function refreshDash(){
 }
 
 // ══ GRADUAÇÕES ══════════════════════════════════════════
+const reqsAdulto={Branca:80,Azul:120,Roxa:200,Marrom:300};
+const reqsKids={
+  'Cinza com Branco':30,'Cinza':30,'Cinza com Preto':30,
+  'Amarelo com Branco':40,'Amarelo':40,'Amarelo com Preto':40,
+  'Laranja com Branco':50,'Laranja':50,'Laranja com Preto':50,
+  'Verde com Branco':60,'Verde':60,'Verde com Preto':60
+};
+const beltNextKids={
+  'Cinza com Branco':'Cinza','Cinza':'Cinza com Preto','Cinza com Preto':'Amarelo com Branco',
+  'Amarelo com Branco':'Amarelo','Amarelo':'Amarelo com Preto','Amarelo com Preto':'Laranja com Branco',
+  'Laranja com Branco':'Laranja','Laranja':'Laranja com Preto','Laranja com Preto':'Verde com Branco',
+  'Verde com Branco':'Verde','Verde':'Verde com Preto','Verde com Preto':'Azul'
+};
+let gradTab='adulto';
 function renderGrad(){
+  // tabs
+  document.getElementById('gradTabAdulto').classList.toggle('on',gradTab==='adulto');
+  document.getElementById('gradTabKids').classList.toggle('on',gradTab==='kids');
   const tb=document.getElementById('tbGrad');
-  const adults=alunos.filter(a=>!a.kids);
-  if(!adults.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text3)">Cadastre alunos para acompanhar graduações.</td></tr>';return}
-  const reqs={Branca:80,Cinza:60,Azul:120,Roxa:200,Marrom:300};
-  tb.innerHTML=adults.map(a=>{
-    const req=reqs[a.faixa]||80;
+  const lista=gradTab==='adulto'?alunos.filter(a=>!a.kids):alunos.filter(a=>a.kids);
+  if(!lista.length){tb.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text3)">Nenhum ${gradTab==='adulto'?'aluno adulto':'kid'} cadastrado.</td></tr>`;return}
+  tb.innerHTML=lista.map(a=>{
+    const reqs=gradTab==='adulto'?reqsAdulto:reqsKids;
+    const req=reqs[a.faixa]||40;
     const t=a.treinos||0;
     const pct=Math.min(100,Math.round(t/req*100));
     return`<tr>
-      <td><div style="display:flex;align-items:center;gap:7px"><span class="ava">${a.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span>${a.nome}</div></td>
+      <td><div style="display:flex;align-items:center;gap:7px"><span class="ava ${a.kids?'ava-bl':''}">${a.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span>${a.nome}</div></td>
       <td><span class="belt ${beltMap[a.faixa]||'bW'}">${a.faixa}</span>${graus(a.graus)}</td>
       <td>${t}/${req}</td>
       <td><div class="pw"><div class="pb"><div class="pf" style="width:${pct}%"></div></div><span class="pl">${pct}%</span></div></td>
@@ -1658,11 +1701,47 @@ function renderGrad(){
 const beltNext={Branca:'Azul',Azul:'Roxa',Roxa:'Marrom',Marrom:'Preta'};
 function promover(id){
   const a=alunos.find(x=>x.id===id);if(!a)return;
-  const prox=beltNext[a.faixa];
+  const prox=a.kids?beltNextKids[a.faixa]:beltNext[a.faixa];
   if(!prox){showToast('Faixa máxima atingida!');return}
-  if(!confirm(`Promover ${a.nome} para faixa ${prox}?`))return;
+  if(!confirm(`Promover ${a.nome} para ${prox}?`))return;
   a.faixa=prox;a.graus=0;a.treinos=0;save();refreshAll();
-  showToast(`🥋 ${a.nome} promovido para faixa ${prox}!`);
+  showToast(`🥋 ${a.nome} promovido para ${prox}!`);
+}
+
+// ══ PLANOS EDITÁVEIS ════════════════════════════════════
+const planosDefault={
+  'Mensal':300,'Trimestral':270,'Semestral':250,'Anual':230,'Kids':250,'Wellhub':0,'TotalPass':0
+};
+function getPlanos(){return ls('planos')||planosDefault}
+function abrirModalPlanos(){
+  const pl=getPlanos();
+  document.getElementById('planosModalBody').innerHTML=`
+    <div class="form-grid">
+      ${Object.entries(pl).map(([nome,val])=>`
+        <div class="fg"><label class="fl">${nome.toUpperCase()}</label>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:13px;color:var(--text2)">R$</span>
+            <input class="fi" type="number" id="plv_${nome.replace(/\s/g,'_')}" value="${val}" min="0" style="flex:1">
+            <span style="font-size:11px;color:var(--text3)">/mês</span>
+          </div>
+        </div>`).join('')}
+    </div>`;
+  abrirModal('modalPlanos');
+}
+function salvarPlanos(){
+  const pl=getPlanos();
+  Object.keys(pl).forEach(nome=>{
+    const el=document.getElementById('plv_'+nome.replace(/\s/g,'_'));
+    if(el)pl[nome]=parseFloat(el.value)||0;
+  });
+  ss('planos',pl);syncToSupabase();
+  // atualiza select do cadastro
+  const sel=document.getElementById('aPlano');
+  if(sel){
+    sel.innerHTML=Object.entries(pl).map(([n,v])=>
+      `<option value="${n} — R$${v}">${n} — R$${v}/mês</option>`).join('');
+  }
+  fecharModal('modalPlanos');showToast('✓ Valores dos planos atualizados!');
 }
 
 // ══ PROSPECTS ══════════════════════════════════════════
@@ -1707,9 +1786,9 @@ let editProdId=null;
 let curCat='';
 function getTams(cat,nome){
   const n=nome.toLowerCase();
+  if(cat==='Kimono') return [...tamAdulto,...tamKids];
   if(n.includes('kids')||n.includes('infantil')) return [...tamKids];
   if(n.includes('feminino')) return [...tamFem];
-  if(cat==='Kimono') return [...tamAdulto];
   if(cat==='Vestuário') return [...tamVest];
   return [...tamUniq];
 }
