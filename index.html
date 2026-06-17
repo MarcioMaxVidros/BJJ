@@ -513,6 +513,9 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
 
     <!-- ══ GRADUAÇÕES ══ -->
     <div class="sec" id="s-gr">
+      <div class="sb-search">
+        <input class="si" type="text" id="buscaGrad" placeholder="Buscar aluno por nome..." oninput="renderGrad()">
+      </div>
       <div class="card"><div class="card-hd">
         <span class="ct">ALUNOS — PROGRESSO</span>
         <div style="display:flex;gap:6px">
@@ -529,7 +532,10 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
 
     <!-- ══ PROSPECTS ══ -->
     <div class="sec" id="s-ps">
-      <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+      <div class="sb-search" style="margin-bottom:0">
+        <input class="si" type="text" id="buscaProspect" placeholder="Buscar prospect por nome ou telefone..." oninput="renderProspects()">
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px;margin-top:10px">
         <button class="btn btn-pu btn-sm" onclick="abrirModalProspect()">+ Novo prospect</button>
       </div>
       <div class="card" style="padding:0;overflow:hidden">
@@ -552,7 +558,8 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
       <div class="card" style="padding:0;overflow:hidden">
         <div style="padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
           <span class="ct">CONTROLE DE MENSALIDADES</span>
-          <div style="display:flex;gap:8px;align-items:center">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input class="fi" type="text" id="msBusca" placeholder="Buscar aluno..." style="height:30px;font-size:12px;width:160px" oninput="renderMensalidades()">
             <button class="btn-ghost" style="font-size:11px" onclick="abrirModalPlanos()">⚙ Valores dos Planos</button>
             <select class="fi" id="msFiltStatus" style="height:30px;font-size:12px;width:120px" onchange="renderMensalidades()">
               <option value="">Todos</option><option>Em dia</option><option>Vencido</option><option>Vence hoje</option>
@@ -574,6 +581,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
         <div class="kpi a-ok"><div class="kl">PEDIDOS HOJE</div><div class="kv" id="kpiPedidos">0</div></div>
       </div>
       <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <input class="fi" type="text" id="buscaEstoque" placeholder="Buscar produto..." style="height:34px;font-size:13px;width:180px" oninput="renderEstoque()">
         <div class="chips" id="ljChips" style="margin-bottom:0">
           <span class="chip on" onclick="filtProd(this,'')">Todos</span>
           <span class="chip" onclick="filtProd(this,'Kimono')">Kimonos</span>
@@ -590,7 +598,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
         </table></div>
       </div>
       <div class="card">
-        <div class="card-hd"><span class="ct">PEDIDOS</span></div>
+        <div class="card-hd"><span class="ct">PEDIDOS</span><input class="fi" type="text" id="buscaPedidos" placeholder="Buscar aluno ou produto..." style="height:30px;font-size:12px;width:200px" oninput="renderPedidos()"></div>
         <div class="tw"><table>
           <thead><tr><th>Data</th><th>Aluno</th><th>Produto</th><th>Tam.</th><th>Qtd</th><th>Valor</th><th>Status</th></tr></thead>
           <tbody id="tbPedidos"><tr><td colspan="7" style="text-align:center;padding:16px;color:var(--text3)">Nenhum pedido realizado.</td></tr></tbody>
@@ -607,8 +615,12 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
         <div class="kpi a-pu"><div class="kl">SALDO</div><div class="kv" id="fiSaldo">R$0</div></div>
         <div class="kpi"><div class="kl">LANÇAMENTOS</div><div class="kv" id="fiCount">0</div></div>
       </div>
-      <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
-        <button class="btn btn-pu btn-sm" onclick="abrirModalLancamento()">+ Lançamento</button>
+      <div style="display:flex;justify-content:space-between;margin-bottom:12px;gap:8px;flex-wrap:wrap">
+        <input class="fi" type="text" id="buscaFinanceiro" placeholder="Buscar lançamento..." style="height:34px;font-size:13px;width:200px" oninput="renderFinanceiro()">
+        <div style="display:flex;gap:8px">
+          <button class="btn-ghost" onclick="abrirModalRelatorio()">📊 Relatório mensal</button>
+          <button class="btn btn-pu btn-sm" onclick="abrirModalLancamento()">+ Lançamento</button>
+        </div>
       </div>
       <div class="card" style="padding:0;overflow:hidden">
         <div class="tw"><table>
@@ -627,6 +639,7 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
         <div class="kpi a-er"><div class="kl">AULAS PENDENTES</div><div class="kv" id="kpiAulasP" style="color:var(--er)">0</div></div>
       </div>
       <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <input class="fi" type="text" id="buscaProfs" placeholder="Buscar professor..." style="height:34px;font-size:13px;width:180px;display:none" oninput="renderProfs()">
         <div class="chips" id="pfChips" style="margin-bottom:0">
           <span class="chip on" onclick="filtPfView(this,'profs')">Professores</span>
           <span class="chip" onclick="filtPfView(this,'grade')">Grade de Aulas</span>
@@ -895,6 +908,31 @@ textarea.fi{height:auto;padding:8px 11px;resize:vertical}
     <div class="modal-ft">
       <button class="btn btn-sec" onclick="fecharModal('modalLancamento')">Cancelar</button>
       <button class="btn btn-pu" onclick="salvarLancamento()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RELATÓRIO MENSAL -->
+<div class="modal-overlay" id="modalRelatorio">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-hd">
+      <div><div class="modal-title">Relatório Mensal</div></div>
+      <button class="modal-close" onclick="fecharModal('modalRelatorio')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg"><label class="fl">MÊS</label>
+          <select class="fi" id="relMes"></select>
+        </div>
+        <div class="fg"><label class="fl">ANO</label>
+          <select class="fi" id="relAno"></select>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-top:10px">O relatório reúne entradas, saídas e saldo do período, com detalhamento por categoria (mensalidades, lojinha, pagamento de professores e outros) e a lista completa de lançamentos do mês.</div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-sec" onclick="fecharModal('modalRelatorio')">Cancelar</button>
+      <button class="btn btn-pu" onclick="gerarRelatorioMensal()">Gerar relatório</button>
     </div>
   </div>
 </div>
@@ -1337,6 +1375,16 @@ function fc(f){return !f?'b-ch':f>80?'b-ok':f>60?'b-wa':'b-er'}
 function idade(nasc){if(!nasc)return '—';const d=new Date(nasc),now=new Date();return Math.floor((now-d)/31557600000)+'a'}
 function formatDate(d){if(!d)return '—';const[y,m,dd]=d.split('-');return`${dd}/${m}/${y}`}
 function nowStr(){return new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}
+// Resolve a data real (Date) de um lançamento do financeiro. Usa ts (ISO) quando
+// disponível; para lançamentos antigos sem ts, reconstrói a partir de "dd/mm hh:mm"
+// assumindo o ano corrente (limitação: lançamentos de virada de ano sem ts podem
+// ficar com o ano errado — por isso novos lançamentos sempre gravam ts).
+function dataLancamento(f){
+  if(f.ts){const d=new Date(f.ts);if(!isNaN(d))return d}
+  const m=/^(\d{2})\/(\d{2})(?:\s+(\d{2}):(\d{2}))?/.exec(f.data||'');
+  if(m){const ano=new Date().getFullYear();return new Date(ano,parseInt(m[2])-1,parseInt(m[1]),parseInt(m[3]||0),parseInt(m[4]||0))}
+  return new Date();
+}
 
 // ══ ALUNOS ═════════════════════════════════════════════
 function abrirModalAluno(isKid=false){
@@ -1603,7 +1651,7 @@ function confirmarPagto(){
     localStorage.setItem(KEY+'venc_'+id,venc.toISOString().slice(0,10));
   }catch{}
   // lançar no financeiro
-  financeiro.unshift({id:Date.now().toString(),desc:`Mensalidade ${a.nome} — ${ref}`,tipo:'Entrada',forma,valor,data:nowStr()});
+  financeiro.unshift({id:Date.now().toString(),desc:`Mensalidade ${a.nome} — ${ref}`,tipo:'Entrada',forma,valor,data:nowStr(),ts:new Date().toISOString(),cat:'Mensalidades'});
   save();fecharModal('modalPagto');renderMensalidades();renderFinanceiro();refreshDash();
   showToast(`✓ Pagamento de R$${valor} de ${a.nome} registrado!`);
 }
@@ -1629,9 +1677,12 @@ function renderMensalidades(){
   const tb=document.getElementById('tbMensalidades');
   if(!ativos.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text3)">Nenhum aluno ativo cadastrado.</td></tr>';return}
   let filtered=rows;
-  if(filt==='Em dia') filtered=rows.filter(r=>r.sit.label==='Em dia');
-  else if(filt==='Vencido') filtered=rows.filter(r=>r.sit.label==='Vencido');
-  else if(filt==='Vence hoje') filtered=rows.filter(r=>r.sit.label==='Vence hoje');
+  const q=(document.getElementById('msBusca')?.value||'').toLowerCase();
+  if(q) filtered=filtered.filter(r=>r.a.nome.toLowerCase().includes(q));
+  if(filt==='Em dia') filtered=filtered.filter(r=>r.sit.label==='Em dia');
+  else if(filt==='Vencido') filtered=filtered.filter(r=>r.sit.label==='Vencido');
+  else if(filt==='Vence hoje') filtered=filtered.filter(r=>r.sit.label==='Vence hoje');
+  if(!filtered.length){tb.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text3)">Nenhum aluno encontrado.</td></tr>`;return}
   tb.innerHTML=filtered.map(({a,venc,sit,ultP,valor})=>`<tr>
     <td style="padding-left:12px"><div style="display:flex;align-items:center;gap:7px">
       <span class="ava ${a.kids?'ava-bl':''}">${a.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span>
@@ -1745,8 +1796,10 @@ function renderGrad(){
   document.getElementById('gradTabAdulto').classList.toggle('on',gradTab==='adulto');
   document.getElementById('gradTabKids').classList.toggle('on',gradTab==='kids');
   const tb=document.getElementById('tbGrad');
-  const lista=gradTab==='adulto'?alunos.filter(a=>!a.kids):alunos.filter(a=>a.kids);
-  if(!lista.length){tb.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text3)">Nenhum ${gradTab==='adulto'?'aluno adulto':'kid'} cadastrado.</td></tr>`;return}
+  const q=(document.getElementById('buscaGrad')?.value||'').toLowerCase();
+  let lista=gradTab==='adulto'?alunos.filter(a=>!a.kids):alunos.filter(a=>a.kids);
+  if(q) lista=lista.filter(a=>a.nome.toLowerCase().includes(q));
+  if(!lista.length){tb.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text3)">${q?'Nenhum aluno encontrado para "'+document.getElementById('buscaGrad').value+'".':'Nenhum '+(gradTab==='adulto'?'aluno adulto':'kid')+' cadastrado.'}</td></tr>`;return}
   tb.innerHTML=lista.map(a=>{
     const reqs=gradTab==='adulto'?reqsAdulto:reqsKids;
     const req=reqs[a.faixa]||40;
@@ -1820,8 +1873,10 @@ function avancarProspect(id){
 }
 function renderProspects(){
   const tb=document.getElementById('tbProspects');
-  if(!prospects.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text3)">Nenhum prospect cadastrado.</td></tr>';return}
-  tb.innerHTML=prospects.map(p=>`<tr>
+  const q=(document.getElementById('buscaProspect')?.value||'').toLowerCase();
+  const lista=q?prospects.filter(p=>p.nome.toLowerCase().includes(q)||(p.tel||'').toLowerCase().includes(q)):prospects;
+  if(!lista.length){tb.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text3)">${q?'Nenhum prospect encontrado.':'Nenhum prospect cadastrado.'}</td></tr>`;return}
+  tb.innerHTML=lista.map(p=>`<tr>
     <td style="padding-left:12px"><div style="font-weight:600">${p.nome}</div></td>
     <td style="font-size:12px">${p.tel}</td>
     <td><span class="badge b-ch">${p.interesse}</span></td>
@@ -1890,11 +1945,13 @@ function salvarProduto(){
 }
 function renderEstoque(){
   const tb=document.getElementById('tbEstoque');
-  const list=curCat?produtos.filter(p=>p.cat===curCat):produtos;
+  const q=(document.getElementById('buscaEstoque')?.value||'').toLowerCase();
+  let list=curCat?produtos.filter(p=>p.cat===curCat):produtos;
+  if(q) list=list.filter(p=>p.nome.toLowerCase().includes(q));
   const low=produtos.filter(p=>Object.values(p.estoque||{}).some(v=>v>0&&v<=3)).length;
   document.getElementById('kpiProd').textContent=produtos.length;
   document.getElementById('kpiLow2').textContent=low;
-  if(!list.length){tb.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text3)">Nenhum produto${curCat?' nesta categoria':''} cadastrado.</td></tr>`;return}
+  if(!list.length){tb.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text3)">Nenhum produto${q?' encontrado':curCat?' nesta categoria':''} cadastrado.</td></tr>`;return}
   tb.innerHTML=list.map(p=>{
     const tams=Object.entries(p.estoque||{});
     const tamHtml=tams.map(([t,q])=>`<div class="stk-cell"><div class="stk-v ${q<=0?'stk-low':q<=3?'stk-wa-v':'stk-ok-v'}">${q}</div><div class="stk-s">${t}</div></div>`).join('');
@@ -1947,22 +2004,24 @@ function finalizarVenda(){
   p.estoque[tam]-=qtd;
   const pedido={id:Date.now().toString(),data:nowStr(),aluno:document.getElementById('pedAluno').value,prod:p.nome,tam,qtd,valor:p.preco*qtd,forma:document.getElementById('pedForma').value,status:'Retirar'};
   pedidos.unshift(pedido);
-  financeiro.unshift({id:Date.now().toString(),desc:`Loja: ${p.nome} (${tam})`,tipo:'Entrada',forma:pedido.forma,valor:pedido.valor,data:nowStr()});
+  financeiro.unshift({id:Date.now().toString(),desc:`Loja: ${p.nome} (${tam})`,tipo:'Entrada',forma:pedido.forma,valor:pedido.valor,data:nowStr(),ts:new Date().toISOString(),cat:'Lojinha'});
   save();fecharModal('modalPedido');renderEstoque();renderPedidos();renderFinanceiro();refreshDash();
   showToast(`✓ Venda de R$${pedido.valor} registrada!`);
 }
 function renderPedidos(){
   const tb=document.getElementById('tbPedidos');
   document.getElementById('kpiPedidos').textContent=pedidos.filter(p=>p.data.includes(new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}))).length;
-  if(!pedidos.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:16px;color:var(--text3)">Nenhum pedido.</td></tr>';return}
-  tb.innerHTML=pedidos.map((p,i)=>`<tr>
+  const q=(document.getElementById('buscaPedidos')?.value||'').toLowerCase();
+  const list=q?pedidos.filter((p,i)=>(p.aluno||'').toLowerCase().includes(q)||(p.prod||'').toLowerCase().includes(q)):pedidos;
+  if(!list.length){tb.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:16px;color:var(--text3)">${q?'Nenhum pedido encontrado.':'Nenhum pedido.'}</td></tr>`;return}
+  tb.innerHTML=list.map((p)=>{const i=pedidos.indexOf(p);return`<tr>
     <td style="font-size:12px">${p.data}</td><td>${p.aluno}</td><td>${p.prod}</td>
     <td><code style="font-size:11px;background:var(--ch-xl);padding:2px 5px;border-radius:3px">${p.tam}</code></td>
     <td>${p.qtd}</td>
     <td style="font-weight:700;color:var(--pu)">R$${p.valor}</td>
     <td><span class="badge ${p.status==='Entregue'?'b-ok':'b-wa'}">${p.status}</span>
       ${p.status!=='Entregue'?`<button class="btn-ghost" onclick="entregarPedido(${i})">Entregar</button>`:''}</td>
-  </tr>`).join('');
+  </tr>`}).join('');
 }
 function entregarPedido(i){pedidos[i].status='Entregue';save();renderPedidos();showToast('Pedido marcado como entregue!')}
 
@@ -1999,7 +2058,7 @@ function salvarLancamento(){
   const qtd=parseFloat(document.getElementById('lQtd').value)||1;
   if(!desc||!vlrUnit){showToast('⚠ Descrição e valor são obrigatórios');return}
   const total=qtd*vlrUnit;
-  financeiro.unshift({id:Date.now().toString(),desc,tipo:document.getElementById('lTipo').value,forma:document.getElementById('lForma').value,qtd,vlrUnit,valor:total,data:nowStr()});
+  financeiro.unshift({id:Date.now().toString(),desc,tipo:document.getElementById('lTipo').value,forma:document.getElementById('lForma').value,qtd,vlrUnit,valor:total,data:nowStr(),ts:new Date().toISOString(),cat:'Outros'});
   save();fecharModal('modalLancamento');renderFinanceiro();showToast('✓ Lançamento registrado!');
 }
 function renderFinanceiro(){
@@ -2012,8 +2071,10 @@ function renderFinanceiro(){
   document.getElementById('fiSaldo').textContent='R$'+Math.abs(saldo).toLocaleString('pt-BR',{minimumFractionDigits:0});
   document.getElementById('fiSaldo').style.color=saldo>=0?'var(--ok)':'var(--er)';
   document.getElementById('fiCount').textContent=financeiro.length;
-  if(!financeiro.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text3)">Nenhum lançamento.</td></tr>';return}
-  tb.innerHTML=financeiro.map(f=>`<tr>
+  const q=(document.getElementById('buscaFinanceiro')?.value||'').toLowerCase();
+  const lista=q?financeiro.filter(f=>(f.desc||'').toLowerCase().includes(q)||(f.forma||'').toLowerCase().includes(q)):financeiro;
+  if(!lista.length){tb.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text3)">${q?'Nenhum lançamento encontrado.':'Nenhum lançamento.'}</td></tr>`;return}
+  tb.innerHTML=lista.map(f=>`<tr>
     <td style="font-size:12px;color:var(--text3)">${f.data}</td>
     <td>${f.desc}</td>
     <td style="font-size:12px;text-align:center">${f.qtd||1} × R$${(f.vlrUnit||f.valor).toFixed(2)}</td>
@@ -2021,6 +2082,126 @@ function renderFinanceiro(){
     <td><span class="badge ${f.tipo==='Entrada'?'b-ok':'b-er'}">${f.tipo}</span></td>
     <td style="font-weight:700;color:${f.tipo==='Entrada'?'var(--ok)':'var(--er)'}">${f.tipo==='Entrada'?'+':'-'}R$${f.valor.toFixed(2)}</td>
   </tr>`).join('');
+}
+
+// ══ RELATÓRIO FINANCEIRO MENSAL ════════════════════════
+const mesesNomes=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+function abrirModalRelatorio(){
+  const hoje=new Date();
+  const selMes=document.getElementById('relMes');
+  const selAno=document.getElementById('relAno');
+  selMes.innerHTML=mesesNomes.map((m,i)=>`<option value="${i}">${m}</option>`).join('');
+  selMes.value=hoje.getMonth();
+  // anos disponíveis: do ano do lançamento mais antigo até o ano atual (mínimo o ano atual)
+  let anoMin=hoje.getFullYear();
+  financeiro.forEach(f=>{const a=dataLancamento(f).getFullYear();if(a<anoMin)anoMin=a});
+  const anos=[];
+  for(let a=hoje.getFullYear();a>=anoMin;a--)anos.push(a);
+  selAno.innerHTML=anos.map(a=>`<option value="${a}">${a}</option>`).join('');
+  selAno.value=hoje.getFullYear();
+  abrirModal('modalRelatorio');
+}
+function gerarRelatorioMensal(){
+  const mes=parseInt(document.getElementById('relMes').value);
+  const ano=parseInt(document.getElementById('relAno').value);
+  const doMes=financeiro.filter(f=>{const d=dataLancamento(f);return d.getMonth()===mes&&d.getFullYear()===ano});
+  doMes.sort((a,b)=>dataLancamento(a)-dataLancamento(b));
+
+  let entradas=0,saidas=0;
+  const porCat={};
+  doMes.forEach(f=>{
+    const cat=f.cat||'Outros';
+    if(!porCat[cat])porCat[cat]={entradas:0,saidas:0};
+    if(f.tipo==='Entrada'){entradas+=f.valor;porCat[cat].entradas+=f.valor}
+    else{saidas+=f.valor;porCat[cat].saidas+=f.valor}
+  });
+  const saldo=entradas-saidas;
+  const fmt=v=>'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  const catOrdem=['Mensalidades','Lojinha','Professores','Outros'];
+  const catLabel={Mensalidades:'Mensalidades',Lojinha:'Lojinha',Professores:'Pagamento de professores',Outros:'Outros lançamentos'};
+  const linhasCat=catOrdem.filter(c=>porCat[c]).map(c=>{
+    const v=porCat[c];
+    const liq=v.entradas-v.saidas;
+    return`<tr>
+      <td style="padding:8px 10px;font-weight:600">${catLabel[c]}</td>
+      <td style="padding:8px 10px;text-align:right;color:#1A8754">${v.entradas?fmt(v.entradas):'—'}</td>
+      <td style="padding:8px 10px;text-align:right;color:#C0392B">${v.saidas?fmt(v.saidas):'—'}</td>
+      <td style="padding:8px 10px;text-align:right;font-weight:700;color:${liq>=0?'#1A8754':'#C0392B'}">${fmt(liq)}</td>
+    </tr>`;
+  }).join('')||`<tr><td colspan="4" style="padding:14px;text-align:center;color:#999">Sem lançamentos por categoria neste período.</td></tr>`;
+
+  const linhasDetalhe=doMes.length?doMes.map(f=>{
+    const d=dataLancamento(f);
+    const dataFmt=d.toLocaleDateString('pt-BR');
+    return`<tr>
+      <td style="padding:7px 10px;font-size:12.5px;color:#666">${dataFmt}</td>
+      <td style="padding:7px 10px;font-size:12.5px">${f.desc}</td>
+      <td style="padding:7px 10px;font-size:12.5px">${catLabel[f.cat]||'Outros lançamentos'}</td>
+      <td style="padding:7px 10px;font-size:12.5px">${f.forma||'—'}</td>
+      <td style="padding:7px 10px;font-size:12.5px;text-align:right;font-weight:600;color:${f.tipo==='Entrada'?'#1A8754':'#C0392B'}">${f.tipo==='Entrada'?'+':'-'}${fmt(f.valor)}</td>
+    </tr>`;
+  }).join(''):`<tr><td colspan="5" style="padding:16px;text-align:center;color:#999">Nenhum lançamento neste período.</td></tr>`;
+
+  const tituloMes=`${mesesNomes[mes]} de ${ano}`;
+  const geradoEm=new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+  const html=`<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8">
+<title>Relatório Financeiro — ${tituloMes}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Barlow',Arial,sans-serif;color:#1A1A1A;padding:32px;background:#fff}
+  .hd{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid #2C2C2C;padding-bottom:14px;margin-bottom:22px}
+  .hd h1{font-family:'Barlow Condensed',Arial,sans-serif;font-size:22px;letter-spacing:1px}
+  .hd .sub{font-size:12px;color:#777;margin-top:3px}
+  .hd .ger{font-size:11px;color:#999;text-align:right}
+  .cards{display:flex;gap:12px;margin-bottom:24px}
+  .card{flex:1;border:1px solid #E8E6DF;border-radius:10px;padding:14px}
+  .card .l{font-size:10.5px;letter-spacing:.5px;color:#888;font-weight:600;margin-bottom:6px}
+  .card .v{font-family:'Barlow Condensed',Arial,sans-serif;font-size:22px;font-weight:800}
+  h2{font-family:'Barlow Condensed',Arial,sans-serif;font-size:14px;letter-spacing:.5px;color:#444;margin:26px 0 10px;text-transform:uppercase}
+  table{width:100%;border-collapse:collapse}
+  thead th{text-align:left;font-size:11px;letter-spacing:.3px;color:#888;text-transform:uppercase;border-bottom:2px solid #E8E6DF;padding:8px 10px}
+  tbody tr{border-bottom:1px solid #F0EFEA}
+  .ft{margin-top:30px;padding-top:14px;border-top:1px solid #E8E6DF;font-size:10.5px;color:#999;text-align:center}
+  @media print{body{padding:14px}.no-print{display:none}}
+  .btnbar{text-align:center;margin-bottom:20px}
+  .btnbar button{font-family:'Barlow',Arial,sans-serif;font-size:13px;font-weight:600;padding:9px 18px;border-radius:8px;border:none;background:#7B5EA7;color:#fff;cursor:pointer}
+</style></head>
+<body>
+  <div class="btnbar no-print"><button onclick="window.print()">🖨 Imprimir / Salvar como PDF</button></div>
+  <div class="hd">
+    <div><h1>FRATRES BJJ — Relatório Financeiro</h1><div class="sub">${tituloMes} · Unidade Haydee</div></div>
+    <div class="ger">Gerado em<br>${geradoEm}</div>
+  </div>
+  <div class="cards">
+    <div class="card"><div class="l">ENTRADAS</div><div class="v" style="color:#1A8754">${fmt(entradas)}</div></div>
+    <div class="card"><div class="l">SAÍDAS</div><div class="v" style="color:#C0392B">${fmt(saidas)}</div></div>
+    <div class="card"><div class="l">SALDO DO MÊS</div><div class="v" style="color:${saldo>=0?'#1A8754':'#C0392B'}">${fmt(saldo)}</div></div>
+    <div class="card"><div class="l">LANÇAMENTOS</div><div class="v">${doMes.length}</div></div>
+  </div>
+
+  <h2>Resumo por categoria</h2>
+  <table>
+    <thead><tr><th>Categoria</th><th style="text-align:right">Entradas</th><th style="text-align:right">Saídas</th><th style="text-align:right">Líquido</th></tr></thead>
+    <tbody>${linhasCat}</tbody>
+  </table>
+
+  <h2>Lançamentos do período</h2>
+  <table>
+    <thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Forma</th><th style="text-align:right">Valor</th></tr></thead>
+    <tbody>${linhasDetalhe}</tbody>
+  </table>
+
+  <div class="ft">Fratres BJJ · O Tatame nos Une, a Fraternidade nos Fortalece.</div>
+</body></html>`;
+
+  const win=window.open('','_blank');
+  if(!win){showToast('⚠ Permita pop-ups para abrir o relatório');return}
+  win.document.write(html);
+  win.document.close();
+  fecharModal('modalRelatorio');
 }
 
 // ══ DASHBOARD ══════════════════════════════════════════
@@ -2064,6 +2245,8 @@ function filtPfView(el,view){
   pfViews.forEach(v=>document.getElementById(v).style.display='none');
   document.getElementById('pfView'+view.charAt(0).toUpperCase()+view.slice(1)).style.display='block';
   const btn=document.getElementById('pfBtnAdd');
+  const busca=document.getElementById('buscaProfs');
+  busca.style.display=view==='profs'?'':'none';
   if(view==='profs'){btn.textContent='+ Cadastrar professor';btn.onclick=abrirModalProf;btn.style.display=''}
   else if(view==='grade'){btn.textContent='+ Nova aula';btn.onclick=abrirModalAula;btn.style.display=''}
   else{btn.style.display='none'}
@@ -2129,8 +2312,10 @@ function excluirProf(id){
 }
 function renderProfs(){
   const tb=document.getElementById('tbProfs');
-  if(!professores.length){tb.innerHTML='<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text3)">Nenhum professor cadastrado.</td></tr>';return}
-  tb.innerHTML=professores.map(p=>`<tr>
+  const q=(document.getElementById('buscaProfs')?.value||'').toLowerCase();
+  const lista=q?professores.filter(p=>p.nome.toLowerCase().includes(q)):professores;
+  if(!lista.length){tb.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text3)">${q?'Nenhum professor encontrado.':'Nenhum professor cadastrado.'}</td></tr>`;return}
+  tb.innerHTML=lista.map(p=>`<tr>
     <td style="padding-left:12px"><div style="display:flex;align-items:center;gap:7px">
       <span class="ava" style="background:var(--pu-xl);color:var(--pu-d)">${p.nome.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase()}</span>
       <div><div style="font-weight:700">${p.nome}</div><div style="font-size:11px;color:var(--text3)">${p.email||'—'}</div></div>
@@ -2275,7 +2460,7 @@ function renderPagto(){
   }).join('');
 }
 function registrarPagtoProf(id,nome,valor){
-  financeiro.unshift({id:Date.now().toString(),desc:`Pagamento professor: ${nome}`,tipo:'Saída',forma:'Transferência',valor,data:nowStr()});
+  financeiro.unshift({id:Date.now().toString(),desc:`Pagamento professor: ${nome}`,tipo:'Saída',forma:'Transferência',valor,data:nowStr(),ts:new Date().toISOString(),cat:'Professores'});
   save();renderFinanceiro();
   showToast(`✓ Pagamento de R$${valor} para ${nome} registrado!`);
 }
